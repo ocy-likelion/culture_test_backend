@@ -17,15 +17,22 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "surveys")
-public class Survey extends BaseEntity {
+@Table(name = "questions")
+public class Question extends BaseEntity {
 
-  @Column(length = 100)
-  String title;
+  @Column(nullable = false)
+  private String content;
 
-  private boolean isMain;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "property_id")
+  private Property property;
 
-  @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+  private boolean isSelective;
+
+  @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
   @OrderBy("displayOrder ASC")
+  private List<Choice> choices = new ArrayList<>();
+
+  @OneToMany(mappedBy = "question")
   private List<SurveyQuestion> surveyQuestions = new ArrayList<>();
 }

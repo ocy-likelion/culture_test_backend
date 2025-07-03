@@ -1,6 +1,6 @@
 package com.likelion.culture_test.domain.survey.controller;
 
-import com.likelion.culture_test.domain.survey.dto.QuestionResponse;
+import com.likelion.culture_test.domain.survey.dto.response.QuestionResponse;
 import com.likelion.culture_test.domain.survey.service.SurveyService;
 import com.likelion.culture_test.global.globalDto.PageResponse;
 import com.likelion.culture_test.global.rsData.RsData;
