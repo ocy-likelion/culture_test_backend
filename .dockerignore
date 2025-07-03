@@ -1,0 +1,18 @@
+# .dockerignore
+
+# Build output
+build
+.gradle
+
+# IDE files
+.idea
+*.iml
+
+# Log files
+*.log
+
+# Local Gradle properties
+gradle.properties
+
+
+credentials.json
