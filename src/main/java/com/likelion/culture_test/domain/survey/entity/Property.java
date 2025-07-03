@@ -1,5 +1,6 @@
 package com.likelion.culture_test.domain.survey.entity;
 
+import com.likelion.culture_test.domain.survey.enums.Category;
 import com.likelion.culture_test.global.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,24 +9,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "surveys")
-public class Survey extends BaseEntity {
+@Table(name = "properties")
+public class Property extends BaseEntity {
 
-  @Column(length = 100)
-  String title;
+  @Column(length = 150, nullable = false, unique = true)
+  private String name;
 
-  private boolean isMain;
-
-  @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-  @OrderBy("displayOrder ASC")
-  private List<SurveyQuestion> surveyQuestions = new ArrayList<>();
+  @Enumerated(EnumType.STRING)
+  private Category category;
 }
