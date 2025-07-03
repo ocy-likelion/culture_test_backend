@@ -1,6 +1,13 @@
 package com.likelion.culture_test.domain.survey.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.likelion.culture_test.domain.survey.dto.response.InitDataDto;
+import com.likelion.culture_test.domain.survey.dto.response.InitDataDto.ChoiceDto;
+import com.likelion.culture_test.domain.survey.dto.response.InitDataDto.PropertyDto;
+import com.likelion.culture_test.domain.survey.dto.response.InitDataDto.QuestionDto;
+import com.likelion.culture_test.domain.survey.dto.response.InitDataDto.SurveyDto;
 import com.likelion.culture_test.domain.survey.entity.*;
 import com.likelion.culture_test.domain.survey.enums.Category;
 import com.likelion.culture_test.domain.survey.repository.PropertyRepository;
@@ -13,11 +20,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,13 +39,7 @@ public class DataInitializerService {
   private final PropertyRepository propertyRepository;
   private final ObjectMapper objectMapper;
 
-  public record ChoiceInitDto(int displayOrder, String content, String property) {}
-  public record QuestionInitDto(String content, boolean isSelective, String property, List<ChoiceInitDto> choices) {}
-  public record SurveyInitDto(String title, boolean isMain, List<QuestionInitDto> questions) {}
-  public record PropertyInitDto(String key, String name, String category) {}
-  public record InitDataDto(List<PropertyInitDto> properties, List<SurveyInitDto> surveys) {}
-
-
+  
   @PostConstruct
   @Transactional
   public void initializeData() {
@@ -62,7 +64,7 @@ public class DataInitializerService {
       });
 
 
-      for (SurveyInitDto surveyDto : initData.surveys()) {
+      for (SurveyDto surveyDto : initData.surveys()) {
         Survey survey = Survey.builder()
             .title(surveyDto.title())
             .isMain(surveyDto.isMain())
@@ -71,7 +73,7 @@ public class DataInitializerService {
 
         List<SurveyQuestion> surveyQuestions = new ArrayList<>();
         int questionOrder = 1;
-        for (QuestionInitDto questionDto : surveyDto.questions()) {
+        for (QuestionDto questionDto : surveyDto.questions()) {
           Question question = Question.builder()
               .content(questionDto.content())
               .isSelective(questionDto.isSelective())
@@ -117,4 +119,54 @@ public class DataInitializerService {
       throw new RuntimeException("설문조사 초기 데이터 적재 실패: " + e.getMessage(), e);
     }
   }
+
+
+  public void backupData() throws IOException {
+    List<Property> properties = propertyRepository.findAll();
+    List<Survey> surveys = surveyRepository.findAll();
+
+    List<PropertyDto> propertyDtos = properties.stream()
+        .map(property -> new PropertyDto(
+            "P_" + property.getId(),
+            property.getName(),
+            property.getCategory().name()))
+        .toList();
+
+    List<SurveyDto> surveyDtos = surveys.stream()
+        .map(survey -> {
+          List<QuestionDto> questionDtos = survey.getSurveyQuestions().stream()
+              .sorted(Comparator.comparingInt(SurveyQuestion::getDisplayOrder))
+              .map(surveyQuestion  -> {
+                Question question = surveyQuestion.getQuestion();
+                List<ChoiceDto> choiceDtos = question.getChoices().stream()
+                    .map(choice -> new ChoiceDto(
+                        choice.getDisplayOrder(),
+                        choice.getContent(),
+                        choice.getProperty() != null ? "P_" + choice.getProperty().getId() : null // key 역생성
+                    ))
+                    .toList();
+                return new QuestionDto(
+                    question.getContent(),
+                    question.isSelective(),
+                    question.getProperty() != null ? "P_" + question.getProperty().getId() : null, // key 역생성
+                    choiceDtos
+                );
+              })
+              .toList();
+          return new SurveyDto(survey.getTitle(), survey.isMain(), questionDtos);
+        })
+        .toList();
+
+    InitDataDto backupData = new InitDataDto(propertyDtos, surveyDtos);
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+    objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    String backupJson = objectMapper.writeValueAsString(backupData);
+
+    Path path = Paths.get("data/backup.json");
+    Files.writeString(path, backupJson);
+    log.info("⭐ 설문조사 DB 데이터 백업 완료 : data/backup.json");
+  }
+
 }
