@@ -1,0 +1,252 @@
+{
+  "properties" : [ {
+    "key" : "P_1",
+    "name" : "개인주의 vs 공동체",
+    "category" : "COMMUNICATING"
+  }, {
+    "key" : "P_2",
+    "name" : "정량적 지표 신뢰 성향",
+    "category" : "CANDIDATE_PROFILE"
+  }, {
+    "key" : "P_3",
+    "name" : "경험 중심 유형",
+    "category" : "CANDIDATE_PROFILE"
+  }, {
+    "key" : "P_4",
+    "name" : "정확성 중심 유형",
+    "category" : "CANDIDATE_PROFILE"
+  }, {
+    "key" : "P_5",
+    "name" : "잠재력 중심 유형",
+    "category" : "CANDIDATE_PROFILE"
+  }, {
+    "key" : "P_6",
+    "name" : "성과 중심 유형",
+    "category" : "CANDIDATE_PROFILE"
+  } ],
+  "surveys" : [ {
+    "title" : "인사담당자 성향 테스트 (v1.0)",
+    "isMain" : true,
+    "questions" : [ {
+      "content" : "모든 사람과 긴밀히 연결된 팀보다는, 필요한 순간 정확히 연결되는 구조가 더 효율적일 수 있다.",
+      "isSelective" : false,
+      "property" : "P_1",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "협업은 누가 맡았든 필요한 사람이 먼저 나서는 유연성이 핵심이라고 본다.",
+      "isSelective" : false,
+      "property" : "P_1",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "실수는 개인이 책임지는 것이 조직의 기본 원칙이라고 본다.",
+      "isSelective" : false,
+      "property" : "P_1",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "개인 기여가 명확히 드러나는 환경에서 역량이 더 잘 드러난다고 생각한다.",
+      "isSelective" : false,
+      "property" : "P_1",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "함께 일하는 사람들과 소통 빈도가 많을수록 성과가 잘 나온다고 생각한다.",
+      "isSelective" : false,
+      "property" : "P_1",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "팀 전체가 성장하려면 개별 역량보다 관계 중심의 문화가 필요하다.",
+      "isSelective" : false,
+      "property" : "P_1",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "이력서와 포트폴리오는 완벽하지만 면접 태도가 아쉬운 후보자가 있다면, 저는 면접에서의 인상보다는 객관적인 서류 스펙을 더 신뢰하는 편이다.",
+      "isSelective" : false,
+      "property" : "P_2",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "문제 해결 능력은 증명하기 어렵기 때문에, 후보자의 주관적인 설명보다 코딩 테스트나 과제 테스트로 판단해야 한다.",
+      "isSelective" : false,
+      "property" : "P_2",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "요구 경력이 3년인 경우, 요구 경력 미만이지만 뛰어난 후보자보다 최소한 경력을 채우는 사람이 더 안전한 선택이라고 생각한다.",
+      "isSelective" : false,
+      "property" : "P_2",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "채용 공고의 필수 기술 스택을 모두 갖추지 못한다면, 다른 역량이 뛰어나도 채용을 고려하지 않는다.",
+      "isSelective" : false,
+      "property" : "P_2",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다"
+      } ]
+    }, {
+      "content" : "채용 과정에서 가장 중요하게 검토하는 것은 무엇인가요?",
+      "isSelective" : true,
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "직무와 관련된 프로젝트 경험",
+        "property" : "P_3"
+      }, {
+        "displayOrder" : 2,
+        "content" : "보유 기술 스택의 정확도",
+        "property" : "P_4"
+      }, {
+        "displayOrder" : 3,
+        "content" : "성장 잠재력 및 학습 능력",
+        "property" : "P_5"
+      }, {
+        "displayOrder" : 4,
+        "content" : "이전 직장에서의 성과 및 평판",
+        "property" : "P_6"
+      } ]
+    } ]
+  } ]
+}
