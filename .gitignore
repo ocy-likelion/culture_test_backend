@@ -70,3 +70,10 @@ files/
 /coverage/
 
 credentials.json
+
+
+
+
+*.mv.db
+*.trace.db
+*.h2.db

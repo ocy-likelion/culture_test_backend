@@ -20,10 +20,10 @@ import lombok.experimental.SuperBuilder;
 public class Result extends BaseEntity {
 
     @Column(name = "field")
-    private String field; // 배열 어떻게해서
+    private String field; //
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private Long userId; // 나중에 유저객체 만들어지면 그때 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_id", nullable = false)
