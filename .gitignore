@@ -77,3 +77,7 @@ credentials.json
 *.mv.db
 *.trace.db
 *.h2.db
+.env
+application-secret.yml
+.idea/
+target/
