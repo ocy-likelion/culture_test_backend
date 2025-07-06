@@ -2,6 +2,8 @@ package com.likelion.culture_test.domain.result.service;
 
 import com.likelion.culture_test.domain.result.dto.ResultRequestDto;
 import com.likelion.culture_test.domain.result.entity.Result;
+import com.likelion.culture_test.domain.result.entity.ResultDetail;
+import com.likelion.culture_test.domain.result.repository.ResultDetailRepository;
 import com.likelion.culture_test.domain.result.repository.ResultRepository;
 import com.likelion.culture_test.domain.survey.entity.Choice;
 import com.likelion.culture_test.domain.survey.entity.Survey;
@@ -28,6 +30,7 @@ public class ResultService {
     private final SurveyRepository surveyRepository;
     private final ChoiceRepository choiceRepository;
     private final ResultRepository resultRepository;
+    private final ResultDetailRepository resultDetailRepository;
 
     public void processSurveyResult(ResultRequestDto dto) {
         Survey survey = surveyRepository.findById(dto.surveyId())
@@ -44,6 +47,17 @@ public class ResultService {
         // 분야별 점수 누적
         Map<String, List<Integer>> fieldScoreMap = new HashMap<>();
 
+
+        // 결과 저장용 Result 엔티티 생성
+        Result result = Result.builder()
+                .userId(dto.userId())
+                .survey(survey)
+                .field("") // 나중에 채움
+                .cluster(null)
+                .build();
+
+        resultRepository.save(result);
+
         for (int i = 0; i < choices.size(); i++) {
             Choice choice = choices.get(i);
             Long expectedQuestionId = dto.answers().get(i).questionId();
@@ -58,6 +72,17 @@ public class ResultService {
             fieldScoreMap
                     .computeIfAbsent(fieldName, k -> new ArrayList<>())
                     .add(score);
+
+            // ResultDetail 엔티티 생성 및 저장
+            ResultDetail detail = ResultDetail.builder()
+                    .result(result)
+                    .question(choice.getQuestion())
+                    .choice(choice)
+                    .property(choice.getProperty())
+                    .score((double) score)
+                    .build();
+
+            resultDetailRepository.save(detail);
         }
 
         // 분야 이름 고정 순서 정렬
@@ -68,7 +93,7 @@ public class ResultService {
         List<Double> vector = sortedFields.stream()
                 .map(field -> {
                     List<Integer> scores = fieldScoreMap.get(field);
-                    return scores.stream().mapToInt(i -> i).average().orElse(0.0);
+                    return scores.stream().mapToInt(Integer::intValue).average().orElse(0.0);
                 })
                 .toList();
 
@@ -76,12 +101,14 @@ public class ResultService {
                 .map(String::valueOf)
                 .collect(Collectors.joining(","));
 
-        Result result = Result.builder()
-                .userId(dto.userId())
-                .survey(survey)
-                .field(field)
-                .cluster(null) // 추후 군집 분석 후 설정
-                .build();
+        result.setField(field);
+
+//        Result result = Result.builder()
+//                .userId(dto.userId())
+//                .survey(survey)
+//                .field(field)
+//                .cluster(null) // 추후 군집 분석 후 설정
+//                .build();
 
         resultRepository.save(result);
     }
