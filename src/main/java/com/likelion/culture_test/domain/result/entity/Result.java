@@ -23,13 +23,13 @@ public class Result extends BaseEntity {
     private String field; //
 
     @Column(name = "user_id", nullable = false)
-    private Long userId; // 나중에 유저객체 만들어지면 그때 
+    private Long userId; // 나중에 유저객체 만들어지면 그때
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_id", nullable = false)
     private Survey survey;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cluster_id", nullable = false)
+    @JoinColumn(name = "cluster_id", nullable = true)
     private Cluster cluster;
 }
