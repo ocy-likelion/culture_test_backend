@@ -7,6 +7,8 @@ import com.likelion.culture_test.domain.survey.entity.Choice;
 import com.likelion.culture_test.domain.survey.entity.Survey;
 import com.likelion.culture_test.domain.survey.repository.ChoiceRepository;
 import com.likelion.culture_test.domain.survey.repository.SurveyRepository;
+import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
 import com.likelion.culture_test.global.util.ScoreUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +31,7 @@ public class ResultService {
 
     public void processSurveyResult(ResultRequestDto dto) {
         Survey survey = surveyRepository.findById(dto.surveyId())
-                .orElseThrow(() -> new RuntimeException("설문 없음"));
+                .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
 
         // choiceId만 추출
         List<Long> choiceIds = dto.answers().stream()
@@ -47,7 +49,7 @@ public class ResultService {
             Long expectedQuestionId = dto.answers().get(i).questionId();
 
             if (!choice.getQuestion().getId().equals(expectedQuestionId)) {
-                throw new IllegalArgumentException("선택지와 질문이 일치하지 않음");
+                throw new CustomException(ErrorCode.QUESTION_CHOICE_MISMATCH);
             }
 
             String fieldName = choice.getProperty().getName(); // 분야 이름

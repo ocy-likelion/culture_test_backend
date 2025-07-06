@@ -33,19 +33,24 @@
       "property" : "P_1",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_1"
       } ]
     }, {
       "content" : "협업은 누가 맡았든 필요한 사람이 먼저 나서는 유연성이 핵심이라고 본다.",
@@ -53,19 +58,24 @@
       "property" : "P_1",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_1"
       } ]
     }, {
       "content" : "실수는 개인이 책임지는 것이 조직의 기본 원칙이라고 본다.",
@@ -73,19 +83,24 @@
       "property" : "P_1",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_1"
       } ]
     }, {
       "content" : "개인 기여가 명확히 드러나는 환경에서 역량이 더 잘 드러난다고 생각한다.",
@@ -93,19 +108,24 @@
       "property" : "P_1",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_1"
       } ]
     }, {
       "content" : "함께 일하는 사람들과 소통 빈도가 많을수록 성과가 잘 나온다고 생각한다.",
@@ -113,19 +133,24 @@
       "property" : "P_1",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_1"
       } ]
     }, {
       "content" : "팀 전체가 성장하려면 개별 역량보다 관계 중심의 문화가 필요하다.",
@@ -133,19 +158,24 @@
       "property" : "P_1",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_1"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_1"
       } ]
     }, {
       "content" : "이력서와 포트폴리오는 완벽하지만 면접 태도가 아쉬운 후보자가 있다면, 저는 면접에서의 인상보다는 객관적인 서류 스펙을 더 신뢰하는 편이다.",
@@ -153,19 +183,24 @@
       "property" : "P_2",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_2"
       } ]
     }, {
       "content" : "문제 해결 능력은 증명하기 어렵기 때문에, 후보자의 주관적인 설명보다 코딩 테스트나 과제 테스트로 판단해야 한다.",
@@ -173,19 +208,24 @@
       "property" : "P_2",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_2"
       } ]
     }, {
       "content" : "요구 경력이 3년인 경우, 요구 경력 미만이지만 뛰어난 후보자보다 최소한 경력을 채우는 사람이 더 안전한 선택이라고 생각한다.",
@@ -193,19 +233,24 @@
       "property" : "P_2",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_2"
       } ]
     }, {
       "content" : "채용 공고의 필수 기술 스택을 모두 갖추지 못한다면, 다른 역량이 뛰어나도 채용을 고려하지 않는다.",
@@ -213,19 +258,24 @@
       "property" : "P_2",
       "choices" : [ {
         "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다"
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 2,
-        "content" : "그렇지 않다"
+        "content" : "그렇지 않다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 3,
-        "content" : "보통이다"
+        "content" : "보통이다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 4,
-        "content" : "그렇다"
+        "content" : "그렇다",
+        "property" : "P_2"
       }, {
         "displayOrder" : 5,
-        "content" : "매우 그렇다"
+        "content" : "매우 그렇다",
+        "property" : "P_2"
       } ]
     }, {
       "content" : "채용 과정에서 가장 중요하게 검토하는 것은 무엇인가요?",
