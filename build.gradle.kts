@@ -45,6 +45,8 @@ dependencies {
 	// Swagger UI
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 
+	implementation ("com.h2database:h2")
+
 }
 
 tasks.withType<Test> {

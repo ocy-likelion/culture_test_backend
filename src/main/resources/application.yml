@@ -2,12 +2,15 @@ server:
   port: 8090
 
 spring:
+
   output:
     ansi:
       enabled: ALWAYS
   profiles:
     active: dev
     include: secret
+
+
   jpa:
     open-in-view: false
     properties:
@@ -20,4 +23,6 @@ spring:
 
 logging:
   level:
-    com.planit.holiday_keeper: DEBUG
+    root: info
+    com.likelion.culture_test: DEBUG
+#    com.planit.holiday_keeper: DEBUG
