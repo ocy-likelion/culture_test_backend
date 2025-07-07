@@ -9,6 +9,7 @@ import com.likelion.culture_test.domain.result.repository.ResultDetailRepository
 import com.likelion.culture_test.domain.result.repository.ResultRepository;
 import com.likelion.culture_test.domain.survey.entity.Choice;
 import com.likelion.culture_test.domain.survey.entity.Survey;
+import com.likelion.culture_test.domain.survey.enums.Category;
 import com.likelion.culture_test.domain.survey.repository.ChoiceRepository;
 import com.likelion.culture_test.domain.survey.repository.SurveyRepository;
 import com.likelion.culture_test.global.exceptions.CustomException;
@@ -133,13 +134,14 @@ public class ResultService {
                 .toList();
     }
 
-    public Map<String, Double> getScoreByProperty(ResultQueryDto dto) {
+    public Map<String, Double> getScoreByCategory(ResultQueryDto dto) {
         List<Object[]> rows = resultDetailRepository.aggregateScoreByProperty(dto.getUserId(), dto.getSurveyId());
         Map<String, Double> map = new HashMap<>();
         for (Object[] row : rows) {
-            String property = (String) row[0];
+            Category category = (Category) row[0];
             Double score = (Double) row[1];
-            map.put(property, score);
+            map.put(category.name(), score);
+            // map.put(category.getDescription(), score);
         }
         return map;
     }

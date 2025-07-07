@@ -37,7 +37,7 @@ public class ResultController {
     @GetMapping("/detail/{userId}/survey/{surveyId}/scores")
     public Map<String, Double> getScores(@PathVariable(name = "userId") Long userId, @PathVariable(name = "surveyId") Long surveyId) {
         ResultQueryDto dto = new ResultQueryDto(userId, surveyId);
-        return resultService.getScoreByProperty(dto);
+        return resultService.getScoreByCategory(dto);
     }
 
     @Operation(summary = "특정 유저가 특정 설문지를 풀 때 몇 번에 어느 문항을 답하였는지 기록 조회")
