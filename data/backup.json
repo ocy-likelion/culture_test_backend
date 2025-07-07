@@ -1,34 +1,42 @@
 {
   "properties" : [ {
     "key" : "P_1",
-    "name" : "개인주의 vs 공동체",
-    "category" : "COMMUNICATING"
+    "name" : "즉시 전력형",
+    "category" : "WORK_CAPABILITY"
   }, {
     "key" : "P_2",
-    "name" : "정량적 지표 신뢰 성향",
-    "category" : "CANDIDATE_PROFILE"
+    "name" : "성장 가능형",
+    "category" : "WORK_CAPABILITY"
   }, {
     "key" : "P_3",
-    "name" : "경험 중심 유형",
-    "category" : "CANDIDATE_PROFILE"
+    "name" : "직면형",
+    "category" : "CONFLICT_RESOLUTION"
   }, {
     "key" : "P_4",
-    "name" : "정확성 중심 유형",
-    "category" : "CANDIDATE_PROFILE"
+    "name" : "숙고형",
+    "category" : "CONFLICT_RESOLUTION"
   }, {
     "key" : "P_5",
-    "name" : "잠재력 중심 유형",
-    "category" : "CANDIDATE_PROFILE"
+    "name" : "혁신적 성향",
+    "category" : "PERSONALITY_PREFERENCE"
   }, {
     "key" : "P_6",
-    "name" : "성과 중심 유형",
-    "category" : "CANDIDATE_PROFILE"
+    "name" : "전통적 성향",
+    "category" : "PERSONALITY_PREFERENCE"
+  }, {
+    "key" : "P_7",
+    "name" : "객관적 자료형",
+    "category" : "EVALUATION_CRITERIA"
+  }, {
+    "key" : "P_8",
+    "name" : "주관적 인상형",
+    "category" : "EVALUATION_CRITERIA"
   } ],
   "surveys" : [ {
     "title" : "인사담당자 성향 테스트 (v1.0)",
     "isMain" : true,
     "questions" : [ {
-      "content" : "모든 사람과 긴밀히 연결된 팀보다는, 필요한 순간 정확히 연결되는 구조가 더 효율적일 수 있다.",
+      "content" : "자기주도적인 학습 태도를 꾸준히 보여준 지원자라 하더라도, 결과로 보여준 산출물의 양이 절대적으로 부족하다면 실무 기여도가 낮다고 판단되어 평가가 낮아질 수밖에 없다.",
       "isSelective" : false,
       "property" : "P_1",
       "choices" : [ {
@@ -53,7 +61,7 @@
         "property" : "P_1"
       } ]
     }, {
-      "content" : "협업은 누가 맡았든 필요한 사람이 먼저 나서는 유연성이 핵심이라고 본다.",
+      "content" : "잠재력이 있더라도 당장 실무에 투입되기 어려운 지원자보다는, 관련 경력과 경험이 풍부하여 바로 성과를 낼 수 있는 지원자에게 더 높은 점수를 주는 편이다.",
       "isSelective" : false,
       "property" : "P_1",
       "choices" : [ {
@@ -78,107 +86,7 @@
         "property" : "P_1"
       } ]
     }, {
-      "content" : "실수는 개인이 책임지는 것이 조직의 기본 원칙이라고 본다.",
-      "isSelective" : false,
-      "property" : "P_1",
-      "choices" : [ {
-        "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 2,
-        "content" : "그렇지 않다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 3,
-        "content" : "보통이다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 4,
-        "content" : "그렇다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 5,
-        "content" : "매우 그렇다",
-        "property" : "P_1"
-      } ]
-    }, {
-      "content" : "개인 기여가 명확히 드러나는 환경에서 역량이 더 잘 드러난다고 생각한다.",
-      "isSelective" : false,
-      "property" : "P_1",
-      "choices" : [ {
-        "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 2,
-        "content" : "그렇지 않다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 3,
-        "content" : "보통이다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 4,
-        "content" : "그렇다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 5,
-        "content" : "매우 그렇다",
-        "property" : "P_1"
-      } ]
-    }, {
-      "content" : "함께 일하는 사람들과 소통 빈도가 많을수록 성과가 잘 나온다고 생각한다.",
-      "isSelective" : false,
-      "property" : "P_1",
-      "choices" : [ {
-        "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 2,
-        "content" : "그렇지 않다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 3,
-        "content" : "보통이다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 4,
-        "content" : "그렇다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 5,
-        "content" : "매우 그렇다",
-        "property" : "P_1"
-      } ]
-    }, {
-      "content" : "팀 전체가 성장하려면 개별 역량보다 관계 중심의 문화가 필요하다.",
-      "isSelective" : false,
-      "property" : "P_1",
-      "choices" : [ {
-        "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 2,
-        "content" : "그렇지 않다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 3,
-        "content" : "보통이다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 4,
-        "content" : "그렇다",
-        "property" : "P_1"
-      }, {
-        "displayOrder" : 5,
-        "content" : "매우 그렇다",
-        "property" : "P_1"
-      } ]
-    }, {
-      "content" : "이력서와 포트폴리오는 완벽하지만 면접 태도가 아쉬운 후보자가 있다면, 저는 면접에서의 인상보다는 객관적인 서류 스펙을 더 신뢰하는 편이다.",
+      "content" : "비전공자이지만 기술에 대한 높은 관심과 질 높은 프로젝트 경험이 있다면, 전공자보다 더 높은 평가를 줄 수 있다고 생각한다.",
       "isSelective" : false,
       "property" : "P_2",
       "choices" : [ {
@@ -203,7 +111,7 @@
         "property" : "P_2"
       } ]
     }, {
-      "content" : "문제 해결 능력은 증명하기 어렵기 때문에, 후보자의 주관적인 설명보다 코딩 테스트나 과제 테스트로 판단해야 한다.",
+      "content" : "프로젝트 수행 과정 중 발생한 기술적 문제를 완벽히 해결하지 못했더라도, 그 과정을 통해 배우려는 태도와 이해도를 보였다면 충분히 가능성 있는 인재라고 판단한다.",
       "isSelective" : false,
       "property" : "P_2",
       "choices" : [ {
@@ -228,75 +136,309 @@
         "property" : "P_2"
       } ]
     }, {
-      "content" : "요구 경력이 3년인 경우, 요구 경력 미만이지만 뛰어난 후보자보다 최소한 경력을 채우는 사람이 더 안전한 선택이라고 생각한다.",
+      "content" : "때로는 지원자가 감정을 드러내며 갈등을 일으키더라도, 그 솔직함이 팀워크에 긍정적인 변화를 가져올 수 있다고 믿는다.",
       "isSelective" : false,
-      "property" : "P_2",
+      "property" : "P_3",
       "choices" : [ {
         "displayOrder" : 1,
         "content" : "전혀 그렇지 않다",
-        "property" : "P_2"
-      }, {
-        "displayOrder" : 2,
-        "content" : "그렇지 않다",
-        "property" : "P_2"
-      }, {
-        "displayOrder" : 3,
-        "content" : "보통이다",
-        "property" : "P_2"
-      }, {
-        "displayOrder" : 4,
-        "content" : "그렇다",
-        "property" : "P_2"
-      }, {
-        "displayOrder" : 5,
-        "content" : "매우 그렇다",
-        "property" : "P_2"
-      } ]
-    }, {
-      "content" : "채용 공고의 필수 기술 스택을 모두 갖추지 못한다면, 다른 역량이 뛰어나도 채용을 고려하지 않는다.",
-      "isSelective" : false,
-      "property" : "P_2",
-      "choices" : [ {
-        "displayOrder" : 1,
-        "content" : "전혀 그렇지 않다",
-        "property" : "P_2"
-      }, {
-        "displayOrder" : 2,
-        "content" : "그렇지 않다",
-        "property" : "P_2"
-      }, {
-        "displayOrder" : 3,
-        "content" : "보통이다",
-        "property" : "P_2"
-      }, {
-        "displayOrder" : 4,
-        "content" : "그렇다",
-        "property" : "P_2"
-      }, {
-        "displayOrder" : 5,
-        "content" : "매우 그렇다",
-        "property" : "P_2"
-      } ]
-    }, {
-      "content" : "채용 과정에서 가장 중요하게 검토하는 것은 무엇인가요?",
-      "isSelective" : true,
-      "choices" : [ {
-        "displayOrder" : 1,
-        "content" : "직무와 관련된 프로젝트 경험",
         "property" : "P_3"
       }, {
         "displayOrder" : 2,
-        "content" : "보유 기술 스택의 정확도",
+        "content" : "그렇지 않다",
+        "property" : "P_3"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_3"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_3"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_3"
+      } ]
+    }, {
+      "content" : "상사가 명확한 지침을 주지 않았을 때, 지원자가 직접 문제를 지적하고 개선책을 제안했다면, 그 행동이 옳다고 생각한다.",
+      "isSelective" : false,
+      "property" : "P_3",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_3"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_3"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_3"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_3"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_3"
+      } ]
+    }, {
+      "content" : "반복되는 마찰에 대해 직접 당사자와 다시 대화를 시도한 지원자보다, 조용히 거리두기를 선택한 지원자의 판단이 더 이해됐다.",
+      "isSelective" : false,
+      "property" : "P_4",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_4"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
         "property" : "P_4"
       }, {
         "displayOrder" : 3,
-        "content" : "성장 잠재력 및 학습 능력",
+        "content" : "보통이다",
+        "property" : "P_4"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_4"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_4"
+      } ]
+    }, {
+      "content" : "프로젝트 중 의견 충돌이 있었을 때, 자신의 주장을 끝까지 유지한 지원자보다 한 발 물러선 지원자의 태도가 더 전문적으로 보였다.",
+      "isSelective" : false,
+      "property" : "P_4",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_4"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_4"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_4"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_4"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_4"
+      } ]
+    }, {
+      "content" : "업무 성과가 일정 수준 이상이면, 일하는 방식이 다소 들쭉날쭉해도 괜찮다고 생각한다.",
+      "isSelective" : false,
+      "property" : "P_5",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_5"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_5"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
         "property" : "P_5"
       }, {
         "displayOrder" : 4,
-        "content" : "이전 직장에서의 성과 및 평판",
+        "content" : "그렇다",
+        "property" : "P_5"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_5"
+      } ]
+    }, {
+      "content" : "조직은 절차와 규칙을 유연하게 해석할 수 있는 인재를 더 필요로 한다고 본다.",
+      "isSelective" : false,
+      "property" : "P_5",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_5"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_5"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_5"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_5"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_5"
+      } ]
+    }, {
+      "content" : "일을 빠르게 처리하는 사람보다, 시간을 더 들이더라도 실수를 줄이는 사람이 더 신뢰가 간다.",
+      "isSelective" : false,
+      "property" : "P_6",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_6"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_6"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_6"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_6"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
         "property" : "P_6"
       } ]
+    }, {
+      "content" : "하던 방식을 매번 바꾸기보다는, 기존 방식을 꾸준히 개선하는 게 더 현실적인 발전이다.",
+      "isSelective" : false,
+      "property" : "P_6",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_6"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_6"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_6"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_6"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_6"
+      } ]
+    }, {
+      "content" : "지원자의 이력서와 포트폴리오가 매우 뛰어나다면, 면접 태도가 다소 아쉬워도 객관적인 자료를 더 신뢰하는 편이다.",
+      "isSelective" : false,
+      "property" : "P_7",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_7"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_7"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_7"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_7"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_7"
+      } ]
+    }, {
+      "content" : "지원자의 역량을 평가할 때, 면접에서의 주관적인 설명보다는 코딩 테스트나 과제 결과물과 같은 객관적인 지표를 더 신뢰한다.",
+      "isSelective" : false,
+      "property" : "P_7",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_7"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_7"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_7"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_7"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_7"
+      } ]
+    }, {
+      "content" : "요구 경력에 미치지 못하거나 서류가 다소 부족하더라도, 면접에서 우리 조직과의 적합성과 성장 잠재력이 보인다면 채용을 긍정적으로 고려할 수 있다.",
+      "isSelective" : false,
+      "property" : "P_8",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_8"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_8"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_8"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_8"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_8"
+      } ]
+    }, {
+      "content" : "코딩 테스트나 과제 결과만으로 지원자의 문제 해결 능력을 온전히 파악하기 어렵다. 따라서 면접을 통해 직무에 맞는 사고 과정과 문제 접근 방식을 갖추었는지 확인해야 한다.",
+      "isSelective" : false,
+      "property" : "P_8",
+      "choices" : [ {
+        "displayOrder" : 1,
+        "content" : "전혀 그렇지 않다",
+        "property" : "P_8"
+      }, {
+        "displayOrder" : 2,
+        "content" : "그렇지 않다",
+        "property" : "P_8"
+      }, {
+        "displayOrder" : 3,
+        "content" : "보통이다",
+        "property" : "P_8"
+      }, {
+        "displayOrder" : 4,
+        "content" : "그렇다",
+        "property" : "P_8"
+      }, {
+        "displayOrder" : 5,
+        "content" : "매우 그렇다",
+        "property" : "P_8"
+      } ]
     } ]
+  }, {
+    "title" : "인사담당자 성향 테스트 (v2.0)",
+    "isMain" : false,
+    "questions" : [ ]
   } ]
 }
