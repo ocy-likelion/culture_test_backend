@@ -73,7 +73,7 @@ public class ResultService {
             }
 
             String fieldName = choice.getProperty().getName(); // 분야 이름
-            int score = ScoreUtils.calculateScore(choice.getDisplayOrder(), expectedQuestionId);
+            int score = ScoreUtils.calculateScore(choice.getDisplayOrder(), choice.getQuestion().getProperty().getId());
 
             fieldScoreMap
                     .computeIfAbsent(fieldName, k -> new ArrayList<>())
