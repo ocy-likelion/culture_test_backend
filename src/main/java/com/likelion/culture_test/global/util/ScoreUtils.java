@@ -1,5 +1,8 @@
 package com.likelion.culture_test.global.util;
 
+import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
+
 import java.util.Set;
 
 public class ScoreUtils {
@@ -15,7 +18,7 @@ public class ScoreUtils {
     public static int calculateScore(int displayOrder, Long propertyId) {
         int index = displayOrder - 1; // displayOrder는 1~5, 인덱스는 0~4
         if (index < 0 || index >= SCORES.length) {
-            throw new IllegalArgumentException("잘못된 displayOrder: " + displayOrder);
+            throw new CustomException(ErrorCode.INVALID_DISPLAY_ORDER);
         }
         int score = SCORES[index];
         return (propertyId != null && (propertyId % 2 == 0)) ? -score : score;
