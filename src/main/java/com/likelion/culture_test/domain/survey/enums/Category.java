@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Category {
 
-  CANDIDATE_PROFILE("인재상"),
-  WORK_STYLE("업무 방식"),
-  COMMUNICATING("커뮤니케이션 능력");
+  WORK_CAPABILITY("업무 능력"),
+  CONFLICT_RESOLUTION("갈등 대응 방식"),
+  PERSONALITY_PREFERENCE("성향/인성"),
+  EVALUATION_CRITERIA("평가 기준");
 
   private final String description;
 }
