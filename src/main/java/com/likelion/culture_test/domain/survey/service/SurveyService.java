@@ -2,6 +2,8 @@ package com.likelion.culture_test.domain.survey.service;
 
 
 import com.likelion.culture_test.domain.survey.dto.response.QuestionResponse;
+import com.likelion.culture_test.domain.survey.dto.response.SurveyDetailResponse;
+import com.likelion.culture_test.domain.survey.dto.response.SurveyResponse;
 import com.likelion.culture_test.domain.survey.entity.Survey;
 import com.likelion.culture_test.domain.survey.entity.SurveyQuestion;
 import com.likelion.culture_test.domain.survey.repository.SurveyQuestionRepository;
@@ -29,7 +31,7 @@ public class SurveyService {
 
   public Page<QuestionResponse> getMainSurvey(Pageable pageable) {
     Survey survey = findMainSurvey()
-        .orElseThrow(() -> new CustomException(ErrorCode.ENTITY_NOT_FOUND));
+        .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
 
     Page<SurveyQuestion> surveyQuestions =
         surveyQuestionRepository.findBySurveyId(survey.getId(), pageable);
@@ -39,18 +41,40 @@ public class SurveyService {
     );
   }
 
+
   public Optional<Survey> findMainSurvey() {
     return surveyRepository.findByIsMain(true);
   }
 
 
+  public Page<SurveyResponse> findSurveys(Pageable pageable) {
+    return surveyRepository.findAll(pageable).map(SurveyResponse::fromEntity);
+  }
 
-  public Survey insert(String title, boolean main) {
+
+  public Survey findById(Long surveyId) {
+    return surveyRepository.findById(surveyId)
+        .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
+  }
+
+
+  public SurveyDetailResponse getSurveyDetail(Long surveyId) {
+    Survey survey = findById(surveyId);
+    return SurveyDetailResponse.fromEntity(survey);
+  }
+
+
+  @Transactional
+  public void createSurvey(String title, Boolean isMain) {
+    if (isMain) {
+      surveyRepository.updateAllMainToFalse();
+    }
+
     Survey survey = Survey.builder()
         .title(title)
-        .isMain(main)
+        .isMain(isMain)
         .build();
-
-    return surveyRepository.save(survey);
+    surveyRepository.save(survey);
   }
+
 }
