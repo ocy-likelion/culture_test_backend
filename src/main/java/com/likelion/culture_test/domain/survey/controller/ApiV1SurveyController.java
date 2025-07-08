@@ -86,4 +86,12 @@ public class ApiV1SurveyController {
     surveyService.createSurvey(request.title(), request.isMain());
     return new RsData<>("200", "새로운 설문조사지 생성 성공");
   }
+
+
+  @DeleteMapping("/{surveyId}")
+  @Operation(summary = "설문 조사지 제거")
+  public RsData<Void> deleteSurvey(@PathVariable Long surveyId) {
+    surveyService.deleteById(surveyId);
+    return new RsData<>("204", "%d번 질문지 제거 및 질문 연결 해제 성공".formatted(surveyId));
+  }
 }

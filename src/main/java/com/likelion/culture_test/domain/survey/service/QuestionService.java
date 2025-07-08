@@ -125,7 +125,7 @@ public class QuestionService {
 
 
   @Transactional
-  public void deleteQuestion(Long questionId) {
+  public void deleteById(Long questionId) {
     Question question = findById(questionId);
 
     surveyQuestionRepository.deleteByQuestion(question);
