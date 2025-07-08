@@ -33,17 +33,27 @@ public class ResultController {
 
 
 
-    @Operation(summary = "특정 유저의 특정 설문지 결과의 분야별 수치 조회")
+    @Operation(summary = "특정 유저의 특정 설문지 결과의 분야별 수치 조회 (확인 용)")
     @GetMapping("/detail/{userId}/survey/{surveyId}/scores")
     public Map<String, Double> getScores(@PathVariable(name = "userId") Long userId, @PathVariable(name = "surveyId") Long surveyId) {
         ResultQueryDto dto = new ResultQueryDto(userId, surveyId);
         return resultService.getScoreByCategory(dto);
     }
 
-    @Operation(summary = "특정 유저가 특정 설문지를 풀 때 몇 번에 어느 문항을 답하였는지 기록 조회")
+    @Operation(summary = "특정 유저가 특정 설문지를 풀 때 몇 번에 어느 문항을 답하였는지 기록 조회 (개발 용)")
     @GetMapping("/detail/{userId}/survey/{surveyId}/answers")
     public List<ResultDetailResponseDto> getAnswers(@PathVariable(name = "userId") Long userId, @PathVariable(name = "surveyId") Long surveyId) {
         ResultQueryDto dto = new ResultQueryDto(userId, surveyId);
         return resultService.getUserAnswersDto(dto);
     }
+
+    @Operation(summary = "특정 유저의 설문 결과를 벡터 형태로 반환 (Fast api 서버로 전송할 군집화 용")
+    @GetMapping("/vector/{userId}/survey/{surveyId}")
+    public List<Double> getVector(
+            @PathVariable(name = "userId") Long userId,
+            @PathVariable(name = "surveyId") Long surveyId
+    ) {
+        return resultService.getVectorByUserAndSurvey(userId, surveyId);
+    }
+
 }

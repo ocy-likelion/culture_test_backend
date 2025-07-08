@@ -149,4 +149,17 @@ public class ResultService {
     public List<ResultDetail> getUserAnswers(ResultQueryDto dto) {
         return resultDetailRepository.findByUserIdAndSurveyId(dto.getUserId(), dto.getSurveyId());
     }
+
+
+    public List<Double> getVectorByUserAndSurvey(Long userId, Long surveyId) {
+        ResultQueryDto dto = new ResultQueryDto(userId, surveyId);
+        Map<String, Double> scoreMap = getScoreByCategory(dto); // 이미 존재하는 메서드 사용
+
+        return Arrays.stream(Category.values())
+                .map(cat -> scoreMap.getOrDefault(cat.name(), 0.0))
+                .toList();
+    }
+
+
+
 }
