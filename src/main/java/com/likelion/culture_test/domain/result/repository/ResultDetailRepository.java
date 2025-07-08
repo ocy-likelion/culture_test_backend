@@ -17,10 +17,12 @@ public interface ResultDetailRepository extends JpaRepository<ResultDetail, Long
     List<ResultDetail> findByUserIdAndSurveyId(@Param("userId") Long userId, @Param("surveyId") Long surveyId);
 
     @Query("""
-        SELECT rd.property.name, SUM(rd.score)
+        SELECT p.category, SUM(rd.score)
         FROM ResultDetail rd
-        WHERE rd.result.userId = :userId AND rd.result.survey.id = :surveyId
-        GROUP BY rd.property.name
+        JOIN rd.property p
+        JOIN rd.result r
+        WHERE r.userId = :userId AND r.survey.id = :surveyId
+        GROUP BY p.category
     """)
     List<Object[]> aggregateScoreByProperty(@Param("userId") Long userId, @Param("surveyId") Long surveyId);
 
