@@ -1,8 +1,6 @@
 package com.likelion.culture_test.domain.result.service;
 
-import com.likelion.culture_test.domain.result.dto.ResultDetailResponseDto;
-import com.likelion.culture_test.domain.result.dto.ResultQueryDto;
-import com.likelion.culture_test.domain.result.dto.ResultRequestDto;
+import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.entity.Result;
 import com.likelion.culture_test.domain.result.entity.ResultDetail;
 import com.likelion.culture_test.domain.result.repository.ResultDetailRepository;
@@ -19,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.likelion.culture_test.domain.result.dto.AnswerDto; // ✅ import 필요
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +32,7 @@ public class ResultService {
     private final ChoiceRepository choiceRepository;
     private final ResultRepository resultRepository;
     private final ResultDetailRepository resultDetailRepository;
+    private final WebClient webClient;
 
     public void processSurveyResult(ResultRequestDto dto) {
         Survey survey = surveyRepository.findById(dto.surveyId())
@@ -158,6 +157,20 @@ public class ResultService {
         return Arrays.stream(Category.values())
                 .map(cat -> scoreMap.getOrDefault(cat.name(), 0.0))
                 .toList();
+    }
+
+
+
+    public void sendVectorToFastApi(Long userId, Long surveyId, List<Double> vector) {
+        VectorRequestDto requestDto = new VectorRequestDto(userId, surveyId, vector);
+
+        webClient.post()
+                .uri("/receive/vector/test")
+                .bodyValue(requestDto)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .doOnError(e -> System.err.println("전송 실패: " + e.getMessage()))
+                .subscribe();
     }
 
 

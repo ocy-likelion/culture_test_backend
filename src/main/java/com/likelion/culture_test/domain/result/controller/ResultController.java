@@ -53,7 +53,17 @@ public class ResultController {
             @PathVariable(name = "userId") Long userId,
             @PathVariable(name = "surveyId") Long surveyId
     ) {
-        return resultService.getVectorByUserAndSurvey(userId, surveyId);
+        // return resultService.getVectorByUserAndSurvey(userId, surveyId);
+
+        List<Double> vector = resultService.getVectorByUserAndSurvey(userId, surveyId);
+        resultService.sendVectorToFastApi(userId, surveyId, vector);
+
+        return vector;
     }
+
+
+
+
+
 
 }
