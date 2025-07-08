@@ -33,7 +33,7 @@ public class ApiV1QuestionController {
       @RequestParam(defaultValue = "10") int size
   ) {
     Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-    Page<QuestionResponse> response = questionService.findQuestions(pageable);
+    Page<QuestionResponse> response = questionService.findAllByPage(pageable);
 
     return new RsData<>("200", "질문 목록 조회 성공", PageResponse.of(response));
   }
@@ -42,7 +42,7 @@ public class ApiV1QuestionController {
   @PostMapping()
   @Operation(summary = "질문 생성")
   public RsData<QuestionResponse> createQuestion(@Valid @RequestBody CreateQuestionRequest request) {
-    QuestionResponse response = questionService.createQuestion(request);
+    QuestionResponse response = questionService.create(request);
     return new RsData<>("200", "새로운 질문 생성 성공", response);
   }
 

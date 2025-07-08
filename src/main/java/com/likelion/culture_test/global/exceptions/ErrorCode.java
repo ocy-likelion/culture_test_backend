@@ -20,6 +20,7 @@ public enum ErrorCode {
 
   // Property
   PROPERTY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 특성을 찾을 수 없습니다."),
+  INVALID_CATEGORY_NAME(HttpStatus.NOT_FOUND, "입력하신 카테고리명은 잘못된 카테고리명입니다."),
 
 
   // 공통 에러

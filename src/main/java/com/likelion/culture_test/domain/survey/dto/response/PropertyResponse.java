@@ -14,7 +14,7 @@ public record PropertyResponse(
     @Schema(description = "특성 카테고리명", example = "커뮤니케이션")
     String categoryName,
 
-    @Schema(description = "특성 이름", example = "개인주의 vs 공동체")
+    @Schema(description = "특성 이름", example = "개인주의 성향")
     String propertyName
 
 ) {

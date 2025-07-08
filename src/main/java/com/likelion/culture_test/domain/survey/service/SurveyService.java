@@ -47,7 +47,7 @@ public class SurveyService {
   }
 
 
-  public Page<SurveyResponse> findSurveys(Pageable pageable) {
+  public Page<SurveyResponse> findAllByPage(Pageable pageable) {
     return surveyRepository.findAll(pageable).map(SurveyResponse::fromEntity);
   }
 
@@ -65,7 +65,7 @@ public class SurveyService {
 
 
   @Transactional
-  public void createSurvey(String title, Boolean isMain) {
+  public void create(String title, Boolean isMain) {
     if (isMain) {
       surveyRepository.updateAllMainToFalse();
     }
@@ -77,7 +77,7 @@ public class SurveyService {
     surveyRepository.save(survey);
   }
 
-
+  @Transactional
   public void deleteById(Long surveyId) {
     Survey survey = findById(surveyId);
     surveyRepository.delete(survey);
