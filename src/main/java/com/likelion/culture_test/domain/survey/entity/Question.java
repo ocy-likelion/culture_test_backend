@@ -33,6 +33,6 @@ public class Question extends BaseEntity {
   @OrderBy("displayOrder ASC")
   private List<Choice> choices = new ArrayList<>();
 
-  @OneToMany(mappedBy = "question")
+  @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<SurveyQuestion> surveyQuestions = new ArrayList<>();
 }

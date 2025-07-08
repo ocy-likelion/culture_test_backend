@@ -66,7 +66,7 @@ public class ApiV1SurveyController {
       @RequestParam(defaultValue = "10") int size
   ) {
     Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-    Page<SurveyResponse> response = surveyService.findSurveys(pageable);
+    Page<SurveyResponse> response = surveyService.findAllByPage(pageable);
 
     return new RsData<>("200", "설문조사지 목록 조회 성공", PageResponse.of(response));
   }
@@ -83,7 +83,7 @@ public class ApiV1SurveyController {
   @PostMapping()
   @Operation(summary = "설문 조사지 생성")
   public RsData<Void> createSurvey(@Valid @RequestBody CreateSurveyRequest request) {
-    surveyService.createSurvey(request.title(), request.isMain());
+    surveyService.create(request.title(), request.isMain());
     return new RsData<>("200", "새로운 설문조사지 생성 성공");
   }
 

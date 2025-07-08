@@ -6,7 +6,6 @@ import com.likelion.culture_test.domain.survey.entity.Choice;
 import com.likelion.culture_test.domain.survey.entity.Property;
 import com.likelion.culture_test.domain.survey.entity.Question;
 import com.likelion.culture_test.domain.survey.repository.QuestionRepository;
-import com.likelion.culture_test.domain.survey.repository.SurveyQuestionRepository;
 import com.likelion.culture_test.global.exceptions.CustomException;
 import com.likelion.culture_test.global.exceptions.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +27,9 @@ public class QuestionService {
 
   private final QuestionRepository questionRepository;
   private final PropertyService propertyService;
-  private final SurveyQuestionRepository surveyQuestionRepository;
 
 
-  public Page<QuestionResponse> findQuestions(Pageable pageable) {
+  public Page<QuestionResponse> findAllByPage(Pageable pageable) {
     return questionRepository.findAll(pageable).map(QuestionResponse::fromEntity);
   }
 
@@ -42,7 +40,7 @@ public class QuestionService {
   }
 
   @Transactional
-  public QuestionResponse createQuestion(CreateQuestionRequest request) {
+  public QuestionResponse create(CreateQuestionRequest request) {
     validateQuestionRequest(request);
     Property property = getPropertyIfExists(request.propertyId());
 
@@ -127,9 +125,13 @@ public class QuestionService {
   @Transactional
   public void deleteById(Long questionId) {
     Question question = findById(questionId);
-
-    surveyQuestionRepository.deleteByQuestion(question);
-
     questionRepository.delete(question);
+  }
+
+
+  public Page<QuestionResponse> findQuestionsByProperty(Long propertyId, Pageable pageable) {
+    Property property = propertyService.findById(propertyId);
+    return questionRepository.findAllByProperty(property, pageable)
+        .map(QuestionResponse::fromEntity);
   }
 }
