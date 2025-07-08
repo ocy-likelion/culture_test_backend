@@ -6,6 +6,7 @@ import com.likelion.culture_test.domain.survey.entity.Choice;
 import com.likelion.culture_test.domain.survey.entity.Property;
 import com.likelion.culture_test.domain.survey.entity.Question;
 import com.likelion.culture_test.domain.survey.repository.QuestionRepository;
+import com.likelion.culture_test.domain.survey.repository.SurveyQuestionRepository;
 import com.likelion.culture_test.global.exceptions.CustomException;
 import com.likelion.culture_test.global.exceptions.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class QuestionService {
 
   private final QuestionRepository questionRepository;
   private final PropertyService propertyService;
+  private final SurveyQuestionRepository surveyQuestionRepository;
 
 
   public Page<QuestionResponse> findQuestions(Pageable pageable) {
@@ -121,4 +123,13 @@ public class QuestionService {
     return propertyId != null ? propertyService.findById(propertyId) : null;
   }
 
+
+  @Transactional
+  public void deleteById(Long questionId) {
+    Question question = findById(questionId);
+
+    surveyQuestionRepository.deleteByQuestion(question);
+
+    questionRepository.delete(question);
+  }
 }
