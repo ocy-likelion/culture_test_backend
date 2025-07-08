@@ -16,6 +16,7 @@ import com.likelion.culture_test.domain.survey.repository.SurveyRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import org.springframework.context.event.EventListener;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +45,8 @@ public class DataInitializerService {
   private final ObjectMapper objectMapper;
 
   
-  @PostConstruct
+  //@PostConstruct
+  @EventListener(ApplicationReadyEvent.class)
   @Transactional
   public void initializeData() {
     if (surveyRepository.count() > 0) {
@@ -91,6 +97,10 @@ public class DataInitializerService {
                     .displayOrder(choiceDto.displayOrder())
                     .question(question)
                     .build();
+
+                if (!questionDto.isSelective()) {
+                  choice.setProperty(question.getProperty());
+                }
 
                 if (questionDto.isSelective() && choiceDto.property() != null) {
                   choice.setProperty(propertyMap.get(choiceDto.property()));

@@ -1,1 +1,43 @@
-# application-prod
+server:
+  port: 8090
+  shutdown: graceful
+
+spring:
+  autoconfigure:
+    exclude:
+  lifecycle:
+    timeout-per-shutdown-phase: 1h
+  datasource:
+    url: jdbc:mysql://172.17.0.1:3306/culture_test_db?characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: 172.17.0.1
+      port: 6379
+      password: ${custom.secret.spring.data.redis.password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+        highlight_sql: false
+        use_sql_comments: false
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
+
+logging:
+  level:
+    root: info
+    com.likelion.culture_test: DEBUG

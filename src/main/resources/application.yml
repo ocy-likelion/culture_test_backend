@@ -6,8 +6,9 @@ spring:
     ansi:
       enabled: ALWAYS
   profiles:
-    active: dev
+    active: local
     include: secret
+
   jpa:
     open-in-view: false
     properties:
@@ -20,4 +21,5 @@ spring:
 
 logging:
   level:
-    com.planit.holiday_keeper: DEBUG
+    root: info
+    com.likelion.culture_test: DEBUG
