@@ -77,4 +77,9 @@ public class SurveyService {
     surveyRepository.save(survey);
   }
 
+
+  public void deleteById(Long surveyId) {
+    Survey survey = findById(surveyId);
+    surveyRepository.delete(survey);
+  }
 }

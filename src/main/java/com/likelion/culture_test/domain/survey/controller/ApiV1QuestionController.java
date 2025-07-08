@@ -47,4 +47,14 @@ public class ApiV1QuestionController {
   }
 
 
+  @DeleteMapping("/{questionId}")
+  @Operation(summary = "질문 제거")
+  public RsData<Void> deleteQuestion(@PathVariable Long questionId) {
+    questionService.deleteById(questionId);
+    return new RsData<>("204", "%d번 질문 제거 성공".formatted(questionId));
+  }
+
+
+
+
 }
