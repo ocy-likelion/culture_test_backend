@@ -108,11 +108,11 @@ public class ApiV1SurveyController {
 
 
   @PostMapping("/{surveyId}/questions")
-  @Operation(summary = "설문지에 질문 추가 (설문-질문 연결")
+  @Operation(summary = "설문지에 질문 추가 (설문-질문 연결)  (미완)")
   public RsData<Void> insertBatchQuestions(
       @PathVariable Long surveyId
   ) {
-    surveyService.connectBatchQuestions(surveyId, request.title(), request.isMain());
+    //surveyService.connectBatchQuestions(surveyId, request.title(), request.isMain());
     return new RsData<>("204", "%d번 질문지에 질문 추가 성공".formatted(surveyId));
   }
 
