@@ -82,4 +82,17 @@ public class SurveyService {
     Survey survey = findById(surveyId);
     surveyRepository.delete(survey);
   }
+
+
+  @Transactional
+  public void update(Long surveyId, String title, boolean isMain) {
+    Survey survey = findById(surveyId);
+
+    if (isMain) {
+      surveyRepository.updateAllMainToFalse();
+    }
+
+    survey.setTitle(title);
+    survey.setMain(isMain);
+  }
 }

@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-@Schema(description = "질문 생성 요청")
-public record CreateQuestionRequest(
+@Schema(description = "질문 수정 요청")
+public record UpdateQuestionRequest(
 
     @NotBlank
     @Schema(description = "질문 내용", example = "협업은 누가 맡았든 필요한 사람이 먼저 나서는 유연성이 핵심이라고 본다.")

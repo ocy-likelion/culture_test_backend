@@ -50,7 +50,7 @@ public class DataInitializerService {
     }
 
     try {
-      ClassPathResource resource = new ClassPathResource("data/backup.json");
+      ClassPathResource resource = new ClassPathResource("data/initData.json");
       InputStream inputStream = resource.getInputStream();
       InitDataDto initData = objectMapper.readValue(inputStream, InitDataDto.class);
 

@@ -1,6 +1,7 @@
 package com.likelion.culture_test.domain.survey.controller;
 
 import com.likelion.culture_test.domain.survey.dto.request.CreateQuestionRequest;
+import com.likelion.culture_test.domain.survey.dto.request.UpdateSurveyRequest;
 import com.likelion.culture_test.domain.survey.dto.response.QuestionResponse;
 import com.likelion.culture_test.domain.survey.service.QuestionService;
 import com.likelion.culture_test.global.globalDto.PageResponse;
@@ -55,6 +56,13 @@ public class ApiV1QuestionController {
   }
 
 
-
+  @PutMapping("/{questionId}")
+  @Operation(summary = "질문 수정  (미완)")
+  public RsData<QuestionResponse> updateQuestion(
+      @PathVariable Long questionId, @Valid @RequestBody UpdateSurveyRequest request
+  ) {
+    QuestionResponse response = questionService.update(questionId, request);
+    return new RsData<>("204", "%d번 질문 수정 성공".formatted(questionId), response);
+  }
 
 }
