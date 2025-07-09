@@ -39,6 +39,7 @@ public class QuestionService {
         .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
   }
 
+
   @Transactional
   public QuestionResponse create(CreateQuestionRequest request) {
     validateQuestionRequest(request);
