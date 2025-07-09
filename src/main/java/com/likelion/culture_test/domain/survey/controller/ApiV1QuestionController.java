@@ -44,7 +44,7 @@ public class ApiV1QuestionController {
   @Operation(summary = "질문 생성")
   public RsData<QuestionResponse> createQuestion(@Valid @RequestBody CreateQuestionRequest request) {
     QuestionResponse response = questionService.create(request);
-    return new RsData<>("200", "새로운 질문 생성 성공", response);
+    return new RsData<>("201", "새로운 질문 생성 성공", response);
   }
 
 
