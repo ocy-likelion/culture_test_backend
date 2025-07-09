@@ -29,8 +29,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableScheduling
-@EntityScan(basePackages = "com.likelion.culture_test.domain")  // 👈 이걸 추가
-@EnableJpaRepositories(basePackages = "com.likelion.culture_test.domain")  // 👈 이것도 추가!
 public class CultureTestApplication {
 
 	public static void main(String[] args) {
