@@ -1,6 +1,7 @@
 package com.likelion.culture_test.domain.survey.controller;
 
 import com.likelion.culture_test.domain.survey.dto.request.CreateSurveyRequest;
+import com.likelion.culture_test.domain.survey.dto.request.UpdateSurveyRequest;
 import com.likelion.culture_test.domain.survey.dto.response.QuestionResponse;
 import com.likelion.culture_test.domain.survey.dto.response.SurveyDetailResponse;
 import com.likelion.culture_test.domain.survey.dto.response.SurveyResponse;
@@ -34,7 +35,7 @@ public class ApiV1SurveyController {
   private final DataInitializerService dataInitializerService;
 
   @GetMapping("/main")
-  @Operation(summary = "⭐ 메인 설문 조사 조회")
+  @Operation(summary = "⭐ 메인 설문지 조회")
   public RsData<PageResponse<QuestionResponse>> getMainSurvey(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "3") int size
@@ -42,12 +43,12 @@ public class ApiV1SurveyController {
     Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "displayOrder"));
     Page<QuestionResponse> response = surveyService.getMainSurvey(pageable);
 
-    return new RsData<>("200", "설문조사 조회 성공", PageResponse.of(response));
+    return new RsData<>("200", "메인 설문지 조회 성공", PageResponse.of(response));
   }
 
 
   @GetMapping("/sync")
-  @Operation(summary = "설문 조사 데이터 파일 백업 저장")
+  @Operation(summary = "설문지 전체 데이터 파일 백업 저장")
   public RsData<Void> getMainSurvey() {
     try {
       dataInitializerService.backupData();
@@ -60,7 +61,7 @@ public class ApiV1SurveyController {
 
 
   @GetMapping
-  @Operation(summary = "설문 조사지 목록")
+  @Operation(summary = "설문지 목록")
   public RsData<PageResponse<SurveyResponse>> getSurveys(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size
@@ -73,7 +74,7 @@ public class ApiV1SurveyController {
 
 
   @GetMapping("/{surveyId}")
-  @Operation(summary = "설문 조사지 상세 조회")
+  @Operation(summary = "설문지 상세 조회")
   public RsData<SurveyDetailResponse> getSurveyDetail(@PathVariable Long surveyId) {
     SurveyDetailResponse response = surveyService.getSurveyDetail(surveyId);
     return new RsData<>("200", "설문조사지 상세 조회 성공", response);
@@ -81,7 +82,7 @@ public class ApiV1SurveyController {
 
 
   @PostMapping()
-  @Operation(summary = "설문 조사지 생성")
+  @Operation(summary = "설문지 생성")
   public RsData<Void> createSurvey(@Valid @RequestBody CreateSurveyRequest request) {
     surveyService.create(request.title(), request.isMain());
     return new RsData<>("200", "새로운 설문조사지 생성 성공");
@@ -89,9 +90,30 @@ public class ApiV1SurveyController {
 
 
   @DeleteMapping("/{surveyId}")
-  @Operation(summary = "설문 조사지 제거")
+  @Operation(summary = "설문지 제거")
   public RsData<Void> deleteSurvey(@PathVariable Long surveyId) {
     surveyService.deleteById(surveyId);
     return new RsData<>("204", "%d번 질문지 제거 및 질문 연결 해제 성공".formatted(surveyId));
   }
+
+
+  @PutMapping("/{surveyId}")
+  @Operation(summary = "설문지 메타데이터 수정")
+  public RsData<Void> updateSurvey(
+      @PathVariable Long surveyId, @Valid @RequestBody UpdateSurveyRequest request
+  ) {
+    surveyService.update(surveyId, request.title(), request.isMain());
+    return new RsData<>("204", "%d번 질문지 메타데이터 수정 성공".formatted(surveyId));
+  }
+
+
+  @PostMapping("/{surveyId}/questions")
+  @Operation(summary = "설문지에 질문 추가 (설문-질문 연결")
+  public RsData<Void> insertBatchQuestions(
+      @PathVariable Long surveyId
+  ) {
+    surveyService.connectBatchQuestions(surveyId, request.title(), request.isMain());
+    return new RsData<>("204", "%d번 질문지에 질문 추가 성공".formatted(surveyId));
+  }
+
 }

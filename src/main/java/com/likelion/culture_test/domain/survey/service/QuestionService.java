@@ -1,6 +1,7 @@
 package com.likelion.culture_test.domain.survey.service;
 
 import com.likelion.culture_test.domain.survey.dto.request.CreateQuestionRequest;
+import com.likelion.culture_test.domain.survey.dto.request.UpdateSurveyRequest;
 import com.likelion.culture_test.domain.survey.dto.response.QuestionResponse;
 import com.likelion.culture_test.domain.survey.entity.Choice;
 import com.likelion.culture_test.domain.survey.entity.Property;
@@ -8,6 +9,7 @@ import com.likelion.culture_test.domain.survey.entity.Question;
 import com.likelion.culture_test.domain.survey.repository.QuestionRepository;
 import com.likelion.culture_test.global.exceptions.CustomException;
 import com.likelion.culture_test.global.exceptions.ErrorCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -134,5 +136,13 @@ public class QuestionService {
     Property property = propertyService.findById(propertyId);
     return questionRepository.findAllByProperty(property, pageable)
         .map(QuestionResponse::fromEntity);
+  }
+
+
+  @Transactional
+  public QuestionResponse update(Long questionId, @Valid UpdateSurveyRequest request) {
+    Question question = findById(questionId);
+
+    return null;
   }
 }
