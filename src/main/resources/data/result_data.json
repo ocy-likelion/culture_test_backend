@@ -1,6 +1,7 @@
 [
   {
     "userId": 1,
+    "userName": "삼성SDS",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 4},
@@ -23,539 +24,12 @@
   },
   {
     "userId": 2,
+    "userName": "구글코리아",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 2},
       {"questionId": 2, "choiceId": 2},
       {"questionId": 3, "choiceId": 5},
-      {"questionId": 4, "choiceId": 5},
-      {"questionId": 5, "choiceId": 4},
-      {"questionId": 6, "choiceId": 4},
-      {"questionId": 7, "choiceId": 2},
-      {"questionId": 8, "choiceId": 2},
-      {"questionId": 9, "choiceId": 5},
-      {"questionId": 10, "choiceId": 5},
-      {"questionId": 11, "choiceId": 2},
-      {"questionId": 12, "choiceId": 2},
-      {"questionId": 13, "choiceId": 2},
-      {"questionId": 14, "choiceId": 2},
-      {"questionId": 15, "choiceId": 5},
-      {"questionId": 16, "choiceId": 5}
-    ]
-  },
-  {
-    "userId": 3,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 5},
-      {"questionId": 2, "choiceId": 5},
-      {"questionId": 3, "choiceId": 2},
-      {"questionId": 4, "choiceId": 2},
-      {"questionId": 5, "choiceId": 2},
-      {"questionId": 6, "choiceId": 3},
-      {"questionId": 7, "choiceId": 4},
-      {"questionId": 8, "choiceId": 4},
-      {"questionId": 9, "choiceId": 2},
-      {"questionId": 10, "choiceId": 2},
-      {"questionId": 11, "choiceId": 5},
-      {"questionId": 12, "choiceId": 5},
-      {"questionId": 13, "choiceId": 5},
-      {"questionId": 14, "choiceId": 5},
-      {"questionId": 15, "choiceId": 1},
-      {"questionId": 16, "choiceId": 2}
-    ]
-  },
-  {
-    "userId": 4,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 3},
-      {"questionId": 2, "choiceId": 4},
-      {"questionId": 3, "choiceId": 4},
-      {"questionId": 4, "choiceId": 4},
-      {"questionId": 5, "choiceId": 4},
-      {"questionId": 6, "choiceId": 5},
-      {"questionId": 7, "choiceId": 2},
-      {"questionId": 8, "choiceId": 1},
-      {"questionId": 9, "choiceId": 5},
-      {"questionId": 10, "choiceId": 4},
-      {"questionId": 11, "choiceId": 2},
-      {"questionId": 12, "choiceId": 2},
-      {"questionId": 13, "choiceId": 3},
-      {"questionId": 14, "choiceId": 3},
-      {"questionId": 15, "choiceId": 4},
-      {"questionId": 16, "choiceId": 4}
-    ]
-  },
-  {
-    "userId": 5,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 4},
-      {"questionId": 2, "choiceId": 3},
-      {"questionId": 3, "choiceId": 3},
-      {"questionId": 4, "choiceId": 4},
-      {"questionId": 5, "choiceId": 3},
-      {"questionId": 6, "choiceId": 3},
-      {"questionId": 7, "choiceId": 3},
-      {"questionId": 8, "choiceId": 3},
-      {"questionId": 9, "choiceId": 3},
-      {"questionId": 10, "choiceId": 3},
-      {"questionId": 11, "choiceId": 3},
-      {"questionId": 12, "choiceId": 4},
-      {"questionId": 13, "choiceId": 4},
-      {"questionId": 14, "choiceId": 4},
-      {"questionId": 15, "choiceId": 3},
-      {"questionId": 16, "choiceId": 3}
-    ]
-  },
-  {
-    "userId": 6,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 2},
-      {"questionId": 2, "choiceId": 2},
-      {"questionId": 3, "choiceId": 5},
-      {"questionId": 4, "choiceId": 5},
-      {"questionId": 5, "choiceId": 5},
-      {"questionId": 6, "choiceId": 5},
-      {"questionId": 7, "choiceId": 1},
-      {"questionId": 8, "choiceId": 1},
-      {"questionId": 9, "choiceId": 5},
-      {"questionId": 10, "choiceId": 5},
-      {"questionId": 11, "choiceId": 1},
-      {"questionId": 12, "choiceId": 1},
-      {"questionId": 13, "choiceId": 1},
-      {"questionId": 14, "choiceId": 2},
-      {"questionId": 15, "choiceId": 5},
-      {"questionId": 16, "choiceId": 5}
-    ]
-  },
-  {
-    "userId": 7,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 5},
-      {"questionId": 2, "choiceId": 4},
-      {"questionId": 3, "choiceId": 3},
-      {"questionId": 4, "choiceId": 3},
-      {"questionId": 5, "choiceId": 2},
-      {"questionId": 6, "choiceId": 2},
-      {"questionId": 7, "choiceId": 5},
-      {"questionId": 8, "choiceId": 4},
-      {"questionId": 9, "choiceId": 2},
-      {"questionId": 10, "choiceId": 3},
-      {"questionId": 11, "choiceId": 4},
-      {"questionId": 12, "choiceId": 5},
-      {"questionId": 13, "choiceId": 4},
-      {"questionId": 14, "choiceId": 5},
-      {"questionId": 15, "choiceId": 2},
-      {"questionId": 16, "choiceId": 2}
-    ]
-  },
-  {
-    "userId": 8,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 3},
-      {"questionId": 2, "choiceId": 3},
-      {"questionId": 3, "choiceId": 4},
-      {"questionId": 4, "choiceId": 5},
-      {"questionId": 5, "choiceId": 4},
-      {"questionId": 6, "choiceId": 4},
-      {"questionId": 7, "choiceId": 2},
-      {"questionId": 8, "choiceId": 2},
-      {"questionId": 9, "choiceId": 4},
-      {"questionId": 10, "choiceId": 4},
-      {"questionId": 11, "choiceId": 3},
-      {"questionId": 12, "choiceId": 3},
-      {"questionId": 13, "choiceId": 3},
-      {"questionId": 14, "choiceId": 4},
-      {"questionId": 15, "choiceId": 4},
-      {"questionId": 16, "choiceId": 4}
-    ]
-  },
-  {
-    "userId": 9,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 4},
-      {"questionId": 2, "choiceId": 5},
-      {"questionId": 3, "choiceId": 2},
-      {"questionId": 4, "choiceId": 3},
-      {"questionId": 5, "choiceId": 3},
-      {"questionId": 6, "choiceId": 3},
-      {"questionId": 7, "choiceId": 3},
-      {"questionId": 8, "choiceId": 4},
-      {"questionId": 9, "choiceId": 3},
-      {"questionId": 10, "choiceId": 2},
-      {"questionId": 11, "choiceId": 4},
-      {"questionId": 12, "choiceId": 4},
-      {"questionId": 13, "choiceId": 5},
-      {"questionId": 14, "choiceId": 4},
-      {"questionId": 15, "choiceId": 2},
-      {"questionId": 16, "choiceId": 3}
-    ]
-  },
-  {
-    "userId": 10,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 2},
-      {"questionId": 2, "choiceId": 1},
-      {"questionId": 3, "choiceId": 5},
-      {"questionId": 4, "choiceId": 5},
-      {"questionId": 5, "choiceId": 5},
-      {"questionId": 6, "choiceId": 4},
-      {"questionId": 7, "choiceId": 2},
-      {"questionId": 8, "choiceId": 2},
-      {"questionId": 9, "choiceId": 5},
-      {"questionId": 10, "choiceId": 5},
-      {"questionId": 11, "choiceId": 2},
-      {"questionId": 12, "choiceId": 2},
-      {"questionId": 13, "choiceId": 2},
-      {"questionId": 14, "choiceId": 2},
-      {"questionId": 15, "choiceId": 5},
-      {"questionId": 16, "choiceId": 4}
-    ]
-  },
-  {
-    "userId": 11,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 4},
-      {"questionId": 2, "choiceId": 4},
-      {"questionId": 3, "choiceId": 3},
-      {"questionId": 4, "choiceId": 4},
-      {"questionId": 5, "choiceId": 2},
-      {"questionId": 6, "choiceId": 3},
-      {"questionId": 7, "choiceId": 4},
-      {"questionId": 8, "choiceId": 4},
-      {"questionId": 9, "choiceId": 2},
-      {"questionId": 10, "choiceId": 2},
-      {"questionId": 11, "choiceId": 5},
-      {"questionId": 12, "choiceId": 4},
-      {"questionId": 13, "choiceId": 4},
-      {"questionId": 14, "choiceId": 5},
-      {"questionId": 15, "choiceId": 2},
-      {"questionId": 16, "choiceId": 2}
-    ]
-  },
-  {
-    "userId": 12,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 3},
-      {"questionId": 2, "choiceId": 2},
-      {"questionId": 3, "choiceId": 4},
-      {"questionId": 4, "choiceId": 5},
-      {"questionId": 5, "choiceId": 4},
-      {"questionId": 6, "choiceId": 5},
-      {"questionId": 7, "choiceId": 2},
-      {"questionId": 8, "choiceId": 2},
-      {"questionId": 9, "choiceId": 4},
-      {"questionId": 10, "choiceId": 5},
-      {"questionId": 11, "choiceId": 2},
-      {"questionId": 12, "choiceId": 2},
-      {"questionId": 13, "choiceId": 2},
-      {"questionId": 14, "choiceId": 3},
-      {"questionId": 15, "choiceId": 4},
-      {"questionId": 16, "choiceId": 5}
-    ]
-  },
-  {
-    "userId": 13,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 5},
-      {"questionId": 2, "choiceId": 5},
-      {"questionId": 3, "choiceId": 2},
-      {"questionId": 4, "choiceId": 2},
-      {"questionId": 5, "choiceId": 3},
-      {"questionId": 6, "choiceId": 2},
-      {"questionId": 7, "choiceId": 4},
-      {"questionId": 8, "choiceId": 5},
-      {"questionId": 9, "choiceId": 2},
-      {"questionId": 10, "choiceId": 1},
-      {"questionId": 11, "choiceId": 5},
-      {"questionId": 12, "choiceId": 5},
-      {"questionId": 13, "choiceId": 5},
-      {"questionId": 14, "choiceId": 5},
-      {"questionId": 15, "choiceId": 1},
-      {"questionId": 16, "choiceId": 1}
-    ]
-  },
-  {
-    "userId": 14,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 2},
-      {"questionId": 2, "choiceId": 3},
-      {"questionId": 3, "choiceId": 5},
-      {"questionId": 4, "choiceId": 4},
-      {"questionId": 5, "choiceId": 5},
-      {"questionId": 6, "choiceId": 5},
-      {"questionId": 7, "choiceId": 1},
-      {"questionId": 8, "choiceId": 2},
-      {"questionId": 9, "choiceId": 5},
-      {"questionId": 10, "choiceId": 4},
-      {"questionId": 11, "choiceId": 2},
-      {"questionId": 12, "choiceId": 2},
-      {"questionId": 13, "choiceId": 2},
-      {"questionId": 14, "choiceId": 2},
-      {"questionId": 15, "choiceId": 5},
-      {"questionId": 16, "choiceId": 5}
-    ]
-  },
-  {
-    "userId": 15,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 4},
-      {"questionId": 2, "choiceId": 4},
-      {"questionId": 3, "choiceId": 3},
-      {"questionId": 4, "choiceId": 3},
-      {"questionId": 5, "choiceId": 3},
-      {"questionId": 6, "choiceId": 4},
-      {"questionId": 7, "choiceId": 3},
-      {"questionId": 8, "choiceId": 3},
-      {"questionId": 9, "choiceId": 3},
-      {"questionId": 10, "choiceId": 4},
-      {"questionId": 11, "choiceId": 3},
-      {"questionId": 12, "choiceId": 3},
-      {"questionId": 13, "choiceId": 4},
-      {"questionId": 14, "choiceId": 4},
-      {"questionId": 15, "choiceId": 3},
-      {"questionId": 16, "choiceId": 3}
-    ]
-  },
-  {
-    "userId": 16,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 5},
-      {"questionId": 2, "choiceId": 4},
-      {"questionId": 3, "choiceId": 2},
-      {"questionId": 4, "choiceId": 3},
-      {"questionId": 5, "choiceId": 2},
-      {"questionId": 6, "choiceId": 2},
-      {"questionId": 7, "choiceId": 5},
-      {"questionId": 8, "choiceId": 4},
-      {"questionId": 9, "choiceId": 2},
-      {"questionId": 10, "choiceId": 2},
-      {"questionId": 11, "choiceId": 5},
-      {"questionId": 12, "choiceId": 5},
-      {"questionId": 13, "choiceId": 5},
-      {"questionId": 14, "choiceId": 4},
-      {"questionId": 15, "choiceId": 2},
-      {"questionId": 16, "choiceId": 2}
-    ]
-  },
-  {
-    "userId": 17,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 1},
-      {"questionId": 2, "choiceId": 2},
-      {"questionId": 3, "choiceId": 5},
-      {"questionId": 4, "choiceId": 5},
-      {"questionId": 5, "choiceId": 4},
-      {"questionId": 6, "choiceId": 5},
-      {"questionId": 7, "choiceId": 2},
-      {"questionId": 8, "choiceId": 1},
-      {"questionId": 9, "choiceId": 5},
-      {"questionId": 10, "choiceId": 5},
-      {"questionId": 11, "choiceId": 1},
-      {"questionId": 12, "choiceId": 2},
-      {"questionId": 13, "choiceId": 1},
-      {"questionId": 14, "choiceId": 1},
-      {"questionId": 15, "choiceId": 5},
-      {"questionId": 16, "choiceId": 5}
-    ]
-  },
-  {
-    "userId": 18,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 3},
-      {"questionId": 2, "choiceId": 3},
-      {"questionId": 3, "choiceId": 4},
-      {"questionId": 4, "choiceId": 4},
-      {"questionId": 5, "choiceId": 3},
-      {"questionId": 6, "choiceId": 3},
-      {"questionId": 7, "choiceId": 3},
-      {"questionId": 8, "choiceId": 3},
-      {"questionId": 9, "choiceId": 4},
-      {"questionId": 10, "choiceId": 3},
-      {"questionId": 11, "choiceId": 3},
-      {"questionId": 12, "choiceId": 4},
-      {"questionId": 13, "choiceId": 3},
-      {"questionId": 14, "choiceId": 3},
-      {"questionId": 15, "choiceId": 4},
-      {"questionId": 16, "choiceId": 4}
-    ]
-  },
-  {
-    "userId": 19,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 4},
-      {"questionId": 2, "choiceId": 5},
-      {"questionId": 3, "choiceId": 2},
-      {"questionId": 4, "choiceId": 2},
-      {"questionId": 5, "choiceId": 2},
-      {"questionId": 6, "choiceId": 3},
-      {"questionId": 7, "choiceId": 4},
-      {"questionId": 8, "choiceId": 4},
-      {"questionId": 9, "choiceId": 1},
-      {"questionId": 10, "choiceId": 2},
-      {"questionId": 11, "choiceId": 5},
-      {"questionId": 12, "choiceId": 4},
-      {"questionId": 13, "choiceId": 4},
-      {"questionId": 14, "choiceId": 5},
-      {"questionId": 15, "choiceId": 2},
-      {"questionId": 16, "choiceId": 2}
-    ]
-  },
-  {
-    "userId": 20,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 3},
-      {"questionId": 2, "choiceId": 2},
-      {"questionId": 3, "choiceId": 4},
-      {"questionId": 4, "choiceId": 5},
-      {"questionId": 5, "choiceId": 5},
-      {"questionId": 6, "choiceId": 4},
-      {"questionId": 7, "choiceId": 2},
-      {"questionId": 8, "choiceId": 2},
-      {"questionId": 9, "choiceId": 4},
-      {"questionId": 10, "choiceId": 5},
-      {"questionId": 11, "choiceId": 2},
-      {"questionId": 12, "choiceId": 3},
-      {"questionId": 13, "choiceId": 2},
-      {"questionId": 14, "choiceId": 2},
-      {"questionId": 15, "choiceId": 5},
-      {"questionId": 16, "choiceId": 4}
-    ]
-  },
-  {
-    "userId": 21,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 5},
-      {"questionId": 2, "choiceId": 5},
-      {"questionId": 3, "choiceId": 1},
-      {"questionId": 4, "choiceId": 2},
-      {"questionId": 5, "choiceId": 2},
-      {"questionId": 6, "choiceId": 2},
-      {"questionId": 7, "choiceId": 5},
-      {"questionId": 8, "choiceId": 5},
-      {"questionId": 9, "choiceId": 1},
-      {"questionId": 10, "choiceId": 1},
-      {"questionId": 11, "choiceId": 5},
-      {"questionId": 12, "choiceId": 5},
-      {"questionId": 13, "choiceId": 5},
-      {"questionId": 14, "choiceId": 5},
-      {"questionId": 15, "choiceId": 1},
-      {"questionId": 16, "choiceId": 1}
-    ]
-  },
-  {
-    "userId": 22,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 2},
-      {"questionId": 2, "choiceId": 2},
-      {"questionId": 3, "choiceId": 5},
-      {"questionId": 4, "choiceId": 5},
-      {"questionId": 5, "choiceId": 4},
-      {"questionId": 6, "choiceId": 4},
-      {"questionId": 7, "choiceId": 2},
-      {"questionId": 8, "choiceId": 2},
-      {"questionId": 9, "choiceId": 5},
-      {"questionId": 10, "choiceId": 4},
-      {"questionId": 11, "choiceId": 2},
-      {"questionId": 12, "choiceId": 2},
-      {"questionId": 13, "choiceId": 2},
-      {"questionId": 14, "choiceId": 2},
-      {"questionId": 15, "choiceId": 4},
-      {"questionId": 16, "choiceId": 5}
-    ]
-  },
-  {
-    "userId": 23,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 4},
-      {"questionId": 2, "choiceId": 3},
-      {"questionId": 3, "choiceId": 3},
-      {"questionId": 4, "choiceId": 4},
-      {"questionId": 5, "choiceId": 3},
-      {"questionId": 6, "choiceId": 4},
-      {"questionId": 7, "choiceId": 3},
-      {"questionId": 8, "choiceId": 2},
-      {"questionId": 9, "choiceId": 3},
-      {"questionId": 10, "choiceId": 3},
-      {"questionId": 11, "choiceId": 4},
-      {"questionId": 12, "choiceId": 4},
-      {"questionId": 13, "choiceId": 4},
-      {"questionId": 14, "choiceId": 3},
-      {"questionId": 15, "choiceId": 3},
-      {"questionId": 16, "choiceId": 4}
-    ]
-  },
-  {
-    "userId": 24,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 1},
-      {"questionId": 2, "choiceId": 1},
-      {"questionId": 3, "choiceId": 5},
-      {"questionId": 4, "choiceId": 5},
-      {"questionId": 5, "choiceId": 5},
-      {"questionId": 6, "choiceId": 5},
-      {"questionId": 7, "choiceId": 1},
-      {"questionId": 8, "choiceId": 1},
-      {"questionId": 9, "choiceId": 5},
-      {"questionId": 10, "choiceId": 5},
-      {"questionId": 11, "choiceId": 1},
-      {"questionId": 12, "choiceId": 1},
-      {"questionId": 13, "choiceId": 1},
-      {"questionId": 14, "choiceId": 1},
-      {"questionId": 15, "choiceId": 5},
-      {"questionId": 16, "choiceId": 5}
-    ]
-  },
-  {
-    "userId": 25,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 4},
-      {"questionId": 2, "choiceId": 4},
-      {"questionId": 3, "choiceId": 3},
-      {"questionId": 4, "choiceId": 3},
-      {"questionId": 5, "choiceId": 2},
-      {"questionId": 6, "choiceId": 3},
-      {"questionId": 7, "choiceId": 4},
-      {"questionId": 8, "choiceId": 3},
-      {"questionId": 9, "choiceId": 2},
-      {"questionId": 10, "choiceId": 3},
-      {"questionId": 11, "choiceId": 4},
-      {"questionId": 12, "choiceId": 4},
-      {"questionId": 13, "choiceId": 5},
-      {"questionId": 14, "choiceId": 4},
-      {"questionId": 15, "choiceId": 2},
-      {"questionId": 16, "choiceId": 3}
-    ]
-  },
-  {
-    "userId": 26,
-    "surveyId": 1,
-    "answers": [
-      {"questionId": 1, "choiceId": 3},
-      {"questionId": 2, "choiceId": 2},
-      {"questionId": 3, "choiceId": 4},
       {"questionId": 4, "choiceId": 5},
       {"questionId": 5, "choiceId": 4},
       {"questionId": 6, "choiceId": 4},
@@ -573,6 +47,7 @@
   },
   {
     "userId": 27,
+    "userName": "오라클",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 5},
@@ -595,6 +70,7 @@
   },
   {
     "userId": 28,
+    "userName": "아마존",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 2},
@@ -617,6 +93,7 @@
   },
   {
     "userId": 29,
+    "userName": "LG유플러스",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 4},
@@ -639,6 +116,7 @@
   },
   {
     "userId": 30,
+    "userName": "엔씨소프트",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 3},
@@ -661,6 +139,7 @@
   },
   {
     "userId": 31,
+    "userName": "하이퍼커넥트",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 5},
@@ -683,6 +162,7 @@
   },
   {
     "userId": 32,
+    "userName": "스노우",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 1},
@@ -705,6 +185,7 @@
   },
   {
     "userId": 33,
+    "userName": "KT DS",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 4},
@@ -727,6 +208,7 @@
   },
   {
     "userId": 34,
+    "userName": "컬리",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 2},
@@ -749,6 +231,7 @@
   },
   {
     "userId": 35,
+    "userName": "오픈소스컨설팅",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 5},
@@ -771,6 +254,7 @@
   },
   {
     "userId": 36,
+    "userName": "SK C&C",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 3},
@@ -793,6 +277,7 @@
   },
   {
     "userId": 37,
+    "userName": "한국투자증권",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 4},
@@ -815,6 +300,7 @@
   },
   {
     "userId": 38,
+    "userName": "테슬라",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 2},
@@ -837,6 +323,7 @@
   },
   {
     "userId": 39,
+    "userName": "배달의민족",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 4},
@@ -859,6 +346,7 @@
   },
   {
     "userId": 40,
+    "userName": "메르카리",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 5},
@@ -881,6 +369,7 @@
   },
   {
     "userId": 41,
+    "userName": "크래프톤",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 3},
@@ -903,6 +392,7 @@
   },
   {
     "userId": 42,
+    "userName": "삼성전자",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 4},
@@ -925,6 +415,7 @@
   },
   {
     "userId": 43,
+    "userName": "소프트뱅크벤처스",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 1},
@@ -947,6 +438,7 @@
   },
   {
     "userId": 44,
+    "userName": "SAP",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 5},
@@ -969,6 +461,7 @@
   },
   {
     "userId": 45,
+    "userName": "카카오뱅크",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 2},
@@ -991,6 +484,7 @@
   },
   {
     "userId": 46,
+    "userName": "인프런",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 4},
@@ -1013,6 +507,7 @@
   },
   {
     "userId": 47,
+    "userName": "일렉트로닉아츠",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 5},
@@ -1035,6 +530,7 @@
   },
   {
     "userId": 48,
+    "userName": "직방",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 3},
@@ -1057,6 +553,7 @@
   },
   {
     "userId": 49,
+    "userName": "이마트24",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 4},
@@ -1079,6 +576,7 @@
   },
   {
     "userId": 50,
+    "userName": "에어비앤비",
     "surveyId": 1,
     "answers": [
       {"questionId": 1, "choiceId": 1},
