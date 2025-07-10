@@ -13,10 +13,10 @@ import com.likelion.culture_test.domain.survey.enums.Category;
 import com.likelion.culture_test.domain.survey.repository.PropertyRepository;
 import com.likelion.culture_test.domain.survey.repository.QuestionRepository;
 import com.likelion.culture_test.domain.survey.repository.SurveyRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +28,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import org.springframework.context.event.EventListener;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 
 
 @Service
@@ -44,8 +41,7 @@ public class DataInitializerService {
   private final PropertyRepository propertyRepository;
   private final ObjectMapper objectMapper;
 
-  
-  //@PostConstruct
+
   @EventListener(ApplicationReadyEvent.class)
   @Transactional
   public void initializeData() {

@@ -33,4 +33,6 @@ public class SurveyQuestion extends BaseEntity {
   @JoinColumn(name = "question_id")
   private Question question;
 
+
+
 }

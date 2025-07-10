@@ -47,6 +47,7 @@ dependencies {
 
 	implementation ("com.h2database:h2")
 
+
 	// JWT
 	implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.11.5")
@@ -56,6 +57,8 @@ dependencies {
 	//Oauth2
 	implementation("org.springframework.boot:spring-boot-starter-security")  // 기본 보안
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client") // 소셜 로그인
+	implementation ("org.springframework.boot:spring-boot-starter-webflux")
+
 
 }
 
