@@ -208,6 +208,111 @@ public class ResultService {
                 .subscribe();
     }
 
+    public List<List<Double>> getVectorsByCreatedAt(Long userId, Long surveyId) {
+        List<Result> results = resultRepository.findByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId);
+
+        return results.stream().map(result -> {
+            List<ResultDetail> details = resultDetailRepository.findByResult(result);
+
+            Map<String, List<Double>> categoryToScores = new HashMap<>();
+            for (ResultDetail detail : details) {
+                String category = detail.getProperty().getCategory().name();
+                categoryToScores
+                        .computeIfAbsent(category, k -> new ArrayList<>())
+                        .add(detail.getScore());
+            }
+
+
+
+            return Arrays.stream(Category.values())
+                    .map(cat -> categoryToScores.getOrDefault(cat.name(), List.of(0.0)).stream()
+                            .mapToDouble(Double::doubleValue).average().orElse(0.0))
+                    .toList();
+        }).toList();
+    }
+
+    public List<CategoryScoreWithCreatedAtDto> getCategoryScoresByCreatedAt(Long userId, Long surveyId) {
+        List<Result> results = resultRepository.findByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId);
+
+        return results.stream().map(result -> {
+            List<ResultDetail> details = resultDetailRepository.findByResult(result);
+
+            Map<String, List<Double>> categoryToScores = new HashMap<>();
+            for (ResultDetail detail : details) {
+                String category = detail.getProperty().getCategory().name();
+                categoryToScores
+                        .computeIfAbsent(category, k -> new ArrayList<>())
+                        .add(detail.getScore());
+            }
+
+            Map<String, Double> categoryScores = new HashMap<>();
+            for (Map.Entry<String, List<Double>> entry : categoryToScores.entrySet()) {
+                categoryScores.put(
+                        entry.getKey(),
+                        entry.getValue().stream().mapToDouble(Double::doubleValue).average().orElse(0.0)
+                );
+            }
+
+            return new CategoryScoreWithCreatedAtDto(result.getCreatedAt(), categoryScores);
+        }).toList();
+    }
+
+
+    public List<Double> getLatestVector(Long userId, Long surveyId) {
+        Result latest = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
+
+        List<ResultDetail> details = resultDetailRepository.findByResult(latest);
+
+        Map<String, List<Double>> categoryToScores = new HashMap<>();
+        for (ResultDetail detail : details) {
+            String category = detail.getProperty().getCategory().name();
+            categoryToScores
+                    .computeIfAbsent(category, k -> new ArrayList<>())
+                    .add(detail.getScore());
+        }
+
+        return Arrays.stream(Category.values())
+                .map(cat -> categoryToScores.getOrDefault(cat.name(), List.of(0.0)).stream()
+                        .mapToDouble(Double::doubleValue).average().orElse(0.0))
+                .toList();
+
+
+    }
+
+    public CategoryScoreWithCreatedAtDto getLatestCategoryScores(Long userId, Long surveyId) {
+        Result latest = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
+
+        List<ResultDetail> details = resultDetailRepository.findByResult(latest);
+
+        Map<String, List<Double>> categoryToScores = new HashMap<>();
+        for (ResultDetail detail : details) {
+            String category = detail.getProperty().getCategory().name();
+            categoryToScores
+                    .computeIfAbsent(category, k -> new ArrayList<>())
+                    .add(detail.getScore());
+        }
+
+        Map<String, Double> categoryScores = new HashMap<>();
+        for (Map.Entry<String, List<Double>> entry : categoryToScores.entrySet()) {
+            categoryScores.put(
+                    entry.getKey(),
+                    entry.getValue().stream().mapToDouble(Double::doubleValue).average().orElse(0.0)
+            );
+        }
+
+        return new CategoryScoreWithCreatedAtDto(latest.getCreatedAt(), categoryScores);
+    }
+
+
+
+
+
+
+
+
+
 
 
 }
