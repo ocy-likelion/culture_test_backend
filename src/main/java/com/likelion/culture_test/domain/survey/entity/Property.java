@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @SuperBuilder
 @AllArgsConstructor
@@ -23,4 +26,7 @@ public class Property extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   private Category category;
+
+  @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Question> questions = new ArrayList<>();
 }

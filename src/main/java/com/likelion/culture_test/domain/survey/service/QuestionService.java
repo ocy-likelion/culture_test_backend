@@ -1,14 +1,15 @@
 package com.likelion.culture_test.domain.survey.service;
 
 import com.likelion.culture_test.domain.survey.dto.request.CreateQuestionRequest;
+import com.likelion.culture_test.domain.survey.dto.request.UpdateSurveyRequest;
 import com.likelion.culture_test.domain.survey.dto.response.QuestionResponse;
 import com.likelion.culture_test.domain.survey.entity.Choice;
 import com.likelion.culture_test.domain.survey.entity.Property;
 import com.likelion.culture_test.domain.survey.entity.Question;
 import com.likelion.culture_test.domain.survey.repository.QuestionRepository;
-import com.likelion.culture_test.domain.survey.repository.SurveyQuestionRepository;
 import com.likelion.culture_test.global.exceptions.CustomException;
 import com.likelion.culture_test.global.exceptions.ErrorCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,10 +29,9 @@ public class QuestionService {
 
   private final QuestionRepository questionRepository;
   private final PropertyService propertyService;
-  private final SurveyQuestionRepository surveyQuestionRepository;
 
 
-  public Page<QuestionResponse> findQuestions(Pageable pageable) {
+  public Page<QuestionResponse> findAllByPage(Pageable pageable) {
     return questionRepository.findAll(pageable).map(QuestionResponse::fromEntity);
   }
 
@@ -41,8 +41,9 @@ public class QuestionService {
         .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
   }
 
+
   @Transactional
-  public QuestionResponse createQuestion(CreateQuestionRequest request) {
+  public QuestionResponse create(CreateQuestionRequest request) {
     validateQuestionRequest(request);
     Property property = getPropertyIfExists(request.propertyId());
 
@@ -127,9 +128,21 @@ public class QuestionService {
   @Transactional
   public void deleteById(Long questionId) {
     Question question = findById(questionId);
-
-    surveyQuestionRepository.deleteByQuestion(question);
-
     questionRepository.delete(question);
+  }
+
+
+  public Page<QuestionResponse> findQuestionsByProperty(Long propertyId, Pageable pageable) {
+    Property property = propertyService.findById(propertyId);
+    return questionRepository.findAllByProperty(property, pageable)
+        .map(QuestionResponse::fromEntity);
+  }
+
+
+  @Transactional
+  public QuestionResponse update(Long questionId, @Valid UpdateSurveyRequest request) {
+    Question question = findById(questionId);
+
+    return null;
   }
 }
