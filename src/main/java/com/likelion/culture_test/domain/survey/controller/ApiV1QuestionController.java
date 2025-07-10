@@ -8,7 +8,6 @@ import com.likelion.culture_test.global.globalDto.PageResponse;
 import com.likelion.culture_test.global.rsData.RsData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Enumeration;
 
 @Slf4j
 @RestController
@@ -45,22 +42,7 @@ public class ApiV1QuestionController {
 
   @PostMapping()
   @Operation(summary = "질문 생성")
-  public RsData<QuestionResponse> createQuestion(
-      HttpServletRequest httpRequest, @Valid @RequestBody CreateQuestionRequest request) {
-    log.info("=== POST /api/v1/questions 요청 받음 ===");
-    log.info("Origin: {}", httpRequest.getHeader("Origin"));
-    log.info("Host: {}", httpRequest.getHeader("Host"));
-    log.info("Referer: {}", httpRequest.getHeader("Referer"));
-    log.info("User-Agent: {}", httpRequest.getHeader("User-Agent"));
-    log.info("Content-Type: {}", httpRequest.getHeader("Content-Type"));
-    log.info("Remote Address: {}", httpRequest.getRemoteAddr());
-
-    Enumeration<String> headerNames = httpRequest.getHeaderNames();
-    while (headerNames.hasMoreElements()) {
-      String headerName = headerNames.nextElement();
-      log.info("Header [{}]: {}", headerName, httpRequest.getHeader(headerName));
-    }
-
+  public RsData<QuestionResponse> createQuestion(@Valid @RequestBody CreateQuestionRequest request) {
     QuestionResponse response = questionService.create(request);
     return new RsData<>("201", "새로운 질문 생성 성공", response);
   }

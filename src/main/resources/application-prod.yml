@@ -39,13 +39,9 @@ management:
 
 logging:
   level:
-    root: info
-    com.likelion.culture_test: DEBUG
-    org.springframework.web.cors: DEBUG
-    org.springframework.web.filter.CorsFilter: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.web.servlet.DispatcherServlet: DEBUG
-    org.springframework.web.servlet.mvc.method.annotation: DEBUG
+    root: warn
+    com.likelion.culture_test: info
+    org.springframework: debug
 
 
 fastapi:
