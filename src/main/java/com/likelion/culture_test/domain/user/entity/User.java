@@ -1,7 +1,5 @@
 package com.likelion.culture_test.domain.user.entity;
 
-import com.likelion.culture_test.domain.user.enums.SsoProvider;
-import com.likelion.culture_test.domain.user.enums.UserRole;
 import com.likelion.culture_test.global.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
