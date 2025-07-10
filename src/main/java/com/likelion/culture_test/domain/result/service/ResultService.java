@@ -38,13 +38,48 @@ public class ResultService {
         Survey survey = surveyRepository.findById(dto.surveyId())
                 .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
 
-        // choiceId만 추출
-        List<Long> choiceIds = dto.answers().stream()
-                .map(AnswerDto::choiceId)
+
+        List<AnswerDto> answers = dto.answers();
+
+        List<Long> questionIds = answers.stream()
+                .map(AnswerDto::questionId)
+                .distinct()
+                .sorted()
                 .toList();
 
+        List<Object[]> maxDisplayOrderList = choiceRepository.findMaxDisplayOrderByQuestionIds(questionIds);
+        Map<Long, Integer> questionMaxDisplayOrderMap = new HashMap<>();
+        for (Object[] row : maxDisplayOrderList) {
+            Long questionId = (Long) row[0];
+            Integer maxDisplayOrder = ((Number) row[1]).intValue();
+            questionMaxDisplayOrderMap.put(questionId, maxDisplayOrder);
+        }
+
+        Map<Long, Integer> questionOffsetMap = new HashMap<>();
+        int offset = 0;
+        for (Long qId : questionIds) {
+            questionOffsetMap.put(qId, offset);
+            offset += questionMaxDisplayOrderMap.getOrDefault(qId, 5); // 기본 5, 안전장치
+        }
+
+        List<Long> calculatedChoiceIds = new ArrayList<>();
+        for (AnswerDto answer : answers) {
+            Long questionId = answer.questionId();
+            int displayOrder = answer.choiceId().intValue();  // 여기 choiceId에 displayOrder가 담겨있다고 가정
+
+            int base = questionOffsetMap.getOrDefault(questionId, 0);
+            long calcChoiceId = base + displayOrder;
+            calculatedChoiceIds.add(calcChoiceId);
+        }
+
+
+        // choiceId만 추출
+//        List<Long> choiceIds = dto.answers().stream()
+//                .map(AnswerDto::choiceId)
+//                .toList();
+
         // choice 객체 전부 가져옴
-        List<Choice> choices = choiceRepository.findAllById(choiceIds);
+        List<Choice> choices = choiceRepository.findAllById(calculatedChoiceIds);
 
         // 분야별 점수 누적
         Map<String, List<Integer>> fieldScoreMap = new HashMap<>();
