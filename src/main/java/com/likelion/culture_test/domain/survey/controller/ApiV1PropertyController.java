@@ -44,7 +44,7 @@ public class ApiV1PropertyController {
   @Operation(summary = "특성 생성")
   public RsData<PropertyResponse> createProperty(@Valid @RequestBody CreatePropertyRequest request) {
     PropertyResponse response = propertyService.create(request.categoryName(), request.propertyName());
-    return new RsData<>("200", "새로운 특성 생성 성공", response);
+    return new RsData<>("201", "새로운 특성 생성 성공", response);
   }
 
 

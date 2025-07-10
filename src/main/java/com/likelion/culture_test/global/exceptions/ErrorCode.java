@@ -11,6 +11,9 @@ public enum ErrorCode {
   // Survey
   BACKUP_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 저장 오류가 발생했습니다."),
   SURVEY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 설문지를 찾을 수 없습니다."),
+  NO_NEW_QUESTIONS(HttpStatus.BAD_REQUEST, "이미 모두 추가된 질문입니다."),
+  INVALID_QUESTIONS_CHANGE(HttpStatus.BAD_REQUEST, "해당 설문지에 없는 질문에 대한 요청이 포함되었습니다."),
+  INVALID_QUESTIONS_COUNT(HttpStatus.BAD_REQUEST, "요청에 대한 질문의 수가 잘못되었습니다."),
 
   // Question
   QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 질문을 찾을 수 없습니다."),

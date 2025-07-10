@@ -1,9 +1,11 @@
 package com.likelion.culture_test.domain.survey.controller;
 
+import com.likelion.culture_test.domain.survey.dto.request.BatchQuestionRequest;
 import com.likelion.culture_test.domain.survey.dto.request.CreateSurveyRequest;
+import com.likelion.culture_test.domain.survey.dto.request.UpdateSurveyQuestionsRequest;
 import com.likelion.culture_test.domain.survey.dto.request.UpdateSurveyRequest;
-import com.likelion.culture_test.domain.survey.dto.response.QuestionResponse;
 import com.likelion.culture_test.domain.survey.dto.response.SurveyDetailResponse;
+import com.likelion.culture_test.domain.survey.dto.response.SurveyQuestionResponse;
 import com.likelion.culture_test.domain.survey.dto.response.SurveyResponse;
 import com.likelion.culture_test.domain.survey.service.DataInitializerService;
 import com.likelion.culture_test.domain.survey.service.SurveyService;
@@ -36,12 +38,12 @@ public class ApiV1SurveyController {
 
   @GetMapping("/main")
   @Operation(summary = "⭐ 메인 설문지 조회")
-  public RsData<PageResponse<QuestionResponse>> getMainSurvey(
+  public RsData<PageResponse<SurveyQuestionResponse>> getMainSurvey(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "3") int size
   ) {
     Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "displayOrder"));
-    Page<QuestionResponse> response = surveyService.getMainSurvey(pageable);
+    Page<SurveyQuestionResponse> response = surveyService.getMainSurvey(pageable);
 
     return new RsData<>("200", "메인 설문지 조회 성공", PageResponse.of(response));
   }
@@ -85,7 +87,7 @@ public class ApiV1SurveyController {
   @Operation(summary = "설문지 생성")
   public RsData<Void> createSurvey(@Valid @RequestBody CreateSurveyRequest request) {
     surveyService.create(request.title(), request.isMain());
-    return new RsData<>("200", "새로운 설문조사지 생성 성공");
+    return new RsData<>("201", "새로운 설문조사지 생성 성공");
   }
 
 
@@ -107,13 +109,23 @@ public class ApiV1SurveyController {
   }
 
 
-  @PostMapping("/{surveyId}/questions")
-  @Operation(summary = "설문지에 질문 추가 (설문-질문 연결)  (미완)")
-  public RsData<Void> insertBatchQuestions(
-      @PathVariable Long surveyId
+  @PostMapping("/{surveyId}/questions/batch")
+  @Operation(summary = "설문지에 질문 배치 추가 (설문-질문 연결)  (미완)")
+  public RsData<Void> addQuestionsToSurvey(
+      @PathVariable Long surveyId, @Valid @RequestBody BatchQuestionRequest request
   ) {
-    //surveyService.connectBatchQuestions(surveyId, request.title(), request.isMain());
-    return new RsData<>("204", "%d번 질문지에 질문 추가 성공".formatted(surveyId));
+    surveyService.createSurveyQuestions(surveyId, request.questionIds());
+    return new RsData<>("201", "%d번 질문지에 질문 배치 추가 성공".formatted(surveyId));
+  }
+
+
+  @PutMapping("/{surveyId}/questions")
+  @Operation(summary = "설문지의 질문 목록 업데이트 (순서변경/제거)  (미완)")
+  public RsData<Void> updateSurveyQuestions(
+      @PathVariable Long surveyId, @Valid @RequestBody UpdateSurveyQuestionsRequest request
+  ) {
+    surveyService.updateSurveyQuestions(surveyId, request.questionIds());
+    return new RsData<>("204", "%d번 설문지의 질문 순서 변경 및 제거 성공".formatted(surveyId));
   }
 
 }
