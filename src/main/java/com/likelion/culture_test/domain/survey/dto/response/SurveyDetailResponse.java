@@ -12,11 +12,11 @@ public record SurveyDetailResponse(
 
     SurveyResponse survey,
 
-    List<QuestionResponse> questions
+    List<SurveyQuestionResponse> questions
 ) {
   public static SurveyDetailResponse fromEntity(Survey survey) {
-    List<QuestionResponse> questionList = survey.getSurveyQuestions().stream()
-        .map(surveyQuestion -> QuestionResponse.fromEntity(surveyQuestion.getQuestion())).toList();
+    List<SurveyQuestionResponse> questionList = survey.getSurveyQuestions().stream()
+        .map(SurveyQuestionResponse::fromEntity).toList();
 
     return SurveyDetailResponse.builder()
         .survey(SurveyResponse.fromEntity(survey))
