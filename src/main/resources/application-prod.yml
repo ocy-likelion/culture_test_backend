@@ -41,8 +41,4 @@ logging:
   level:
     root: warn
     com.likelion.culture_test: info
-    org.springframework: debug
 
-
-fastapi:
-  base-url: http://localhost:8000

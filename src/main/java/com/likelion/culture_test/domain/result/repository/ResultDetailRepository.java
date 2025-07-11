@@ -4,6 +4,7 @@ import com.likelion.culture_test.domain.result.entity.ResultDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import com.likelion.culture_test.domain.result.entity.Result;
 
 import java.util.List;
 
@@ -39,4 +40,6 @@ public interface ResultDetailRepository extends JpaRepository<ResultDetail, Long
     List<ResultDetail> findWithDetailsByUserIdAndSurveyId(@Param("userId") Long userId, @Param("surveyId") Long surveyId);
 
 
+
+    List<ResultDetail> findByResult(Result result);
 }
