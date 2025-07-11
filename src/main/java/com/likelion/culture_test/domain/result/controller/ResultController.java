@@ -71,7 +71,7 @@ public class ResultController {
     public List<List<Double>> getVectorHistory(
             @PathVariable(name = "userId") Long userId,
             @PathVariable(name = "surveyId") Long surveyId
-    ) {
+    ) {// 아직 보내는 기능은 안함
         return resultService.getVectorsByCreatedAt(userId, surveyId);
     }
 

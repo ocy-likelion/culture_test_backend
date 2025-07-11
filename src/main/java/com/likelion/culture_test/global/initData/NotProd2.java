@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.util.List;
 
 @Configuration
-@Profile("!prod")
 public class NotProd2 {
 
     @Bean(name = "applicationRunner2")

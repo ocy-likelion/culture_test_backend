@@ -34,6 +34,7 @@ public class ResultService {
     private final ResultDetailRepository resultDetailRepository;
     private final WebClient webClient;
 
+    @Transactional
     public void processSurveyResult(ResultRequestDto dto) {
         Survey survey = surveyRepository.findById(dto.surveyId())
                 .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
@@ -194,8 +195,8 @@ public class ResultService {
                 .toList();
     }
 
-
-
+// 컨트롤러단에서 getmapping으로 분류해놨긴 한데 조회 + 보내는 기능 둘다 있는 메서드라서 혹시몰라일단 붙일게요
+    @Transactional
     public void sendVectorToFastApi(Long userId, Long surveyId, List<Double> vector) {
         VectorRequestDto requestDto = new VectorRequestDto(userId, surveyId, vector);
 
@@ -257,7 +258,7 @@ public class ResultService {
         }).toList();
     }
 
-
+    // 컨트롤러단에서 getmapping으로 분류해놨긴 한데 조회 + 보내는 기능 둘다 있는 메서드라서 일단 붙일게요
     public List<Double> getLatestVector(Long userId, Long surveyId) {
         Result latest = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
@@ -307,7 +308,7 @@ public class ResultService {
 
 
 
-
+    @Transactional
     public void sendAllVectorsToFastApi() {
         List<Result> results = resultRepository.findAll();
 
