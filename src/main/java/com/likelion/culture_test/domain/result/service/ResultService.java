@@ -34,6 +34,7 @@ public class ResultService {
     private final ResultDetailRepository resultDetailRepository;
     private final WebClient webClient;
 
+    @Transactional
     public void processSurveyResult(ResultRequestDto dto) {
         Survey survey = surveyRepository.findById(dto.surveyId())
                 .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
@@ -194,8 +195,8 @@ public class ResultService {
                 .toList();
     }
 
-
-
+// 컨트롤러단에서 getmapping으로 분류해놨긴 한데 조회 + 보내는 기능 둘다 있는 메서드라서 혹시몰라일단 붙일게요
+    @Transactional
     public void sendVectorToFastApi(Long userId, Long surveyId, List<Double> vector) {
         VectorRequestDto requestDto = new VectorRequestDto(userId, surveyId, vector);
 
@@ -257,7 +258,7 @@ public class ResultService {
         }).toList();
     }
 
-
+    // 컨트롤러단에서 getmapping으로 분류해놨긴 한데 조회 + 보내는 기능 둘다 있는 메서드라서 일단 붙일게요
     public List<Double> getLatestVector(Long userId, Long surveyId) {
         Result latest = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
@@ -304,6 +305,40 @@ public class ResultService {
 
         return new CategoryScoreWithCreatedAtDto(latest.getCreatedAt(), categoryScores);
     }
+
+
+
+    @Transactional
+    public void sendAllVectorsToFastApi() {
+        List<Result> results = resultRepository.findAll();
+
+        List<List<Double>> vectors = results.stream().map(result -> {
+            List<ResultDetail> details = resultDetailRepository.findByResult(result);
+
+            Map<String, List<Double>> categoryToScores = new HashMap<>();
+            for (ResultDetail detail : details) {
+                String category = detail.getProperty().getCategory().name();
+                categoryToScores
+                        .computeIfAbsent(category, k -> new ArrayList<>())
+                        .add(detail.getScore());
+            }
+
+            return Arrays.stream(Category.values())
+                    .map(cat -> categoryToScores.getOrDefault(cat.name(), List.of(0.0)).stream()
+                            .mapToDouble(Double::doubleValue).average().orElse(0.0))
+                    .toList();
+        }).toList();
+
+        webClient.post()
+                .uri("/receive/vector/batch")
+                .bodyValue(vectors)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .doOnError(e -> log.error("전체 벡터 전송 실패: {}", e.getMessage()))
+                .subscribe();
+    }
+
+
 
 
 
