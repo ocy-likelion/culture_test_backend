@@ -42,6 +42,3 @@ logging:
     root: warn
     com.likelion.culture_test: info
 
-
-fastapi:
-  base-url: http://localhost:8000
