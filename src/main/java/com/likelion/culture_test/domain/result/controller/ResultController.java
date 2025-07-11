@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+
+import com.likelion.culture_test.domain.result.dto.CategoryScoreWithCreatedAtDto;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -60,6 +63,47 @@ public class ResultController {
 
         return vector;
     }
+
+
+
+    @Operation(summary = "생성일 기준 전체 설문 결과 벡터만 조회 (군집화 전송용)")
+    @GetMapping("/history/vector/{userId}/survey/{surveyId}")
+    public List<List<Double>> getVectorHistory(
+            @PathVariable(name = "userId") Long userId,
+            @PathVariable(name = "surveyId") Long surveyId
+    ) {
+        return resultService.getVectorsByCreatedAt(userId, surveyId);
+    }
+
+    @Operation(summary = "생성일 기준 전체 설문 결과 카테고리별 수치 조회 (개발용)")
+    @GetMapping("/history/scores/{userId}/survey/{surveyId}")
+    public List<CategoryScoreWithCreatedAtDto> getScoreHistory(
+            @PathVariable(name = "userId") Long userId,
+            @PathVariable(name = "surveyId") Long surveyId
+    ) {
+        return resultService.getCategoryScoresByCreatedAt(userId, surveyId);
+    }
+
+    @Operation(summary = "가장 최근 설문 결과 벡터값 조회 (군집화 전송 용)")
+    @GetMapping("/latest/vector/{userId}/survey/{surveyId}")
+    public List<Double> getLatestVector(
+            @PathVariable(name = "userId") Long userId,
+            @PathVariable(name = "surveyId") Long surveyId
+    ) {
+        List<Double> vector = resultService.getLatestVector(userId, surveyId);
+        resultService.sendVectorToFastApi(userId, surveyId, vector); // 전송 포함
+        return vector;
+    }
+
+    @Operation(summary = "가장 최근 설문 결과 카테고리별 수치 조회 (개발용)")
+    @GetMapping("/latest/scores/{userId}/survey/{surveyId}")
+    public CategoryScoreWithCreatedAtDto getLatestScore(
+            @PathVariable(name = "userId") Long userId,
+            @PathVariable(name = "surveyId") Long surveyId
+    ) {
+        return resultService.getLatestCategoryScores(userId, surveyId);
+    }
+
 
 
 
