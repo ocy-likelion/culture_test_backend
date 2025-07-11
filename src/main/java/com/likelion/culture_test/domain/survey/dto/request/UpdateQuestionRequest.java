@@ -11,10 +11,10 @@ import java.util.List;
 public record UpdateQuestionRequest(
 
     @NotBlank
-    @Schema(description = "질문 내용", example = "협업은 누가 맡았든 필요한 사람이 먼저 나서는 유연성이 핵심이라고 본다.")
+    @Schema(description = "질문 내용", example = "비전공자이지만 기술에 대한 높은 관심과 질 높은 프로젝트 경험이 있다면, 전공자보다 더 높은 평가를 줄 수 있다고 생각한다.")
     String content,
 
-    @Schema(description = "특성 ID (선택형인 경우 => null)", example = "1")
+    @Schema(description = "특성 ID (선택형인 경우 => null)", example = "2")
     Long propertyId,
 
     @NotNull
@@ -24,20 +24,4 @@ public record UpdateQuestionRequest(
     @Valid
     @Schema(description = "선택지 목록  (리커트 질문의 경우 무시됨)")
     List<ChoiceRequest> choices
-) {
-
-  @Schema(description = "선택지 생성 정보 (관리자용 API로, 분리 불필요)")
-  public record ChoiceRequest(
-
-      @NotBlank
-      @Schema(description = "선택지 내용", example = "매우 그렇다")
-      String content,
-
-      @NotNull
-      @Schema(description = "선택지 순서", example = "1")
-      Integer displayOrder,
-
-      @Schema(description = "선택지별 특성 ID", example = "2")
-      Long propertyId
-  ) {}
-}
+) {}
