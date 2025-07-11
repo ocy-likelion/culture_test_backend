@@ -308,6 +308,40 @@ public class ResultService {
 
 
 
+    public void sendAllVectorsToFastApi() {
+        List<Result> results = resultRepository.findAll();
+
+        List<List<Double>> vectors = results.stream().map(result -> {
+            List<ResultDetail> details = resultDetailRepository.findByResult(result);
+
+            Map<String, List<Double>> categoryToScores = new HashMap<>();
+            for (ResultDetail detail : details) {
+                String category = detail.getProperty().getCategory().name();
+                categoryToScores
+                        .computeIfAbsent(category, k -> new ArrayList<>())
+                        .add(detail.getScore());
+            }
+
+            return Arrays.stream(Category.values())
+                    .map(cat -> categoryToScores.getOrDefault(cat.name(), List.of(0.0)).stream()
+                            .mapToDouble(Double::doubleValue).average().orElse(0.0))
+                    .toList();
+        }).toList();
+
+        webClient.post()
+                .uri("/receive/vector/batch")
+                .bodyValue(vectors)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .doOnError(e -> log.error("전체 벡터 전송 실패: {}", e.getMessage()))
+                .subscribe();
+    }
+
+
+
+
+
+
 
 
 
