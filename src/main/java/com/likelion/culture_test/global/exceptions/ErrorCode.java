@@ -34,8 +34,9 @@ public enum ErrorCode {
 
   QUESTION_CHOICE_MISMATCH(HttpStatus.BAD_REQUEST, "선택지와 질문이 일치하지 않습니다."),
 
-  INVALID_DISPLAY_ORDER(HttpStatus.BAD_REQUEST, "잘못된 설문 문항 번호 값입니다.");
+  INVALID_DISPLAY_ORDER(HttpStatus.BAD_REQUEST, "잘못된 설문 문항 번호 값입니다."),
 
+  RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "설문 결과를 찾을 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
