@@ -250,40 +250,81 @@ public class ResultService {
 
     }
 
-    public Map<String, TraitScoreDto> getLatestCategoryScores(Long userId, Long surveyId) {
-        Result latest = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
+    public AnalysisResponseDto getLatestCategoryScores(Long userId, Long surveyId) {
+        Optional<Result> resOpt = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId);
+        // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
+        // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
+        if (resOpt.isEmpty()){
+            return new AnalysisResponseDto("pending", List.of());
+        }
+
+        Result latest = resOpt.get();
+
 
         List<ResultDetail> details = resultDetailRepository.findByResult(latest);
+
+
 
         Map<Category, Double> avgByCategory = details.stream()
                 .collect(Collectors.groupingBy(
                         d -> d.getProperty().getCategory(),
                         Collectors.averagingDouble(ResultDetail::getScore)
                 ));
+        List<TraitItemDto> items = new ArrayList<>();
 
-        Map<String, TraitScoreDto> resultMap = new HashMap<>();
+        for (var e : avgByCategory.entrySet()) {
+            Category cat = e.getKey();
+            double raw = e.getValue();
 
-        for (Map.Entry<Category, Double> entry : avgByCategory.entrySet()) {
-            Category category = entry.getKey();
-            double score = entry.getValue();
+            int leftScore = (int) Math.round((raw + 2) / 4 * 100);
+            int rightScore = 100 - leftScore;
 
-            double positivePercent = (score + 2) / 4 * 100;
-            double negativePercent = 100 - positivePercent;
+//            int leftScore = (int) Math.round(leftRatio);
+//            int rightScore = 100 - leftScore;
 
-            resultMap.put(
-                    category.name(),
-                    new TraitScoreDto(
-                            TraitLabelUtils.getPositiveLabel(category),
-                            TraitLabelUtils.getNegativeLabel(category),
-                            Math.round(positivePercent * 10) / 10.0,
-                            Math.round(negativePercent * 10) / 10.0,
-                            score
-                    )
-            );
+            String leftType = TraitLabelUtils.getPositiveLabel(cat);
+            String rightType = TraitLabelUtils.getNegativeLabel(cat);
+
+            //TraitSideDto leftSide, rightSide;
+//            if (score >= 0) {                // +쪽(positive)이 우세
+//                leftSide  = new TraitSideDto(positiveLabel, positive);
+//                rightSide = new TraitSideDto(negativeLabel, negative);
+//            } else {                         // -쪽(negative)이 우세
+//                leftSide  = new TraitSideDto(negativeLabel, negative);
+//                rightSide = new TraitSideDto(positiveLabel, positive);
+//            }
+
+            items.add(new TraitItemDto(
+                    cat.getDescription(),
+                    new TraitSideDto(leftType,  leftScore),
+                    new TraitSideDto(rightType, rightScore)
+            ));
+
         }
 
-        return resultMap;
+
+//        Map<String, TraitScoreDto> resultMap = new HashMap<>();
+//
+//        for (Map.Entry<Category, Double> entry : avgByCategory.entrySet()) {
+//            Category category = entry.getKey();
+//            double score = entry.getValue();
+//
+//            double positivePercent = (score + 2) / 4 * 100;
+//            double negativePercent = 100 - positivePercent;
+//
+//            resultMap.put(
+//                    category.name(),
+//                    new TraitScoreDto(
+//                            TraitLabelUtils.getPositiveLabel(category),
+//                            TraitLabelUtils.getNegativeLabel(category),
+//                            Math.round(positivePercent * 10) / 10.0,
+//                            Math.round(negativePercent * 10) / 10.0,
+//                            score
+//                    )
+//            );
+//        }
+
+        return new AnalysisResponseDto("done", items);
     }
 
 

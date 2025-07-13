@@ -92,7 +92,7 @@ public class ResultController {
 
     @Operation(summary = "설문 응답 제출 후 결과 백분율 반환")
     @GetMapping("/latest/scoresAndPercentages/{userId}/survey/{surveyId}")
-    public Map<String, TraitScoreDto> getLatestScore(
+    public AnalysisResponseDto getLatestScore(
             @PathVariable(name = "userId") Long userId,
             @PathVariable(name = "surveyId") Long surveyId
     ) {
