@@ -3,6 +3,7 @@ package com.likelion.culture_test.domain.result.service;
 import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.entity.Result;
 import com.likelion.culture_test.domain.result.entity.ResultDetail;
+import com.likelion.culture_test.domain.result.enums.ResultType;
 import com.likelion.culture_test.domain.result.repository.ResultDetailRepository;
 import com.likelion.culture_test.domain.result.repository.ResultRepository;
 import com.likelion.culture_test.domain.survey.entity.Choice;
@@ -254,7 +255,7 @@ public class ResultService {
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
         if (resOpt.isEmpty()){
-            return new AnalysisResponseDto("pending", List.of());
+            return new AnalysisResponseDto(ResultType.not_yet, "pending", List.of());
         }
 
         Result latest = resOpt.get();
@@ -299,7 +300,18 @@ public class ResultService {
                     new TraitSideDto(rightType, rightScore)
             ));
 
+//            double parseLeft = Double.parseDouble(leftType);
+//            double parseRight = Double.parseDouble(rightType);
+//
+
+//            if(parseLeft > parseRight && ){
+//                resultType = ResultType.ABCD;
+//
+//            }
+
         }
+
+        ResultType resultType = decideResultType(items);
 
 
 //        Map<String, TraitScoreDto> resultMap = new HashMap<>();
@@ -323,7 +335,7 @@ public class ResultService {
 //            );
 //        }
 
-        return new AnalysisResponseDto("done", items);
+        return new AnalysisResponseDto(resultType, "done", items);
     }
 
 
@@ -348,7 +360,7 @@ public class ResultService {
                             .mapToDouble(Double::doubleValue).average().orElse(0.0))
                     .toList();
         }).toList();
-
+        log.info("보내기 직전 생성된 벡터 수: {}", vectors.size());
         webClient.post()
                 .uri("/receive/vector/batch")
                 .bodyValue(vectors)
@@ -356,7 +368,47 @@ public class ResultService {
                 .bodyToMono(Void.class)
                 .doOnError(e -> log.error("전체 벡터 전송 실패: {}", e.getMessage()))
                 .subscribe();
+
     }
+
+
+
+    private ResultType decideResultType(List<TraitItemDto> items) {
+
+        int[] flag = { -1, -1, -1, -1 };   // A,B,C,D 순
+
+        for (TraitItemDto item : items) {
+            int left  = item.left().score();
+            int right = item.right().score();
+
+            if (left == right) continue;         // tie → 그대로 -1 (미결정)
+
+            if (item.label().equals(Category.WORK_CAPABILITY.getDescription())) {
+                flag[0] = left > right ? 1 : 0;
+            } else if (item.label().equals(Category.CONFLICT_RESOLUTION.getDescription())) {
+                flag[1] = left > right ? 1 : 0;
+            } else if (item.label().equals(Category.PERSONALITY_PREFERENCE.getDescription())) {
+                flag[2] = left > right ? 1 : 0;
+            } else if (item.label().equals(Category.EVALUATION_CRITERIA.getDescription())) {
+                flag[3] = left > right ? 1 : 0;
+            }
+
+        }
+
+        // 하나라도 미결정(-1) 이면 not_yet
+        for (int f : flag) if (f == -1) return ResultType.not_yet;
+
+        char[] code = {
+                flag[0] == 1 ? 'A' : 'a',
+                flag[1] == 1 ? 'B' : 'b',
+                flag[2] == 1 ? 'C' : 'c',
+                flag[3] == 1 ? 'D' : 'd'
+        };
+        String key = new String(code);  // 예: "AbcD"
+
+        return ResultType.valueOf(key); // 반드시 존재, 없으면 예외 → not_yet
+    }
+
 
 
 
