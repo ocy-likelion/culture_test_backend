@@ -1,8 +1,6 @@
 package com.likelion.culture_test.domain.result.controller;
 
-import com.likelion.culture_test.domain.result.dto.ResultDetailResponseDto;
-import com.likelion.culture_test.domain.result.dto.ResultQueryDto;
-import com.likelion.culture_test.domain.result.dto.ResultRequestDto;
+import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.service.ResultService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
-
-import com.likelion.culture_test.domain.result.dto.CategoryScoreWithCreatedAtDto;
 
 @Slf4j
 @RestController
@@ -95,9 +90,9 @@ public class ResultController {
         return vector;
     }
 
-    @Operation(summary = "가장 최근 설문 결과 카테고리별 수치 조회 (개발용)")
-    @GetMapping("/latest/scores/{userId}/survey/{surveyId}")
-    public CategoryScoreWithCreatedAtDto getLatestScore(
+    @Operation(summary = "설문 응답 제출 후 결과 백분율 반환")
+    @GetMapping("/latest/scoresAndPercentages/{userId}/survey/{surveyId}")
+    public AnalysisResponseDto getLatestScore(
             @PathVariable(name = "userId") Long userId,
             @PathVariable(name = "surveyId") Long surveyId
     ) {
