@@ -301,6 +301,15 @@ public class ResultService {
                     new TraitSideDto(rightType, rightScore)
             ));
 
+//            double parseLeft = Double.parseDouble(leftType);
+//            double parseRight = Double.parseDouble(rightType);
+//
+//            ResultType resultType = ResultType.not_yet;
+//            if(parseLeft > parseRight && ){
+//                resultType = ResultType.ABCD;
+//
+//            }
+
         }
 
 
@@ -360,6 +369,45 @@ public class ResultService {
                 .subscribe();
 
     }
+
+
+
+    private ResultType decideResultType(List<TraitItemDto> items) {
+
+        int[] flag = { -1, -1, -1, -1 };   // A,B,C,D 순
+
+        for (TraitItemDto item : items) {
+            int left  = item.left().score();
+            int right = item.right().score();
+
+            if (left == right) continue;         // tie → 그대로 -1 (미결정)
+
+            if (item.label().equals(Category.WORK_CAPABILITY.getDescription())) {
+                flag[0] = left > right ? 1 : 0;
+            } else if (item.label().equals(Category.CONFLICT_RESOLUTION.getDescription())) {
+                flag[1] = left > right ? 1 : 0;
+            } else if (item.label().equals(Category.PERSONALITY_PREFERENCE.getDescription())) {
+                flag[2] = left > right ? 1 : 0;
+            } else if (item.label().equals(Category.EVALUATION_CRITERIA.getDescription())) {
+                flag[3] = left > right ? 1 : 0;
+            }
+
+        }
+
+        // 하나라도 미결정(-1) 이면 not_yet
+        for (int f : flag) if (f == -1) return ResultType.not_yet;
+
+        char[] code = {
+                flag[0] == 1 ? 'A' : 'a',
+                flag[1] == 1 ? 'B' : 'b',
+                flag[2] == 1 ? 'C' : 'c',
+                flag[3] == 1 ? 'D' : 'd'
+        };
+        String key = new String(code);  // 예: "AbcD"
+
+        return ResultType.valueOf(key); // 반드시 존재, 없으면 예외 → not_yet
+    }
+
 
 
 
