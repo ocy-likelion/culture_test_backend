@@ -13,6 +13,7 @@ import com.likelion.culture_test.domain.survey.repository.SurveyRepository;
 import com.likelion.culture_test.global.exceptions.CustomException;
 import com.likelion.culture_test.global.exceptions.ErrorCode;
 import com.likelion.culture_test.global.util.ScoreUtils;
+import com.likelion.culture_test.global.util.TraitLabelUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import com.likelion.culture_test.global.util.TraitLabelUtils;
 
 @Slf4j
 @Service
