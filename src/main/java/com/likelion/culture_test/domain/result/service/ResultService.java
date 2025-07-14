@@ -3,6 +3,7 @@ package com.likelion.culture_test.domain.result.service;
 import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.entity.Result;
 import com.likelion.culture_test.domain.result.entity.ResultDetail;
+import com.likelion.culture_test.domain.result.enums.ResultType;
 import com.likelion.culture_test.domain.result.repository.ResultDetailRepository;
 import com.likelion.culture_test.domain.result.repository.ResultRepository;
 import com.likelion.culture_test.domain.survey.entity.Choice;
@@ -255,7 +256,7 @@ public class ResultService {
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
         if (resOpt.isEmpty()){
-            return new AnalysisResponseDto("pending", List.of());
+            return new AnalysisResponseDto(ResultType.not_yet, "pending", List.of());
         }
 
         Result latest = resOpt.get();
@@ -324,7 +325,7 @@ public class ResultService {
 //            );
 //        }
 
-        return new AnalysisResponseDto("done", items);
+        return new AnalysisResponseDto(ResultType.not_yet, "done", items);
     }
 
 
@@ -349,7 +350,7 @@ public class ResultService {
                             .mapToDouble(Double::doubleValue).average().orElse(0.0))
                     .toList();
         }).toList();
-
+        log.info("보내기 직전 생성된 벡터 수: {}", vectors.size());
         webClient.post()
                 .uri("/receive/vector/batch")
                 .bodyValue(vectors)
@@ -357,6 +358,7 @@ public class ResultService {
                 .bodyToMono(Void.class)
                 .doOnError(e -> log.error("전체 벡터 전송 실패: {}", e.getMessage()))
                 .subscribe();
+
     }
 
 
