@@ -304,13 +304,15 @@ public class ResultService {
 //            double parseLeft = Double.parseDouble(leftType);
 //            double parseRight = Double.parseDouble(rightType);
 //
-//            ResultType resultType = ResultType.not_yet;
+
 //            if(parseLeft > parseRight && ){
 //                resultType = ResultType.ABCD;
 //
 //            }
 
         }
+
+        ResultType resultType = decideResultType(items);
 
 
 //        Map<String, TraitScoreDto> resultMap = new HashMap<>();
@@ -334,7 +336,7 @@ public class ResultService {
 //            );
 //        }
 
-        return new AnalysisResponseDto(ResultType.not_yet, "done", items);
+        return new AnalysisResponseDto(resultType, "done", items);
     }
 
 
