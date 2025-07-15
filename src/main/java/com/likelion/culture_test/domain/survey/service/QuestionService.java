@@ -1,7 +1,8 @@
 package com.likelion.culture_test.domain.survey.service;
 
+import com.likelion.culture_test.domain.survey.dto.request.ChoiceRequest;
 import com.likelion.culture_test.domain.survey.dto.request.CreateQuestionRequest;
-import com.likelion.culture_test.domain.survey.dto.request.UpdateSurveyRequest;
+import com.likelion.culture_test.domain.survey.dto.request.UpdateQuestionRequest;
 import com.likelion.culture_test.domain.survey.dto.response.QuestionResponse;
 import com.likelion.culture_test.domain.survey.entity.Choice;
 import com.likelion.culture_test.domain.survey.entity.Property;
@@ -9,7 +10,6 @@ import com.likelion.culture_test.domain.survey.entity.Question;
 import com.likelion.culture_test.domain.survey.repository.QuestionRepository;
 import com.likelion.culture_test.global.exceptions.CustomException;
 import com.likelion.culture_test.global.exceptions.ErrorCode;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -44,7 +44,7 @@ public class QuestionService {
 
   @Transactional
   public QuestionResponse create(CreateQuestionRequest request) {
-    validateQuestionRequest(request);
+    validateQuestionRequest(request.isSelective(), request.propertyId(), request.choices());
     Property property = getPropertyIfExists(request.propertyId());
 
     Question question = Question.builder()
@@ -100,20 +100,20 @@ public class QuestionService {
   }
 
 
-  private void validateQuestionRequest(CreateQuestionRequest request) {
-    if (request.isSelective()) {
-      if (request.choices() == null || request.choices().size() < 2) {
+  private void validateQuestionRequest(boolean isSelective, Long propertyId, List<ChoiceRequest> choices) {
+    if (isSelective) {
+      if (choices == null || choices.size() < 2) {
         throw new CustomException(ErrorCode.SELECTIVE_QUESTION_NEEDS_CHOICES);
       }
 
-      boolean hasProperty = request.choices().stream()
+      boolean hasProperty = choices.stream()
           .anyMatch(choice -> choice.propertyId() == null);
       if (hasProperty) {
         throw new CustomException(ErrorCode.SELECTIVE_CHOICE_NEEDS_PROPERTY);
       }
 
     } else {
-      if (request.propertyId() == null) {
+      if (propertyId == null) {
         throw new CustomException(ErrorCode.LIKERT_QUESTION_NEEDS_PROPERTY);
       }
     }
@@ -140,9 +140,33 @@ public class QuestionService {
 
 
   @Transactional
-  public QuestionResponse update(Long questionId, @Valid UpdateSurveyRequest request) {
-    Question question = findById(questionId);
+  public QuestionResponse update(Long questionId, UpdateQuestionRequest request) {
+    validateQuestionRequest(request.isSelective(), request.propertyId(), request.choices());
 
-    return null;
+    Property property = getPropertyIfExists(request.propertyId());
+
+    Question question = findById(questionId);
+    question.setContent(request.content());
+    question.setSelective(request.isSelective());
+    question.setProperty(property);
+
+
+    if (request.isSelective()) {
+      List<Choice> choices = request.choices().stream().map(choiceRequest -> {
+        Property choiceProperty = getPropertyIfExists(choiceRequest.propertyId());
+
+        return Choice.builder()
+            .question(question)
+            .content(choiceRequest.content())
+            .displayOrder(choiceRequest.displayOrder())
+            .property(choiceProperty)
+            .build();
+
+      }).collect(Collectors.toList());
+
+      question.setChoices(choices);
+    }
+
+    return QuestionResponse.fromEntity(question);
   }
 }

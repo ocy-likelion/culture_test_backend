@@ -110,7 +110,7 @@ public class ApiV1SurveyController {
 
 
   @PostMapping("/{surveyId}/questions/batch")
-  @Operation(summary = "설문지에 질문 배치 추가 (설문-질문 연결)  (미완)")
+  @Operation(summary = "설문지에 질문 배치 추가 (설문-질문 연결)")
   public RsData<Void> addQuestionsToSurvey(
       @PathVariable Long surveyId, @Valid @RequestBody BatchQuestionRequest request
   ) {
@@ -120,7 +120,7 @@ public class ApiV1SurveyController {
 
 
   @PutMapping("/{surveyId}/questions")
-  @Operation(summary = "설문지의 질문 목록 업데이트 (순서변경/제거)  (미완)")
+  @Operation(summary = "설문지의 질문 목록 업데이트 (순서변경/제거)")
   public RsData<Void> updateSurveyQuestions(
       @PathVariable Long surveyId, @Valid @RequestBody UpdateSurveyQuestionsRequest request
   ) {

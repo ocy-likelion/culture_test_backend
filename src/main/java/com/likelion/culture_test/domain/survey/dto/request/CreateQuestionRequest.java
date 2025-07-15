@@ -25,19 +25,4 @@ public record CreateQuestionRequest(
     @Schema(description = "선택지 목록  (리커트 질문의 경우 무시됨)")
     List<ChoiceRequest> choices
 ) {
-
-  @Schema(description = "선택지 생성 정보 (관리자용 API로, 분리 불필요)")
-  public record ChoiceRequest(
-
-      @NotBlank
-      @Schema(description = "선택지 내용", example = "매우 그렇다")
-      String content,
-
-      @NotNull
-      @Schema(description = "선택지 순서", example = "1")
-      Integer displayOrder,
-
-      @Schema(description = "선택지별 특성 ID", example = "2")
-      Long propertyId
-  ) {}
 }
