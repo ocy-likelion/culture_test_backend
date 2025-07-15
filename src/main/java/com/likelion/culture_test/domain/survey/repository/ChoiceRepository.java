@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface ChoiceRepository extends JpaRepository<Choice, Long> {
 
-    @Query("SELECT c.question.id, MAX(c.displayOrder) FROM Choice c WHERE c.question.id IN :questionIds GROUP BY c.question.id")
-    List<Object[]> findMaxDisplayOrderByQuestionIds(@Param("questionIds") List<Long> questionIds);
+
 
 }

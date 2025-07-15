@@ -1,8 +1,6 @@
 package com.likelion.culture_test.domain.result.controller;
 
-import com.likelion.culture_test.domain.result.dto.ResultDetailResponseDto;
-import com.likelion.culture_test.domain.result.dto.ResultQueryDto;
-import com.likelion.culture_test.domain.result.dto.ResultRequestDto;
+import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.service.ResultService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
-
-import com.likelion.culture_test.domain.result.dto.CategoryScoreWithCreatedAtDto;
 
 @Slf4j
 @RestController
@@ -71,7 +66,7 @@ public class ResultController {
     public List<List<Double>> getVectorHistory(
             @PathVariable(name = "userId") Long userId,
             @PathVariable(name = "surveyId") Long surveyId
-    ) {
+    ) {// 아직 보내는 기능은 안함
         return resultService.getVectorsByCreatedAt(userId, surveyId);
     }
 
@@ -95,14 +90,24 @@ public class ResultController {
         return vector;
     }
 
-    @Operation(summary = "가장 최근 설문 결과 카테고리별 수치 조회 (개발용)")
-    @GetMapping("/latest/scores/{userId}/survey/{surveyId}")
-    public CategoryScoreWithCreatedAtDto getLatestScore(
+    @Operation(summary = "설문 응답 제출 후 결과 백분율 반환")
+    @GetMapping("/latest/scoresAndPercentages/{userId}/survey/{surveyId}")
+    public AnalysisResponseDto getLatestScore(
             @PathVariable(name = "userId") Long userId,
             @PathVariable(name = "surveyId") Long surveyId
     ) {
         return resultService.getLatestCategoryScores(userId, surveyId);
     }
+
+
+// 위의 벡터 값 하나씩 보내는 메서드는 보내는 동시에 어떤 값 보내졌나 확인용으로 반환하니까 getmapping  근데 이거를 전부다 조회하기 힘드니 그냥 보내기만 하고 post
+    @Operation(summary = "현재 데이터베이스 내 전체 결과 벡터값을 FastAPI 서버로 전송 (일괄 처리, 해당 엔드포인드는 보내는 동시에 조회하는 거(이런것들은 get으로함) 말고 보내는 작업만 하니까 post, )")
+    @PostMapping("/batch/vector/all")
+    public ResponseEntity<Void> sendAllVectors() {
+        resultService.sendAllVectorsToFastApi();
+        return ResponseEntity.ok().build();
+    }
+
 
 
 
