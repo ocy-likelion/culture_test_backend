@@ -9,7 +9,7 @@ public enum Category {
 
   WORK_CAPABILITY("업무 능력"),
   CONFLICT_RESOLUTION("갈등 대응 방식"),
-  PERSONALITY_PREFERENCE("성향/인성"),
+  PERSONALITY_PREFERENCE("성향 및 인성"),
   EVALUATION_CRITERIA("평가 기준");
 
   private final String description;
