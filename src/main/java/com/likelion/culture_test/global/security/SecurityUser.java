@@ -18,18 +18,20 @@ public class SecurityUser implements OAuth2User {
         this.user = user;
     }
 
-    // ✅ 사용자 권한 반환 (권한 시스템이 간단하다면 ROLE_USER만 고정해도 무방)
+    public Long getId(){ return user.getId(); }
+
+    // 사용자 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList(); // 필요 시 Role -> GrantedAuthority 매핑 가능
     }
 
-    // ✅ 사용자 식별자 반환 (Spring Security 내부에서 getName() 사용함)
+    // 용자 식별자 반환
     @Override
     public String getName() {
         return user.getSocialId(); // 또는 user.getId().toString()
     }
 
-    // ✅ 사용자 정보 속성 (카카오에서 받은 nickname 등 넘길 때 사용)
+    // 카카오에서 받은 nickname 등 넘길 때
     @Override
     public Map<String, Object> getAttributes() {
         return Map.of(
