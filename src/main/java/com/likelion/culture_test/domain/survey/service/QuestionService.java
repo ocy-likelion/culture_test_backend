@@ -81,7 +81,7 @@ public class QuestionService {
 
   private List<Choice> createLikertChoices(Question question) {
     String[] contents = {
-      "전혀 그렇지 않다", "그렇지 않다", "보통이다", "그렇다", "매우 그렇다"
+      "전혀 아니다", "아니다", "보통이다", "그렇다", "매우 그렇다"
     };
 
     List<Choice> choices = new ArrayList<>();

@@ -51,8 +51,8 @@
           "isSelective": false,
           "property": "P_1",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -63,8 +63,8 @@
           "isSelective": false,
           "property": "P_1",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -75,8 +75,8 @@
           "isSelective": false,
           "property": "P_2",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -87,8 +87,8 @@
           "isSelective": false,
           "property": "P_2",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -99,8 +99,8 @@
           "isSelective": false,
           "property": "P_3",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -111,8 +111,8 @@
           "isSelective": false,
           "property": "P_3",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -123,8 +123,8 @@
           "isSelective": false,
           "property": "P_4",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -135,8 +135,8 @@
           "isSelective": false,
           "property": "P_4",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -147,8 +147,8 @@
           "isSelective": false,
           "property": "P_5",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -159,8 +159,8 @@
           "isSelective": false,
           "property": "P_5",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -171,8 +171,8 @@
           "isSelective": false,
           "property": "P_6",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -183,8 +183,8 @@
           "isSelective": false,
           "property": "P_6",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -195,8 +195,8 @@
           "isSelective": false,
           "property": "P_7",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -207,8 +207,8 @@
           "isSelective": false,
           "property": "P_7",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -219,8 +219,8 @@
           "isSelective": false,
           "property": "P_8",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
@@ -231,8 +231,8 @@
           "isSelective": false,
           "property": "P_8",
           "choices": [
-            {"displayOrder": 1, "content": "전혀 그렇지 않다"},
-            {"displayOrder": 2, "content": "그렇지 않다"},
+            {"displayOrder": 1, "content": "전혀 아니다"},
+            {"displayOrder": 2, "content": "아니다"},
             {"displayOrder": 3, "content": "보통이다"},
             {"displayOrder": 4, "content": "그렇다"},
             {"displayOrder": 5, "content": "매우 그렇다"}
