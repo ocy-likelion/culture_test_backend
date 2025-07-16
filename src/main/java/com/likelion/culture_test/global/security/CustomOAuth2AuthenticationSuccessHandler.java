@@ -2,6 +2,8 @@ package com.likelion.culture_test.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.likelion.culture_test.domain.user.entity.User;
+import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
 import com.likelion.culture_test.global.rq.Rq;
 import com.likelion.culture_test.global.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,19 +31,23 @@ public class CustomOAuth2AuthenticationSuccessHandler implements AuthenticationS
                                         Authentication authentication) throws IOException {
         // 소셜 로그인 완료 후 사용자 정보 꺼내기
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
-
         User user = securityUser.getUser();
 
         //쿠키발급 및 SecurityContext 로그인 처리
         rq.makeAuthCookies(user);
         rq.setLogin(user);
 
-        response.sendRedirect("https://www.survey.heun0.site/intro");
+        String redirectUrl = request.getParameter("state");
 
-//        // 응답
-//        var result = Map.of("message", "로그인 성공");
-//        response.setContentType("application/json");
-//        response.setCharacterEncoding("UTF-8");
-//        response.getWriter().write(objectMapper.writeValueAsString(result));
+        if(redirectUrl==null || redirectUrl.isEmpty()){
+            throw new CustomException(ErrorCode.OAUTH_REDIRECT_URL_NOT_FOUND);
+//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            response.setContentType("application/json");
+//            response.getWriter().write("{\"message\": \"리다이렉트 URL(state 파라미터)이 존재하지 않습니다.\"}");
+//            return;
+        }
+
+        response.sendRedirect(redirectUrl);
+
     }
 }

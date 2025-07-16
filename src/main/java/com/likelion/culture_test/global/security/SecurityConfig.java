@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -30,18 +31,13 @@ public class SecurityConfig {
     private final CustomAuthenticationFilter customAuthenticationFilter;
     private final CustomOAuth2AuthenticationSuccessHandler customOauth2AuthenticationSuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final ClientRegistrationRepository clientRegistrationRepository; //OAuth2 클라이언트 설정 정보를 가지고 있음
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(jwtUtil, userRepository);
 
         http
-                .cors(cors -> cors.configurationSource(request -> {
-                    System.out.println("🌐 CORS 요청 감지됨! " + request.getMethod() + " " + request.getRequestURI());
-                    return corsConfigurationSource().getCorsConfiguration(request);
-                }));
-        http
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource())) //cors 설정
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) //cors 설정
                 .csrf(csrf -> csrf.disable())
 //                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
@@ -52,6 +48,13 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2 //소셜 로그인 설정
+                        .authorizationEndpoint(endpoint -> endpoint
+                                .authorizationRequestResolver(
+                                        new CustomAuthorizationRequestResolver(
+                                                clientRegistrationRepository,
+                                                "/oauth2/authorization"
+                                        )
+                                ))
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService))
                         .successHandler(customOauth2AuthenticationSuccessHandler)
