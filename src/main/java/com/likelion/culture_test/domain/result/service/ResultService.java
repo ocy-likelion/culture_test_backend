@@ -341,7 +341,7 @@ public class ResultService {
 
 
     @Transactional
-    public void sendAllVectorsToFastApi() {
+    public void sendAllVectorsToFastApi(int clusterNum) {
         List<Result> results = resultRepository.findAll();
 
         List<List<Double>> vectors = results.stream().map(result -> {
@@ -361,9 +361,11 @@ public class ResultService {
                     .toList();
         }).toList();
         log.info("보내기 직전 생성된 벡터 수: {}", vectors.size());
+
+        VectorBatchRequest vectorBatchRequest = new VectorBatchRequest(clusterNum, vectors);
         webClient.post()
                 .uri("/receive/vector/batch")
-                .bodyValue(vectors)
+                .bodyValue(vectorBatchRequest)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .doOnError(e -> log.error("전체 벡터 전송 실패: {}", e.getMessage()))
