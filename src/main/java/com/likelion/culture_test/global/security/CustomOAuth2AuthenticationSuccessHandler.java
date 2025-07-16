@@ -1,6 +1,8 @@
 package com.likelion.culture_test.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.likelion.culture_test.domain.user.entity.User;
+import com.likelion.culture_test.global.rq.Rq;
 import com.likelion.culture_test.global.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,8 +19,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final JwtUtil jwtUtil;
+
     private final ObjectMapper objectMapper;
+    private final Rq rq;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -27,18 +30,18 @@ public class CustomOAuth2AuthenticationSuccessHandler implements AuthenticationS
         // 소셜 로그인 완료 후 사용자 정보 꺼내기
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
 
-        // JWT 발급
-        String jwt = jwtUtil.generateToken(securityUser.getUser().getId());
+        User user = securityUser.getUser();
 
-        var tokenResponse = Map.of(
-                "token", jwt,
-                "message", "로그인 성공"
-        );
+        //쿠키발급 및 SecurityContext 로그인 처리
+        rq.makeAuthCookies(user);
+        rq.setLogin(user);
 
+        response.sendRedirect("https://www.survey.heun0.site/intro");
 
-        // json으로 응답
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(tokenResponse));
+//        // 응답
+//        var result = Map.of("message", "로그인 성공");
+//        response.setContentType("application/json");
+//        response.setCharacterEncoding("UTF-8");
+//        response.getWriter().write(objectMapper.writeValueAsString(result));
     }
 }

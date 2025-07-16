@@ -1,80 +1,72 @@
-//package com.likelion.culture_test.global.security;
-//
-//import jakarta.servlet.FilterChain;
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//import org.springframework.web.filter.OncePerRequestFilter;
-//
-//import java.io.IOException;
-//
-//public class CustomAuthenticationFilter extends OncePerRequestFilter {
-//
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request,
-//                                    HttpServletResponse response,
-//                                    FilterChain filterChain) throws ServletException, IOException {
-//        // jwt꺼내고 인증처리
-//        filterChain.doFilter(request, response); // 다음 필터로
-//    }
-//}
+
 package com.likelion.culture_test.global.security;
 
-import com.likelion.culture_test.domain.user.entity.User;
-import com.likelion.culture_test.domain.user.repository.UserRepository;
-import com.likelion.culture_test.global.util.JwtUtil;
+
+import com.likelion.culture_test.global.rq.Rq;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
+@Component
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
+    private final Rq rq;
+
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
+        System.out.println("🔥 CustomAuthenticationFilter 실행됨! URI = " + request.getMethod() + " " + request.getRequestURI());
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7); // "Bearer " 이후 토큰 추출
-            try {
-                // 토큰 유효성 검증
-                if (jwtUtil.validateToken(token)) {
-                    Long userId = jwtUtil.getUserIdFromToken(token);
-
-                    User user = userRepository.findById(userId)
-                            .orElseThrow(()-> new RuntimeException("사용자 없음"));
-
-                    SecurityUser securityUser = new SecurityUser(user);
-
-                    // 인증 객체 생성 및 SecurityContext에 등록
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(securityUser, null,securityUser.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-            } catch (Exception e) {
-                // JwtUtil.validateToken 또는 getUserIdFromToken에서 예외 발생 시
-                // ex) MalformedJwtException, ExpiredJwtException, SignatureException 등
-                logger.warn("Invalid JWT Token: ", e); // 로그를 남겨서 디버깅에 활용
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 응답
-                return; // 필터 체인 중단
-            }
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            System.out.println("⚙️ OPTIONS 요청 → 인증 필터 통과");
+//            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
         }
 
+
+        // 필터 제외 경로 설정 (swagger, 로그인 등)
+        String uri = request.getRequestURI();
+        if (!uri.startsWith("/api/") ||
+                uri.startsWith("/oauth2/authorization") ||
+                uri.startsWith("/login/oauth2/code") ||
+                List.of("/api/auth/login", "/api/auth/register").contains(uri)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        Rq.AuthTokens authTokens = rq.getAuthTokensFromRequest();
+        if (authTokens == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 인증 시도
+        Optional.ofNullable(rq.getUserByAccessToken(authTokens.accessToken()))
+                .or(() -> {
+                    System.out.println("⚠️ AccessToken 유효하지 않음 → RefreshToken으로 재시도");
+                    return Optional.ofNullable(rq.refreshAccessTokenByRefreshToken(authTokens.refreshToken()));
+                })
+                .ifPresentOrElse(
+                        rq::setLogin,
+                        () -> System.out.println("❌ 인증 실패 → SecurityContext 미등록")
+                );
+
         filterChain.doFilter(request, response);
+
     }
 }

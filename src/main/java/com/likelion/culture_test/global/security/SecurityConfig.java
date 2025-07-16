@@ -7,6 +7,7 @@ import com.likelion.culture_test.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,21 +27,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CustomAuthenticationFilter customAuthenticationFilter;
     private final CustomOAuth2AuthenticationSuccessHandler customOauth2AuthenticationSuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(jwtUtil, userRepository);
+//        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(jwtUtil, userRepository);
+
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) //cors 설정
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+                .cors(cors -> cors.configurationSource(request -> {
+                    System.out.println("🌐 CORS 요청 감지됨! " + request.getMethod() + " " + request.getRequestURI());
+                    return corsConfigurationSource().getCorsConfiguration(request);
+                }));
+        http
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource())) //cors 설정
+                .csrf(csrf -> csrf.disable())
+//                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/v3/api-docs/**","/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -50,7 +57,8 @@ public class SecurityConfig {
                         .successHandler(customOauth2AuthenticationSuccessHandler)
                 );
 
-        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+        //jwt 필터 등록
+        http.addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -59,9 +67,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "https://heun0.site",
-                "https://www.heun0.site"
+                "http://localhost:8090",
+                "http://localhost:5173",
+                "https://www.survey.heun0.site",
+                "https://api.heun0.site"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
