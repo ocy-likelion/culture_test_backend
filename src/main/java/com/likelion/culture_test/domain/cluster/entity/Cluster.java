@@ -25,6 +25,12 @@ public class Cluster extends BaseEntity {
     @Column(length = 20, nullable = false)
     private String name;
 
+    private int label;
+
+    @ElementCollection
+    private List<Double> centroid;
+
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
