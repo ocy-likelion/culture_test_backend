@@ -30,4 +30,9 @@ public class Cluster extends BaseEntity {
 
     @OneToMany(mappedBy = "cluster", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Result> results = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "generation_id", nullable = false)
+    private ClusterGeneration generation;
+
 }
