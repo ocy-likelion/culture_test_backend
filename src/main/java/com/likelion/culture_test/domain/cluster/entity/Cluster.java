@@ -25,9 +25,12 @@ public class Cluster extends BaseEntity {
     @Column(length = 20, nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private int label;
 
     @ElementCollection
+    @CollectionTable(name = "cluster_centroids", joinColumns = @JoinColumn(name = "cluster_id"))
+    @Column(name = "value")
     private List<Double> centroid;
 
 
