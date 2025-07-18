@@ -49,6 +49,9 @@ dependencies {
 
 	implementation ("org.springframework.boot:spring-boot-starter-webflux")
 
+	// cache
+	//implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	//implementation("org.springframework.boot:spring-boot-starter-cache")
 }
 
 tasks.withType<Test> {
