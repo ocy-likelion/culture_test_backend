@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class ClusterGeneration extends BaseEntity {
 
     private String version;
@@ -25,4 +27,5 @@ public class ClusterGeneration extends BaseEntity {
 
     @OneToMany(mappedBy = "generation", cascade = CascadeType.ALL)
     private List<Cluster> clusters = new ArrayList<>();
+    //ccc
 }
