@@ -37,6 +37,7 @@ public enum ErrorCode {
   INVALID_DISPLAY_ORDER(HttpStatus.BAD_REQUEST, "잘못된 설문 문항 번호 값입니다."),
 
   RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "설문 결과를 찾을 수 없습니다."),
+  USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
 
 
   //OAuth2 관련 에러

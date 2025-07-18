@@ -29,7 +29,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("🔥 CustomAuthenticationFilter 실행됨! URI = " + request.getMethod() + " " + request.getRequestURI());
+//        System.out.println("🔥 CustomAuthenticationFilter 실행됨! URI = " + request.getMethod() + " " + request.getRequestURI());
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             System.out.println("⚙️ OPTIONS 요청 → 인증 필터 통과");

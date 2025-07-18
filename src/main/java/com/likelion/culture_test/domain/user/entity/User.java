@@ -35,6 +35,10 @@ public class User extends BaseEntity {
     @Column(name = "refresh_token", unique = true)
     private String refreshToken;
 
+    @Builder.Default
+    @Column(name = "agreed_to_privacy_policy")
+    private boolean agreedToPrivacyPolicy = false;
+
 
 
 
