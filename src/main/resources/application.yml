@@ -18,7 +18,30 @@ spring:
         format_sql: true
         highlight_sql: true
         use_sql_comments: true
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
 
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: "${KAKAO_CLIENT_ID}"
+            scope:
+              - profile_nickname
+              - profile_image
+            client-name: Kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 
 logging:
   level:

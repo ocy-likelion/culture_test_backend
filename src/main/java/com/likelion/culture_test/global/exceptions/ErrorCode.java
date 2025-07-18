@@ -36,7 +36,12 @@ public enum ErrorCode {
 
   INVALID_DISPLAY_ORDER(HttpStatus.BAD_REQUEST, "잘못된 설문 문항 번호 값입니다."),
 
-  RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "설문 결과를 찾을 수 없습니다.");
+  RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "설문 결과를 찾을 수 없습니다."),
+  USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
+
+
+  //OAuth2 관련 에러
+  OAUTH_REDIRECT_URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "리다이렉트 URL(state 파라미터)이 존재하지 않습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;

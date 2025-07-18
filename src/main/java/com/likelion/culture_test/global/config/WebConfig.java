@@ -13,22 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${fastapi.base-url}")
     private String fastApiBaseUrl;
 
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-      registry.addMapping("/**")
-          .allowedOrigins(
-              "http://localhost:5173",
-              "https://www.survey.heun0.site",
-              "https://api.heun0.site"
-          )
-          .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-          .allowedHeaders("*")
-          .allowCredentials(true)
-          .maxAge(3600);
-    }
-
-
     @Bean
     public WebClient webClient() {
         return WebClient.builder()
