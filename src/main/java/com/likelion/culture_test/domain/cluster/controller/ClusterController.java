@@ -22,9 +22,12 @@ public class ClusterController {
 
     @PostMapping("/result")
     public ResponseEntity<Void> receiveClusteredResult(@RequestBody ClusterResponseDto responseDto){
+        System.out.println("==== 컨트롤러 진입 확인 ====");
         log.info("클러스터링 상태: {}", responseDto.getStatus());
         log.info("라벨 수: {}", responseDto.getResult().getLabels().size());
+        log.info("라벨 : {}", responseDto.getResult().getLabels());
         log.info("군집 중심점 개수: {}", responseDto.getResult().getCentroids().size());
+        log.info("군집 중심점: {}", responseDto.getResult().getCentroids());
         log.info("보낸 벡터 데이터들 처리 후 다시 받아오기?");
         clusterService.saveClustered(responseDto);
         return ResponseEntity.ok().build();

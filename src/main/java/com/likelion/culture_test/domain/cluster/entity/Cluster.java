@@ -30,7 +30,7 @@ public class Cluster extends BaseEntity {
 
     @ElementCollection
     @CollectionTable(name = "cluster_centroids", joinColumns = @JoinColumn(name = "cluster_id"))
-    @Column(name = "value")
+    @Column(name = "centroid_value")
     private List<Double> centroid;
 
 

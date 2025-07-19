@@ -20,13 +20,12 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ClusterService {
 
-    //private final ClusterGeneration clusterGeneration;
-    //private final Cluster cluster;
+
     private final ClusterRepository clusterRepository;
     private final ClusterGenerationRepository clusterGenerationRepository;
-    //private final Result result;
     private final ResultRepository resultRepository;
 
+    @Transactional
     public void saveClustered(ClusterResponseDto dto){
 
 //        List<Integer> labels = dto.getResult().getLabels();
@@ -62,6 +61,7 @@ public class ClusterService {
         }
         log.info("클러스터끝");
 
+
         // 라벨과 Result 매칭 (예: 가장 최근 Result들 순서대로)
 //        List<Result> results = resultRepository.findAllByLatestSomeLogic(); // 가장 최근 것 5개 등
 //
@@ -73,6 +73,25 @@ public class ClusterService {
 //            result.setCluster(cluster);
 //            resultRepository.save(result);
 //        }
+
+        List<Result> results = resultRepository.findAllByOrderByIdAsc(); // 또는 createdAt 기준 정렬도 가능
+
+        int N = dto.getResult().getLabels().size();
+        if (results.size() < N) {
+            throw new IllegalStateException("저장된 결과 수가 라벨 수보다 적습니다.");
+        }
+
+        List<Result> recentResults = results.subList(results.size() - N, results.size()); // 끝 N개 자르기
+
+        for (int i = 0; i < N; i++) {
+            int label = dto.getResult().getLabels().get(i);
+            Cluster cluster = savedClusters.get(label);
+
+            Result result = recentResults.get(i);
+            result.setCluster(cluster);
+            resultRepository.save(result);
+        }
+
 
     }
 
