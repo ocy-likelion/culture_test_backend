@@ -1,6 +1,7 @@
 package com.likelion.culture_test.domain.cluster.service;
 
 import com.likelion.culture_test.domain.cluster.dto.ClusterResponseDto;
+import com.likelion.culture_test.domain.cluster.entity.Centroid;
 import com.likelion.culture_test.domain.cluster.entity.Cluster;
 import com.likelion.culture_test.domain.cluster.entity.ClusterGeneration;
 import com.likelion.culture_test.domain.cluster.repository.ClusterGenerationRepository;
@@ -52,10 +53,16 @@ public class ClusterService {
             Cluster cluster = Cluster.builder()
                     .label(label)
                     .name("Cluster_" + label)
-                    .centroid(centroid) // List<Double>
+                    //.centroids(centroid) // List<Double>
                     .generation(generation)
                     .description("설명 없음")
                     .build();
+
+            List<Centroid> centroidEntities = centroid.stream()
+                    .map(val -> Centroid.builder().value(val).cluster(cluster).build())
+                    .toList();
+
+            cluster.setCentroids(centroidEntities);
 
             savedClusters.add(clusterRepository.save(cluster));
         }

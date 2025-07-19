@@ -28,10 +28,14 @@ public class Cluster extends BaseEntity {
     @Column(nullable = false)
     private int label;
 
-    @ElementCollection
-    @CollectionTable(name = "cluster_centroids", joinColumns = @JoinColumn(name = "cluster_id"))
-    @Column(name = "centroid_value")
-    private List<Double> centroid;
+//    @ElementCollection
+//    @CollectionTable(name = "cluster_centroids", joinColumns = @JoinColumn(name = "cluster_id"))
+//    @Column(name = "centroid_value")
+//    private List<Double> centroid;
+
+    @OneToMany(mappedBy = "cluster", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Centroid> centroids = new ArrayList<>();
+
 
 
     @Column(columnDefinition = "TEXT")
