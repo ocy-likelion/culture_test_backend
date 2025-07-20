@@ -1,5 +1,6 @@
 package com.likelion.culture_test.domain.cluster.entity;
 
+import com.likelion.culture_test.domain.survey.enums.Category;
 import com.likelion.culture_test.global.jpa.BaseEntity;
 
 import jakarta.persistence.*;
@@ -20,4 +21,9 @@ public class Centroid extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cluster_id", nullable = false)
     private Cluster cluster;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false)
+    private Category category;
+
 }

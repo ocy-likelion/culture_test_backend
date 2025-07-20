@@ -7,14 +7,22 @@ import com.likelion.culture_test.domain.cluster.entity.ClusterGeneration;
 import com.likelion.culture_test.domain.cluster.repository.ClusterGenerationRepository;
 import com.likelion.culture_test.domain.cluster.repository.ClusterRepository;
 import com.likelion.culture_test.domain.result.entity.Result;
+import com.likelion.culture_test.domain.result.enums.ResultType;
 import com.likelion.culture_test.domain.result.repository.ResultRepository;
+import com.likelion.culture_test.domain.survey.enums.Category;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import com.likelion.culture_test.domain.cluster.classfier.ResultTypeResolver;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -58,11 +66,41 @@ public class ClusterService {
                     .description("설명 없음")
                     .build();
 
-            List<Centroid> centroidEntities = centroid.stream()
-                    .map(val -> Centroid.builder().value(val).cluster(cluster).build())
-                    .toList();
+            List<Category> categories = List.of(
+                    Category.WORK_CAPABILITY,
+                    Category.CONFLICT_RESOLUTION,
+                    Category.PERSONALITY_PREFERENCE,
+                    Category.EVALUATION_CRITERIA
+            );
+
+            List<Centroid> centroidEntities = IntStream.range(0, centroid.size())
+                    .mapToObj(i -> Centroid.builder()
+                            .value(centroid.get(i))
+                            .category(categories.get(i))
+                            .cluster(cluster)
+                            .build())
+                    .collect(Collectors.toList());
 
             cluster.setCentroids(centroidEntities);
+
+            // 1. 벡터 추출 (Centroid 값 4개)
+            List<Double> vector = cluster.getCentroids().stream()
+                    .filter(c -> c.getId() != null && c.getValue() != null)
+                    .sorted(Comparator.comparing(Centroid::getId)) // 또는 category가 있다면 그것으로 정렬
+                    .map(Centroid::getValue)
+                    .collect(Collectors.toList());
+
+            // 2. 값 중 하나라도 0이 있는지 체크
+            if (vector.stream().anyMatch(v -> v == 0.0)) {
+                cluster.setDescription("설명 없음"); // 또는 "미확정"
+            } else {
+                // 3. 값 기준으로 대소문자 문자열 만들고
+                ResultType resultType = ResultTypeResolver.resolveResultType(centroidEntities);
+
+                // 4. 해당 결과에 맞는 description 적용
+                cluster.setDescription(resultType.getDescription());
+            }
+
 
             savedClusters.add(clusterRepository.save(cluster));
         }
@@ -80,6 +118,8 @@ public class ClusterService {
 //            result.setCluster(cluster);
 //            resultRepository.save(result);
 //        }
+
+
 
         List<Result> results = resultRepository.findAllByOrderByIdAsc(); // 또는 createdAt 기준 정렬도 가능
 

@@ -255,7 +255,7 @@ public class ResultService {
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
         if (resOpt.isEmpty()){
-            return new AnalysisResponseDto(ResultType.not_yet, "pending", List.of());
+            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "pending", List.of());
         }
 
         Result latest = resOpt.get();
@@ -335,7 +335,7 @@ public class ResultService {
 //            );
 //        }
 
-        return new AnalysisResponseDto(resultType, "done", items);
+        return new AnalysisResponseDto(resultType.getDescription(), "done", items);
     }
 
 
