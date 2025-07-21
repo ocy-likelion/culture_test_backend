@@ -1,5 +1,10 @@
 package com.likelion.culture_test.global.util;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -77,4 +82,17 @@ public class JwtUtil {
             return false;
         }
     }
+
+    public Long validateTokenAndGetUserId(String token) {
+        try {
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secret))
+                    .build()
+                    .verify(token);
+
+            return Long.valueOf(decodedJWT.getSubject());
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+    }
+
 }

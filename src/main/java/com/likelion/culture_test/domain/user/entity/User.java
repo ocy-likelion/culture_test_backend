@@ -36,8 +36,8 @@ public class User extends BaseEntity {
     private String refreshToken;
 
     @Builder.Default
-    @Column(name = "agreed_to_privacy_policy")
-    private boolean agreedToPrivacyPolicy = false;
+    @Column(name = "has_agreed_terms")
+    private boolean hasAgreedTerms = false;
 
 
 
