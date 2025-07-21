@@ -39,6 +39,8 @@ public enum ErrorCode {
   RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "설문 결과를 찾을 수 없습니다."),
   USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
 
+  //인증인가 관련 에러
+  INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
 
   //OAuth2 관련 에러
   OAUTH_REDIRECT_URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "리다이렉트 URL(state 파라미터)이 존재하지 않습니다.");
