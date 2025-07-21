@@ -41,8 +41,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                        .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/v3/api-docs/**","/h2-console/**").permitAll()
+
+                        .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/v3/api-docs/**","/h2-console/**", "/api/v1/cluster/result").permitAll()
                         .anyRequest().permitAll()
+
                 )
                 .oauth2Login(oauth2 -> oauth2 //소셜 로그인 설정
                         .authorizationEndpoint(endpoint -> endpoint
