@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -132,6 +133,55 @@ public class ClusterService {
         }
 
 
+    }
+
+    private static final List<Category> orderedCategories = List.of(
+            Category.WORK_CAPABILITY,
+            Category.CONFLICT_RESOLUTION,
+            Category.PERSONALITY_PREFERENCE,
+            Category.EVALUATION_CRITERIA
+    );
+
+    public Cluster findMostSimilarClusterFromLatestGeneration(Map<Category, Double> categoryScores) {
+        ClusterGeneration latestGen = clusterGenerationRepository.findTopByOrderByIdDesc()
+                .orElseThrow(() -> new CustomException(ErrorCode.CLUSTER_GENERATION_NOT_FOUND));
+
+        List<Cluster> clusters = clusterRepository.findByGeneration(latestGen);
+
+        double[] userVector = orderedCategories.stream()
+                .mapToDouble(cat -> categoryScores.getOrDefault(cat, 0.0))
+                .toArray();
+
+        Cluster mostSimilar = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (Cluster cluster : clusters) {
+            List<Double> center = extractCenterVector(cluster); // 반드시 4개 실수값
+            double distance = 0.0;
+            for (int i = 0; i < center.size(); i++) {
+                distance += Math.pow(userVector[i] - center.get(i), 2);
+            }
+            distance = Math.sqrt(distance);
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                mostSimilar = cluster;
+            }
+        }
+
+        return mostSimilar;
+    }
+
+    public static List<Double> extractCenterVector(Cluster cluster) {
+        Map<Category, Double> centroidMap = cluster.getCentroids().stream()
+                .collect(Collectors.toMap(
+                        Centroid::getCategory,
+                        Centroid::getValue
+                ));
+
+        return orderedCategories.stream()
+                .map(cat -> centroidMap.getOrDefault(cat, 0.0)) // 값 없으면 기본값 0.0
+                .collect(Collectors.toList());
     }
 
 

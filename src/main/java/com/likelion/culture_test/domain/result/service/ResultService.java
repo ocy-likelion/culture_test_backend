@@ -1,6 +1,7 @@
 package com.likelion.culture_test.domain.result.service;
 
 import com.likelion.culture_test.domain.cluster.entity.Cluster;
+import com.likelion.culture_test.domain.cluster.service.ClusterService;
 import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.entity.Result;
 import com.likelion.culture_test.domain.result.entity.ResultDetail;
@@ -36,6 +37,7 @@ public class ResultService {
     private final ResultRepository resultRepository;
     private final ResultDetailRepository resultDetailRepository;
     private final WebClient webClient;
+    private final ClusterService clusterService;
 
     @Transactional
     public void processSurveyResult(ResultRequestDto dto) {
@@ -251,6 +253,7 @@ public class ResultService {
 
     }
 
+    @Transactional
     public AnalysisResponseDto getLatestCategoryScores(Long userId, Long surveyId) {
         Optional<Result> resOpt = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId);
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
@@ -301,13 +304,14 @@ public class ResultService {
         }
 
 
-        Cluster cluster = latest.getCluster();
+        Cluster cluster = clusterService.findMostSimilarClusterFromLatestGeneration(avgByCategory);
         String description = (cluster != null && cluster.getDescription() != null)
                 ? cluster.getDescription()
                 : ResultType.not_yet.getDescription();
 
 
-
+        latest.setCluster(cluster);
+        resultRepository.save(latest);
 
 
         return new AnalysisResponseDto(description, "done", items);

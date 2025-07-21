@@ -26,7 +26,7 @@ public class ResultTypeResolver {
             double value = centroids.get(idx).getValue();
 
             if (value == 0.0) {
-                return ResultType.not_yet;
+                return ResultType.zero;
             }
 
             // 순서에 따라 알파벳 결정
