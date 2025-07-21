@@ -3,10 +3,7 @@ package com.likelion.culture_test.domain.cluster.entity;
 import com.likelion.culture_test.domain.result.entity.Result;
 import com.likelion.culture_test.global.jpa.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -47,5 +44,13 @@ public class Cluster extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "generation_id", nullable = false)
     private ClusterGeneration generation;
+
+    @Override
+    public String toString() {
+        return "Cluster{" +
+                ", label=" + label +
+                ", description='" + description + '\'' +
+                '}';
+    }
 
 }

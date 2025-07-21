@@ -256,7 +256,7 @@ public class ResultService {
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
         if (resOpt.isEmpty()){
-            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "pending", List.of());
+            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of());
         }
 
 
@@ -288,14 +288,7 @@ public class ResultService {
             String leftType = TraitLabelUtils.getPositiveLabel(cat);
             String rightType = TraitLabelUtils.getNegativeLabel(cat);
 
-            //TraitSideDto leftSide, rightSide;
-//            if (score >= 0) {                // +쪽(positive)이 우세
-//                leftSide  = new TraitSideDto(positiveLabel, positive);
-//                rightSide = new TraitSideDto(negativeLabel, negative);
-//            } else {                         // -쪽(negative)이 우세
-//                leftSide  = new TraitSideDto(negativeLabel, negative);
-//                rightSide = new TraitSideDto(positiveLabel, positive);
-//            }
+
 
             items.add(new TraitItemDto(
                     cat.getDescription(),
@@ -303,18 +296,11 @@ public class ResultService {
                     new TraitSideDto(rightType, rightScore)
             ));
 
-//            double parseLeft = Double.parseDouble(leftType);
-//            double parseRight = Double.parseDouble(rightType);
-//
 
-//            if(parseLeft > parseRight && ){
-//                resultType = ResultType.ABCD;
-//
-//            }
 
         }
 
-        //ResultType resultType = decideResultType(items);
+
         Cluster cluster = latest.getCluster();
         String description = (cluster != null && cluster.getDescription() != null)
                 ? cluster.getDescription()
@@ -322,26 +308,7 @@ public class ResultService {
 
 
 
-//        Map<String, TraitScoreDto> resultMap = new HashMap<>();
-//
-//        for (Map.Entry<Category, Double> entry : avgByCategory.entrySet()) {
-//            Category category = entry.getKey();
-//            double score = entry.getValue();
-//
-//            double positivePercent = (score + 2) / 4 * 100;
-//            double negativePercent = 100 - positivePercent;
-//
-//            resultMap.put(
-//                    category.name(),
-//                    new TraitScoreDto(
-//                            TraitLabelUtils.getPositiveLabel(category),
-//                            TraitLabelUtils.getNegativeLabel(category),
-//                            Math.round(positivePercent * 10) / 10.0,
-//                            Math.round(negativePercent * 10) / 10.0,
-//                            score
-//                    )
-//            );
-//        }
+
 
         return new AnalysisResponseDto(description, "done", items);
     }

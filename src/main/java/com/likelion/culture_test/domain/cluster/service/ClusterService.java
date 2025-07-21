@@ -10,6 +10,8 @@ import com.likelion.culture_test.domain.result.entity.Result;
 import com.likelion.culture_test.domain.result.enums.ResultType;
 import com.likelion.culture_test.domain.result.repository.ResultRepository;
 import com.likelion.culture_test.domain.survey.enums.Category;
+import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,7 +46,7 @@ public class ClusterService {
 //                new ClusterGeneration("v1", dto.getResult().getCentroids().size(), "KMeans 결과")
 //        );
 
-        log.info("클러스터어쩌고");
+
         ClusterGeneration generation = ClusterGeneration.builder()
                 .version("v1")
                 .clusterCount(dto.getResult().getCentroids().size())
@@ -63,7 +65,7 @@ public class ClusterService {
                     .name("Cluster_" + label)
                     //.centroids(centroid) // List<Double>
                     .generation(generation)
-                    .description("설명 없음")
+                    .description("아직 설명 없음")
                     .build();
 
             List<Category> categories = List.of(
@@ -104,20 +106,10 @@ public class ClusterService {
 
             savedClusters.add(clusterRepository.save(cluster));
         }
-        log.info("클러스터끝");
 
 
-        // 라벨과 Result 매칭 (예: 가장 최근 Result들 순서대로)
-//        List<Result> results = resultRepository.findAllByLatestSomeLogic(); // 가장 최근 것 5개 등
-//
-//        for (int i = 0; i < results.size(); i++) {
-//            int label = dto.getResult().getLabels().get(i);
-//            Cluster cluster = savedClusters.get(label);
-//
-//            Result result = results.get(i);
-//            result.setCluster(cluster);
-//            resultRepository.save(result);
-//        }
+
+
 
 
 
@@ -125,7 +117,7 @@ public class ClusterService {
 
         int N = dto.getResult().getLabels().size();
         if (results.size() < N) {
-            throw new IllegalStateException("저장된 결과 수가 라벨 수보다 적습니다.");
+            throw new CustomException(ErrorCode.RESULT_LABEL_COUNT_MISMATCH);
         }
 
         List<Result> recentResults = results.subList(results.size() - N, results.size()); // 끝 N개 자르기

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+
 @Entity
 @Getter
 @Setter
@@ -25,5 +26,14 @@ public class Centroid extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private Category category;
+
+    @Override
+    public String toString() {
+        return "Centroid{" +
+
+                ", category='" + category + '\'' +
+                ", valueColumn=" + value +
+                '}';
+    }
 
 }

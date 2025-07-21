@@ -28,7 +28,7 @@ public enum ResultType {
 //    AbcD_m("균형조율형"),
 //    aBCd_s("도전혁신형"),
 //    aBCd_m("성장유연형"),
-    not_yet("미확정");
+    not_yet("미확정(중심값 중 하나 이상 0인 값이 있는 등의 문제)");
 // AbcD-s
 //AbcD-m
 //aBCd-s
