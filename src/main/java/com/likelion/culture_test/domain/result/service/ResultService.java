@@ -1,5 +1,6 @@
 package com.likelion.culture_test.domain.result.service;
 
+import com.likelion.culture_test.domain.cluster.entity.Cluster;
 import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.entity.Result;
 import com.likelion.culture_test.domain.result.entity.ResultDetail;
@@ -258,6 +259,8 @@ public class ResultService {
             return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "pending", List.of());
         }
 
+
+
         Result latest = resOpt.get();
 
 
@@ -311,7 +314,12 @@ public class ResultService {
 
         }
 
-        ResultType resultType = decideResultType(items);
+        //ResultType resultType = decideResultType(items);
+        Cluster cluster = latest.getCluster();
+        String description = (cluster != null && cluster.getDescription() != null)
+                ? cluster.getDescription()
+                : ResultType.not_yet.getDescription();
+
 
 
 //        Map<String, TraitScoreDto> resultMap = new HashMap<>();
@@ -335,7 +343,7 @@ public class ResultService {
 //            );
 //        }
 
-        return new AnalysisResponseDto(resultType.getDescription(), "done", items);
+        return new AnalysisResponseDto(description, "done", items);
     }
 
 
