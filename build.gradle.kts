@@ -52,6 +52,8 @@ dependencies {
 	implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.11.5") // JSON 파싱용
+	implementation ("com.auth0:java-jwt:4.4.0")
+
 
 
 	//Oauth2
@@ -59,7 +61,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client") // 소셜 로그인
 	implementation ("org.springframework.boot:spring-boot-starter-webflux")
 
-
+	// cache
+	//implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	//implementation("org.springframework.boot:spring-boot-starter-cache")
 }
 
 tasks.withType<Test> {

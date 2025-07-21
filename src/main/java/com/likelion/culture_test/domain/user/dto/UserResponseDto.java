@@ -18,6 +18,7 @@ public class UserResponseDto {
     private String profileImageUrl;
     private UserRole role;
     private SsoProvider ssoProvider;
+    private boolean hasAgreedTerms;
 
     public static UserResponseDto fromEntity(User user) {
         return UserResponseDto.builder()
@@ -26,6 +27,7 @@ public class UserResponseDto {
                 .profileImageUrl(user.getProfileImageUrl())
                 .role(user.getRole())
                 .ssoProvider(user.getSsoProvider())
+                .hasAgreedTerms(user.isHasAgreedTerms())
                 .build();
     }
 }

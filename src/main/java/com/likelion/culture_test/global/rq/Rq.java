@@ -2,12 +2,15 @@ package com.likelion.culture_test.global.rq;
 
 import com.likelion.culture_test.domain.user.entity.User;
 import com.likelion.culture_test.domain.user.repository.UserRepository;
+import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
 import com.likelion.culture_test.global.security.SecurityUser;
 import com.likelion.culture_test.global.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +19,8 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Arrays;
 import java.util.Optional;
+
+import static com.likelion.culture_test.global.exceptions.ErrorCode.USER_NOT_FOUND;
 
 @Component
 @RequestScope
@@ -110,30 +115,6 @@ public class Rq {
         return new AuthTokens(refreshToken, accessToken);
     }
 
-
-//    //로그 찍어서 확인
-//    public User getUserByAccessToken(String accessToken) {
-//        System.out.println("🔑 accessToken 확인: " + accessToken);
-//
-//        boolean valid = jwtUtil.validateToken(accessToken);
-//        System.out.println("✅ accessToken 유효함? " + valid);
-//
-//        if (accessToken == null || !valid) return null;
-//
-//        Long userId = jwtUtil.getUserId(accessToken);
-//        System.out.println("👤 AccessToken → userId: " + userId);
-//
-//        return userRepository.findById(userId)
-//                .map(user -> {
-//                    System.out.println("✅ DB에서 user 조회 성공: " + user.getNickname());
-//                    return user;
-//                })
-//                .orElseGet(() -> {
-//                    System.out.println("❌ userId에 해당하는 유저 없음");
-//                    return null;
-//                });
-//    }
-
     public User getUserByAccessToken(String accessToken) {
         if (accessToken == null || !jwtUtil.validateToken(accessToken)) return null;
 
@@ -155,38 +136,74 @@ public class Rq {
 
         return user;
     }
-//    //로그 찍어서 확인
-//    public User refreshAccessTokenByRefreshToken(String refreshToken) {
-//
-//
-//        System.out.println("🔁 refreshToken 시도: " + refreshToken);
-//        boolean valid = jwtUtil.validateToken(refreshToken);
-//        System.out.println("✅ refreshToken 유효함? " + valid);
-//        if (!valid) return null;
-//
-//
-//        if (refreshToken == null || !jwtUtil.validateToken(refreshToken)) return null;
-//
-//        Long userId = jwtUtil.getUserId(refreshToken);
-//        System.out.println("👤 refreshToken → userId = " + userId);
-//        User user = userRepository.findById(userId).orElse(null);
-//        if (user == null) {
-//            System.out.println("❌ 해당 user 없음");
-//            return null;
-//        }
-//
-//        if (!refreshToken.equals(user.getRefreshToken())) {
-//            System.out.println("❌ DB 저장된 refreshToken과 일치하지 않음");
-//            return null;
-//        }
-//
-//        if (user == null || !refreshToken.equals(user.getRefreshToken())) return null;
-//
-//        // 새 AccessToken 발급
-//        String newAccessToken = jwtUtil.generateAccessToken(userId);
-//        System.out.println("✅ refresh 성공 → AccessToken 재발급");
-//        setCookie("accessToken", newAccessToken, false, 60 * 30); // 갱신된 accessToken 쿠키로
-//
-//        return user;
-//    }
+
+    private String extractAccessToken() {
+        String bearerToken = request.getHeader("Authorization");
+        System.out.println(">>> Authorization 헤더: " + bearerToken);
+
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            System.out.println(">>> Authorization에서 추출 성공");
+            return bearerToken.substring(7);
+        }
+
+        Cookie[] cookies = request.getCookies();
+        System.out.println(">>> 쿠키 배열: " + Arrays.toString(cookies));
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                System.out.println(">>> 쿠키 이름: " + cookie.getName() + ", 값: " + cookie.getValue());
+                if (cookie.getName().equals("accessToken")) {
+                    System.out.println(">>> accessToken 쿠키에서 추출 성공");
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        // 3. 실패 로그
+        System.out.println(">>> accessToken 추출 실패");
+        return null;
+    }
+
+    public Long getUserIdFromToken() {
+        String token = extractAccessToken();
+
+        if (token == null || token.isBlank()) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+
+        return jwtUtil.validateTokenAndGetUserId(token);
+    }
+
+
+
+
+    public User getUser() {
+        Long userId = getUserIdFromToken(); // 예: JWT에서 추출
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+    }
+
+
+    //리프레쉬 토큰 제거
+    public void removeRefreshToken() {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+                .path("/")
+                .httpOnly(true)
+                .maxAge(0)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+    }
+
+    //어세스 토큰 제거
+    public void removeAccessToken() {
+        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+                .path("/")
+                .httpOnly(true)
+                .maxAge(0)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+    }
+
 }

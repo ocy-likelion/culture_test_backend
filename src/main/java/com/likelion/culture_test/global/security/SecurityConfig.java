@@ -2,15 +2,12 @@ package com.likelion.culture_test.global.security;
 
 
 
-import com.likelion.culture_test.domain.user.repository.UserRepository;
-import com.likelion.culture_test.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
@@ -44,8 +41,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+
                         .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/v3/api-docs/**","/h2-console/**", "/api/v1/cluster/result").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+
                 )
                 .oauth2Login(oauth2 -> oauth2 //소셜 로그인 설정
                         .authorizationEndpoint(endpoint -> endpoint

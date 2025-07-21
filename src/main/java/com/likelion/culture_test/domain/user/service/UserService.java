@@ -42,12 +42,26 @@ public class UserService {
     }
 
 
-    // Service
+    @Transactional
     public void logout(String accessToken) {
         Long userId = jwtUtil.getUserId(accessToken);
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
         user.setRefreshToken(null);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void withdraw(User user) {
+        userRepository.delete(user);
+    }
+
+
+    @Transactional
+    public void agreeToTerms() {
+        User user = rq.getUser();
+        if (!user.isHasAgreedTerms()) {
+            user.setHasAgreedTerms(true);
+        }
     }
 
 
