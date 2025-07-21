@@ -61,7 +61,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client") // 소셜 로그인
 	implementation ("org.springframework.boot:spring-boot-starter-webflux")
 
-
+	// cache
+	//implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	//implementation("org.springframework.boot:spring-boot-starter-cache")
 }
 
 tasks.withType<Test> {

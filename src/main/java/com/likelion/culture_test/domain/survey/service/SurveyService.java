@@ -33,6 +33,7 @@ public class SurveyService {
   private final QuestionService questionService;
 
 
+  //@Cacheable(value = "surveys", key = "'main_survey_' + #pageable.pageNumber + '_' + #pageable.pageSize")
   public Page<SurveyQuestionResponse> getMainSurvey(Pageable pageable) {
     Survey survey = surveyRepository.findByIsMain(true)
         .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
