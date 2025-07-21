@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Tag(name = "OAuth API", description = "소셜 로그인 API")
 @RestController
 @RequiredArgsConstructor
@@ -58,6 +60,14 @@ public class OAuth2UserController {
         rq.removeRefreshToken(); // 쿠키 제거
         rq.removeAccessToken();
         return RsData.of("200", "회원 탈퇴가 완료되었습니다.");
+    }
+
+    @PatchMapping("/agree-terms")
+    @Operation(summary = "약관 동의", description = "유저가 약관에 동의한 상태로 업데이트합니다.")
+    @SecurityRequirement(name = "BearerAuth")
+    public ResponseEntity<Map<String, String>> agreeTerms() {
+        userService.agreeToTerms();
+        return ResponseEntity.ok(Map.of("message", "약관에 동의 완료되었습니다."));
     }
 
 }
