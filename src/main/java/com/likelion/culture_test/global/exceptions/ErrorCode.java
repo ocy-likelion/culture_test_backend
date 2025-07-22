@@ -39,9 +39,14 @@ public enum ErrorCode {
   RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "설문 결과를 찾을 수 없습니다."),
   USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
 
+  //인증인가 관련 에러
+  INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
 
   //OAuth2 관련 에러
-  OAUTH_REDIRECT_URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "리다이렉트 URL(state 파라미터)이 존재하지 않습니다.");
+  OAUTH_REDIRECT_URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "리다이렉트 URL(state 파라미터)이 존재하지 않습니다."),
+
+  RESULT_LABEL_COUNT_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, "저장된 결과 수가 라벨 수보다 적습니다."),
+  CLUSTER_GENERATION_NOT_FOUND(HttpStatus.NOT_FOUND, "클러스터 세대 정보를 찾을 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;

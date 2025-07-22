@@ -3,6 +3,7 @@ package com.likelion.culture_test.domain.user.controller;
 import com.likelion.culture_test.domain.user.dto.UserResponseDto;
 import com.likelion.culture_test.domain.user.service.UserService;
 import com.likelion.culture_test.global.rq.Rq;
+import com.likelion.culture_test.global.rsData.RsData;
 import com.likelion.culture_test.global.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Tag(name = "OAuth API", description = "소셜 로그인 API")
 @RestController
@@ -33,7 +36,6 @@ public class OAuth2UserController {
 
     @Operation(summary = "로그아웃", description = "로그인한 사용자를 로그아웃 처리합니다.")
     @SecurityRequirement(name = "BearerAuth")
-    // Controller
     @PostMapping("/logout")
     public ResponseEntity<String> logout() {
         Rq.AuthTokens tokens = rq.getAuthTokensFromRequest();
@@ -49,6 +51,23 @@ public class OAuth2UserController {
         SecurityContextHolder.clearContext();
 
         return ResponseEntity.ok("로그아웃 성공");
+    }
+
+    @DeleteMapping("/withdraw")
+    @Operation(summary = "회원 탈퇴")
+    public RsData<String> withdraw() {
+        userService.withdraw(rq.getUser());
+        rq.removeRefreshToken(); // 쿠키 제거
+        rq.removeAccessToken();
+        return RsData.of("200", "회원 탈퇴가 완료되었습니다.");
+    }
+
+    @PatchMapping("/agree-terms")
+    @Operation(summary = "약관 동의", description = "유저가 약관에 동의한 상태로 업데이트합니다.")
+    @SecurityRequirement(name = "BearerAuth")
+    public ResponseEntity<Map<String, String>> agreeTerms() {
+        userService.agreeToTerms();
+        return ResponseEntity.ok(Map.of("message", "약관에 동의 완료되었습니다."));
     }
 
 }
