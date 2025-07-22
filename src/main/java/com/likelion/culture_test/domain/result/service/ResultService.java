@@ -307,7 +307,7 @@ public class ResultService {
         Cluster cluster = clusterService.findMostSimilarClusterFromLatestGeneration(avgByCategory);
         String description = (cluster != null && cluster.getDescription() != null)
                 ? cluster.getDescription()
-                : ResultType.not_yet.getDescription();
+                : ResultType.not_clusterd.getDescription();
 
 
         latest.setCluster(cluster);
