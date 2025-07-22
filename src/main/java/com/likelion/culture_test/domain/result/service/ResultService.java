@@ -19,6 +19,7 @@ import com.likelion.culture_test.global.util.ScoreUtils;
 import com.likelion.culture_test.global.util.TraitLabelUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -38,6 +39,8 @@ public class ResultService {
     private final ResultDetailRepository resultDetailRepository;
     private final WebClient webClient;
     private final ClusterService clusterService;
+    @Value("${fastapi.base-url}")
+    private String fastApiBaseUrl;
 
     @Transactional
     public void processSurveyResult(ResultRequestDto dto) {
@@ -339,7 +342,7 @@ public class ResultService {
                             .mapToDouble(Double::doubleValue).average().orElse(0.0))
                     .toList();
         }).toList();
-        log.info("보내기 직전 생성된 벡터 수: {}", vectors.size());
+        log.info("보내기 직전 생성된 벡터ㅇㅇㅇㅇㅇㅇ 수: {}", vectors.size());
 
         VectorBatchRequest vectorBatchRequest = new VectorBatchRequest(clusterNum, vectors);
         webClient.post()
@@ -349,6 +352,8 @@ public class ResultService {
                 .bodyToMono(Void.class)
                 .doOnError(e -> log.error("전체 벡터 전송 실패: {}", e.getMessage()))
                 .subscribe();
+        log.info("{}{}", fastApiBaseUrl, "/receive/vector/batch");
+        //.block();
 
     }
 
