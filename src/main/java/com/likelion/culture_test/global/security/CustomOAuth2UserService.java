@@ -47,6 +47,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             socialId = registrationId + "_" + oAuth2User.getName();
             nickname = (String) profile.get("nickname");
             profileImageUrl = (String) profile.get("profile_image_url");
+        }else if (provider == SsoProvider.GOOGLE) {
+            socialId = registrationId + "_" + (String) attributes.get("sub"); // ex: GOOGLE_123456789
+            nickname = (String) attributes.get("name");
+            profileImageUrl = (String) attributes.get("picture");
         }
         final String finalSocialId = socialId;
         final String finalNickname = nickname;
