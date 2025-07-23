@@ -4,6 +4,7 @@ import com.likelion.culture_test.domain.user.dto.UserResponseDto;
 import com.likelion.culture_test.domain.user.entity.User;
 import com.likelion.culture_test.domain.user.repository.UserRepository;
 import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
 import com.likelion.culture_test.global.rq.Rq;
 import com.likelion.culture_test.global.security.SecurityUser;
 import com.likelion.culture_test.global.util.JwtUtil;
@@ -27,16 +28,16 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponseDto getMyInfo() {
-        // 현재 로그인한 사용자 정보 가져오기
-        SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        if(!(principal instanceof SecurityUser securityUser)){
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
 
         Long userId = securityUser.getId();
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
 
         return UserResponseDto.fromEntity(user);
     }
@@ -57,11 +58,12 @@ public class UserService {
 
 
     @Transactional
-    public void agreeToTerms() {
+    public UserResponseDto agreeToTerms() {
         User user = rq.getUser();
         if (!user.isHasAgreedTerms()) {
             user.setHasAgreedTerms(true);
         }
+        return UserResponseDto.fromEntity(user);
     }
 
 

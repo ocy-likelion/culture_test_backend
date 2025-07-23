@@ -22,18 +22,12 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     private final Rq rq;
 
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-//        System.out.println("🔥 CustomAuthenticationFilter 실행됨! URI = " + request.getMethod() + " " + request.getRequestURI());
-
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            System.out.println("⚙️ OPTIONS 요청 → 인증 필터 통과");
-//            filterChain.doFilter(request, response);
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }
