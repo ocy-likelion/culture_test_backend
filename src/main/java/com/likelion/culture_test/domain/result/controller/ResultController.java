@@ -108,6 +108,12 @@ public class ResultController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "특정 유저의 결과 기록들 최신순")
+    @GetMapping("/history/{userId}")
+    public List<ResultHistoryDto> getResultHistory(@PathVariable(name ="userId") Long userId) {
+        return resultService.getResultHistoryByUserId(userId);
+    }
+
 
 
 

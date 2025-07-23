@@ -170,7 +170,7 @@ public class ResultService {
                 .toList();
     }
 
-// 컨트롤러단에서 getmapping으로 분류해놨긴 한데 조회 + 보내는 기능 둘다 있는 메서드라서 혹시몰라일단 붙일게요
+
     @Transactional
     public void sendVectorToFastApi(Long userId, Long surveyId, List<Double> vector) {
         VectorRequestDto requestDto = new VectorRequestDto(userId, surveyId, vector);
@@ -209,7 +209,7 @@ public class ResultService {
 
     public List<CategoryScoreWithCreatedAtDto> getCategoryScoresByCreatedAt(Long userId, Long surveyId) {
         List<Result> results = resultRepository.findByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId);
-
+// 이거를 과거 테스트 내역용으로
         return results.stream().map(result -> {
             List<ResultDetail> details = resultDetailRepository.findByResult(result);
 
@@ -394,6 +394,26 @@ public class ResultService {
 
         return ResultType.valueOf(key); // 반드시 존재, 없으면 예외 → not_yet
     }
+
+    public List<ResultHistoryDto> getResultHistoryByUserId(Long userId) {
+        List<Result> results = resultRepository.findByUserIdOrderByCreatedAtDesc(userId);
+
+        return results.stream()
+                .map(result -> new ResultHistoryDto(
+                        result.getId(),
+                        result.getCluster() != null ? result.getCluster().getDescription() : "군집화 이루어지기 전",
+                        result.getCreatedAt().toLocalDate()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
+
+
+
 
 
 
