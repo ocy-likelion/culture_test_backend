@@ -29,6 +29,7 @@ public class SecurityConfig {
     private final CustomOAuth2AuthenticationSuccessHandler customOauth2AuthenticationSuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final ClientRegistrationRepository clientRegistrationRepository; //OAuth2 클라이언트 설정 정보를 가지고 있음
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,11 +40,14 @@ public class SecurityConfig {
 //                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex->ex
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-
-                        .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/v3/api-docs/**","/h2-console/**", "/api/v1/cluster/result").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/v3/api-docs/**","/h2-console/**").permitAll()
+                                .anyRequest().authenticated()
+//                        .anyRequest().permitAll()
 
                 )
                 .oauth2Login(oauth2 -> oauth2 //소셜 로그인 설정
