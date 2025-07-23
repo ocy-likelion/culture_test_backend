@@ -19,5 +19,8 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
 
     List<Result> findAllByOrderByIdAsc();
 
+    List<Result> findByUserIdOrderByCreatedAtDesc(Long userId);
+
+
 
 }

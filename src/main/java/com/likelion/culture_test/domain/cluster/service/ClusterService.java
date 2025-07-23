@@ -143,33 +143,68 @@ public class ClusterService {
     );
 
     public Cluster findMostSimilarClusterFromLatestGeneration(Map<Category, Double> categoryScores) {
-        ClusterGeneration latestGen = clusterGenerationRepository.findTopByOrderByIdDesc()
-                .orElseThrow(() -> new CustomException(ErrorCode.CLUSTER_GENERATION_NOT_FOUND));
+//        ClusterGeneration latestGen = clusterGenerationRepository.findTopByOrderByIdDesc()
+//                .orElseThrow(() -> new CustomException(ErrorCode.CLUSTER_GENERATION_NOT_FOUND));
+//
+//        List<Cluster> clusters = clusterRepository.findByGeneration(latestGen);
+//
+//        double[] userVector = orderedCategories.stream()
+//                .mapToDouble(cat -> categoryScores.getOrDefault(cat, 0.0))
+//                .toArray();
+//
+//        Cluster mostSimilar = null;
+//        double minDistance = Double.MAX_VALUE;
+//
+//        for (Cluster cluster : clusters) {
+//            List<Double> center = extractCenterVector(cluster); // 반드시 4개 실수값
+//            double distance = 0.0;
+//            for (int i = 0; i < center.size(); i++) {
+//                distance += Math.pow(userVector[i] - center.get(i), 2);
+//            }
+//            distance = Math.sqrt(distance);
+//
+//            if (distance < minDistance) {
+//                minDistance = distance;
+//                mostSimilar = cluster;
+//            }
+//        }
+//
+//        return mostSimilar;
 
-        List<Cluster> clusters = clusterRepository.findByGeneration(latestGen);
+        try {
+            ClusterGeneration latestGen = clusterGenerationRepository.findTopByOrderByIdDesc()
+                    .orElseThrow(() -> new CustomException(ErrorCode.CLUSTER_GENERATION_NOT_FOUND));
 
-        double[] userVector = orderedCategories.stream()
-                .mapToDouble(cat -> categoryScores.getOrDefault(cat, 0.0))
-                .toArray();
+            List<Cluster> clusters = clusterRepository.findByGeneration(latestGen);
 
-        Cluster mostSimilar = null;
-        double minDistance = Double.MAX_VALUE;
+            double[] userVector = orderedCategories.stream()
+                    .mapToDouble(cat -> categoryScores.getOrDefault(cat, 0.0))
+                    .toArray();
 
-        for (Cluster cluster : clusters) {
-            List<Double> center = extractCenterVector(cluster); // 반드시 4개 실수값
-            double distance = 0.0;
-            for (int i = 0; i < center.size(); i++) {
-                distance += Math.pow(userVector[i] - center.get(i), 2);
+            Cluster mostSimilar = null;
+            double minDistance = Double.MAX_VALUE;
+
+            for (Cluster cluster : clusters) {
+                List<Double> center = extractCenterVector(cluster); // 반드시 4개 실수값
+                double distance = 0.0;
+                for (int i = 0; i < center.size(); i++) {
+                    distance += Math.pow(userVector[i] - center.get(i), 2);
+                }
+                distance = Math.sqrt(distance);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    mostSimilar = cluster;
+                }
             }
-            distance = Math.sqrt(distance);
 
-            if (distance < minDistance) {
-                minDistance = distance;
-                mostSimilar = cluster;
-            }
+            return mostSimilar;
         }
+        catch (CustomException e){
+            log.warn("No ClusterGeneration found. Returning null cluster.");
+            return null; // 못찾으면 null 반환
 
-        return mostSimilar;
+        }
     }
 
     public static List<Double> extractCenterVector(Cluster cluster) {
