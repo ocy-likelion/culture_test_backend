@@ -401,11 +401,59 @@ public class ResultService {
         return results.stream()
                 .map(result -> new ResultHistoryDto(
                         result.getId(),
-                        result.getCluster() != null ? result.getCluster().getDescription() : "군집화 이루어지기 전",
+                        result.getCluster() != null ? result.getCluster().getDescription() : ResultType.not_clusterd.getDescription(),
                         result.getCreatedAt().toLocalDate()
                 ))
                 .collect(Collectors.toList());
     }
+
+
+
+    @Transactional
+    public AnalysisResponseDto getCategoryScoresByResultId(Long resultId) {
+        Result result = resultRepository.findById(resultId)
+                .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
+
+        List<ResultDetail> details = resultDetailRepository.findByResult(result);
+
+        if (details.isEmpty()) {
+            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of());
+        }
+
+        Map<Category, Double> avgByCategory = details.stream()
+                .collect(Collectors.groupingBy(
+                        d -> d.getProperty().getCategory(),
+                        Collectors.averagingDouble(ResultDetail::getScore)
+                ));
+
+        List<TraitItemDto> items = new ArrayList<>();
+
+        for (Map.Entry<Category, Double> entry : avgByCategory.entrySet()) {
+            Category category = entry.getKey();
+            double rawAvg = entry.getValue();
+
+            int leftScore = (int) Math.round((rawAvg + 2) / 4 * 100);
+            int rightScore = 100 - leftScore;
+
+            String leftLabel = TraitLabelUtils.getPositiveLabel(category);
+            String rightLabel = TraitLabelUtils.getNegativeLabel(category);
+
+            items.add(new TraitItemDto(
+                    category.getDescription(),
+                    new TraitSideDto(leftLabel, leftScore),
+                    new TraitSideDto(rightLabel, rightScore)
+            ));
+        }
+
+        Cluster cluster = result.getCluster();
+
+        String description = (cluster != null && cluster.getDescription() != null)
+                ? cluster.getDescription()
+                : ResultType.not_clusterd.getDescription(); // ❗ 군집화 전 상태 처리
+
+        return new AnalysisResponseDto(description, "done", items);
+    }
+
 
 
 

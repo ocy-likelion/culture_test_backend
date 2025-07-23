@@ -114,6 +114,13 @@ public class ResultController {
         return resultService.getResultHistoryByUserId(userId);
     }
 
+    @Operation(summary = "특정 결과 건의 백분율과 군집화된 유형 반환")
+    @GetMapping("/analysis/{resultId}")
+    public AnalysisResponseDto getAnalysisByResultId(@PathVariable(name ="resultId") Long resultId) {
+        return resultService.getCategoryScoresByResultId(resultId);
+    }
+
+
 
 
 
