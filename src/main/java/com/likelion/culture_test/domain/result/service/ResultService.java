@@ -262,7 +262,7 @@ public class ResultService {
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
         if (resOpt.isEmpty()){
-            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of());
+            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription());
         }
 
 
@@ -310,14 +310,23 @@ public class ResultService {
         Cluster cluster = clusterService.findMostSimilarClusterFromLatestGeneration(avgByCategory);
         String description = (cluster != null && cluster.getDescription() != null)
                 ? cluster.getDescription()
-                : ResultType.not_clusterd.getDescription();
+                : ResultType.not_clusterd.getDescription(); // ❗ 군집화 전 상태 처리
+
+        ResultType resultType = Arrays.stream(ResultType.values())
+                .filter(rt -> rt.getDescription().equals(description))
+                .findFirst()
+                .orElse(ResultType.not_yet);  // 혹은 not_clusterd 등 fallback 설정
+        String detailDescription = resultType.getDetailDescription();
+
+
+
 
 
         latest.setCluster(cluster);
         resultRepository.save(latest);
 
 
-        return new AnalysisResponseDto(description, "done", items);
+        return new AnalysisResponseDto(description, "done", items, detailDescription);
     }
 
 
@@ -416,8 +425,9 @@ public class ResultService {
 
         List<ResultDetail> details = resultDetailRepository.findByResult(result);
 
+
         if (details.isEmpty()) {
-            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of());
+            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription());
         }
 
         Map<Category, Double> avgByCategory = details.stream()
@@ -451,7 +461,13 @@ public class ResultService {
                 ? cluster.getDescription()
                 : ResultType.not_clusterd.getDescription(); // ❗ 군집화 전 상태 처리
 
-        return new AnalysisResponseDto(description, "done", items);
+        ResultType resultType = Arrays.stream(ResultType.values())
+                .filter(rt -> rt.getDescription().equals(description))
+                .findFirst()
+                .orElse(ResultType.not_yet);  // 혹은 not_clusterd 등 fallback 설정
+        String detailDescription = resultType.getDetailDescription();
+
+        return new AnalysisResponseDto(description, "done", items, detailDescription);
     }
 
 
