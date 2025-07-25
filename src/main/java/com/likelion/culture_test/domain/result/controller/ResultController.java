@@ -2,7 +2,10 @@ package com.likelion.culture_test.domain.result.controller;
 
 import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.service.ResultService;
+import com.likelion.culture_test.domain.user.entity.User;
+import com.likelion.culture_test.global.resolver.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +27,13 @@ public class ResultController {
 
     @Operation(summary = "특정 유저가 특정 설문 조사지 안의 각 문항들에 답해서 제출하기")
     @PostMapping("/submit")
-    public ResponseEntity<Void> submitSurveyResult(@RequestBody ResultRequestDto dto) { // @RequestBody ResultRequestDto dto
+    public ResponseEntity<Void> submitSurveyResult(@Parameter(hidden = true) @LoginUser User user, @RequestBody ResultRequestWithoutUserDto resultRequestWithoutUserDto) { // @RequestBody ResultRequestDto dto
+
+        Long userId = user.getId();
+        log.info("현재 로그인된 유저의 id : " + userId);
+        log.info("현재 로그인된 유저의 nickname : " + user.getNickname());
+
+        ResultRequestDto dto = new ResultRequestDto(userId, resultRequestWithoutUserDto.surveyId(), resultRequestWithoutUserDto.answers());
         resultService.processSurveyResult(dto); //
         return ResponseEntity.ok().build();
     }
