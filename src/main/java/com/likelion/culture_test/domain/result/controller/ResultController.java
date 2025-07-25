@@ -3,6 +3,8 @@ package com.likelion.culture_test.domain.result.controller;
 import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.service.ResultService;
 import com.likelion.culture_test.domain.user.entity.User;
+import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
 import com.likelion.culture_test.global.resolver.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,6 +31,9 @@ public class ResultController {
     @PostMapping("/submit")
     public ResponseEntity<Void> submitSurveyResult(@Parameter(hidden = true) @LoginUser User user, @RequestBody ResultRequestWithoutUserDto resultRequestWithoutUserDto) { // @RequestBody ResultRequestDto dto
 
+        if (user == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED); // 401 오류 반환 등
+        }
         Long userId = user.getId();
         log.info("현재 진행 : /submit");
         log.info("현재 로그인된 유저의 id : " + userId);
@@ -106,10 +111,12 @@ public class ResultController {
             @Parameter(hidden = true) @LoginUser User user,
             @PathVariable(name = "surveyId") Long surveyId
     ) {
+
+        if (user == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED); // 401 오류 반환 등
+        }
         Long userId = user.getId();
-        log.info("/latest/scoresAndPercentages/{userId}/survey/{surveyId} 부분 진행");
-        log.info("현재 로그인된 유저의 id : " + userId);
-        log.info("현재 로그인된 유저의 nickname : " + user.getNickname());
+
         return resultService.getLatestCategoryScores(userId, surveyId);
     }
 
@@ -125,10 +132,11 @@ public class ResultController {
     @Operation(summary = "특정 유저의 결과 기록들 최신순")
     @GetMapping("/history/{userId}")
     public List<ResultHistoryDto> getResultHistory(@Parameter(hidden = true) @LoginUser User user) {
+        if (user == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED); // 401 오류 반환 등
+        }
         Long userId = user.getId();
-        log.info("/history/{userId} 부분 진행");
-        log.info("현재 로그인된 유저의 id : " + userId);
-        log.info("현재 로그인된 유저의 nickname : " + user.getNickname());
+
         return resultService.getResultHistoryByUserId(userId);
     }
 
