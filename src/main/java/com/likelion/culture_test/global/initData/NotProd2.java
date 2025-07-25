@@ -28,6 +28,9 @@ public class NotProd2 {
             @Transactional
             @Override
             public void run(ApplicationArguments args) throws Exception {
+                if (resultService.count() > 0) {
+                    return;
+                }
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/result_data.json");

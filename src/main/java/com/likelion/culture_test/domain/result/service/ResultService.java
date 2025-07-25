@@ -391,16 +391,7 @@ public class ResultService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    public Long count() {
+        return resultRepository.count();
+    }
 }

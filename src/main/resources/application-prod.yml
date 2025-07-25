@@ -43,5 +43,4 @@ logging:
     com.likelion.culture_test: info
 
 
-fastapi:
-  base-url: https://culture-test-ai.onrender.com
+
