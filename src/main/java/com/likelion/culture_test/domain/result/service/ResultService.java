@@ -236,7 +236,7 @@ public class ResultService {
         }).toList();
     }
 
-    // 컨트롤러단에서 getmapping으로 분류해놨긴 한데 조회 + 보내는 기능 둘다 있는 메서드라서 일단 붙일게요
+
     public List<Double> getLatestVector(Long userId, Long surveyId) {
         Result latest = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));

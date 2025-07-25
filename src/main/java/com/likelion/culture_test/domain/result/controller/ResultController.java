@@ -30,6 +30,7 @@ public class ResultController {
     public ResponseEntity<Void> submitSurveyResult(@Parameter(hidden = true) @LoginUser User user, @RequestBody ResultRequestWithoutUserDto resultRequestWithoutUserDto) { // @RequestBody ResultRequestDto dto
 
         Long userId = user.getId();
+        log.info("현재 진행 : /submit");
         log.info("현재 로그인된 유저의 id : " + userId);
         log.info("현재 로그인된 유저의 nickname : " + user.getNickname());
 
@@ -95,7 +96,7 @@ public class ResultController {
             @PathVariable(name = "surveyId") Long surveyId
     ) {
         List<Double> vector = resultService.getLatestVector(userId, surveyId);
-        resultService.sendVectorToFastApi(userId, surveyId, vector); // 전송 포함
+        //resultService.sendVectorToFastApi(userId, surveyId, vector); // 전송 포함
         return vector;
     }
 
@@ -106,6 +107,7 @@ public class ResultController {
             @PathVariable(name = "surveyId") Long surveyId
     ) {
         Long userId = user.getId();
+        log.info("/latest/scoresAndPercentages/{userId}/survey/{surveyId} 부분 진행");
         log.info("현재 로그인된 유저의 id : " + userId);
         log.info("현재 로그인된 유저의 nickname : " + user.getNickname());
         return resultService.getLatestCategoryScores(userId, surveyId);
@@ -122,7 +124,11 @@ public class ResultController {
 
     @Operation(summary = "특정 유저의 결과 기록들 최신순")
     @GetMapping("/history/{userId}")
-    public List<ResultHistoryDto> getResultHistory(@PathVariable(name ="userId") Long userId) {
+    public List<ResultHistoryDto> getResultHistory(@Parameter(hidden = true) @LoginUser User user) {
+        Long userId = user.getId();
+        log.info("/history/{userId} 부분 진행");
+        log.info("현재 로그인된 유저의 id : " + userId);
+        log.info("현재 로그인된 유저의 nickname : " + user.getNickname());
         return resultService.getResultHistoryByUserId(userId);
     }
 
