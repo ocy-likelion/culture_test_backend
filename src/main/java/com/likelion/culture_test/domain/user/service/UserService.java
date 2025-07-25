@@ -23,30 +23,15 @@ import static com.likelion.culture_test.global.exceptions.ErrorCode.USER_NOT_FOU
 public class UserService {
 
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
-    private final Rq rq;
 
     @Transactional(readOnly = true)
-    public UserResponseDto getMyInfo() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if(!(principal instanceof SecurityUser securityUser)){
-            throw new CustomException(ErrorCode.INVALID_TOKEN);
-        }
-
-        Long userId = securityUser.getId();
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
-
+    public UserResponseDto getMyInfo(User user) {
         return UserResponseDto.fromEntity(user);
     }
 
 
     @Transactional
-    public void logout(String accessToken) {
-        Long userId = jwtUtil.getUserId(accessToken);
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+    public void logout(User user) {
         user.setRefreshToken(null);
         userRepository.save(user);
     }
@@ -58,8 +43,7 @@ public class UserService {
 
 
     @Transactional
-    public UserResponseDto agreeToTerms() {
-        User user = rq.getUser();
+    public UserResponseDto agreeToTerms(User user) {
         if (!user.isHasAgreedTerms()) {
             user.setHasAgreedTerms(true);
         }
