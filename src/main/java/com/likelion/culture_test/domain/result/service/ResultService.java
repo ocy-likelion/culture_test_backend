@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -261,8 +262,10 @@ public class ResultService {
         Optional<Result> resOpt = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId);
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
+
+        String initialImageUrl = "/images/default.png";
         if (resOpt.isEmpty()){
-            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of());
+            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
         }
 
 
@@ -310,14 +313,35 @@ public class ResultService {
         Cluster cluster = clusterService.findMostSimilarClusterFromLatestGeneration(avgByCategory);
         String description = (cluster != null && cluster.getDescription() != null)
                 ? cluster.getDescription()
-                : ResultType.not_clusterd.getDescription();
+                : ResultType.not_clusterd.getDescription(); // ❗ 군집화 전 상태 처리
+
+        ResultType resultType = Arrays.stream(ResultType.values())
+                .filter(rt -> rt.getDescription().equals(description))
+                .findFirst()
+                .orElse(ResultType.not_yet);  // 혹은 not_clusterd 등 fallback 설정
+        String detailDescription = resultType.getDetailDescription();
+
+
+
 
 
         latest.setCluster(cluster);
         resultRepository.save(latest);
 
+        String imageName = extractLastWord(description) + ".png";
+        String imagePath = "src/main/resources/static/images/" + imageName;
+        String imageUrl;
 
-        return new AnalysisResponseDto(description, "done", items);
+        File file = new File(imagePath);
+        if (file.exists()) {
+            imageUrl = "/images/" + imageName;
+        } else {
+            imageUrl = "/images/default.png";
+        }
+
+
+
+        return new AnalysisResponseDto(description, "done", items, detailDescription, imageUrl);
     }
 
 
@@ -416,8 +440,11 @@ public class ResultService {
 
         List<ResultDetail> details = resultDetailRepository.findByResult(result);
 
+        String initialImageUrl = "/images/default.png";
+
+
         if (details.isEmpty()) {
-            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of());
+            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
         }
 
         Map<Category, Double> avgByCategory = details.stream()
@@ -451,8 +478,33 @@ public class ResultService {
                 ? cluster.getDescription()
                 : ResultType.not_clusterd.getDescription(); // ❗ 군집화 전 상태 처리
 
-        return new AnalysisResponseDto(description, "done", items);
+        ResultType resultType = Arrays.stream(ResultType.values())
+                .filter(rt -> rt.getDescription().equals(description))
+                .findFirst()
+                .orElse(ResultType.not_yet);  // 혹은 not_clusterd 등 fallback 설정
+        String detailDescription = resultType.getDetailDescription();
+
+        String imageName = extractLastWord(description) + ".png";
+        String imagePath = "src/main/resources/static/images/" + imageName;
+        String imageUrl;
+
+        File file = new File(imagePath);
+        if (file.exists()) {
+            imageUrl = "/images/" + imageName;
+        } else {
+            imageUrl = "/images/default.png";
+        }
+
+
+        return new AnalysisResponseDto(description, "done", items, detailDescription, imageUrl);
     }
+
+    private String extractLastWord(String sentence) {
+        if (sentence == null || sentence.isBlank()) return "default";
+        String[] words = sentence.trim().split(" ");
+        return words[words.length - 1];
+    }
+
 
 
 
