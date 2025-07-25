@@ -65,9 +65,9 @@ public class OAuth2UserController {
     @PatchMapping("/agree-terms")
     @Operation(summary = "약관 동의", description = "유저가 약관에 동의한 상태로 업데이트합니다.")
     @SecurityRequirement(name = "BearerAuth")
-    public ResponseEntity<Map<String, String>> agreeTerms() {
-        userService.agreeToTerms();
-        return ResponseEntity.ok(Map.of("message", "약관에 동의 완료되었습니다."));
+    public ResponseEntity<UserResponseDto> agreeTerms() {
+        UserResponseDto userResponseDto = userService.agreeToTerms();
+        return ResponseEntity.ok(userResponseDto);
     }
 
 }
