@@ -24,8 +24,8 @@ public class ResultController {
 
     @Operation(summary = "특정 유저가 특정 설문 조사지 안의 각 문항들에 답해서 제출하기")
     @PostMapping("/submit")
-    public ResponseEntity<Void> submitSurveyResult(@RequestBody ResultRequestDto dto) {
-        resultService.processSurveyResult(dto);
+    public ResponseEntity<Void> submitSurveyResult(@RequestBody ResultRequestDto dto) { // @RequestBody ResultRequestDto dto
+        resultService.processSurveyResult(dto); //
         return ResponseEntity.ok().build();
     }
 
@@ -118,6 +118,13 @@ public class ResultController {
     @GetMapping("/analysis/{resultId}")
     public AnalysisResponseDto getAnalysisByResultId(@PathVariable(name ="resultId") Long resultId) {
         return resultService.getCategoryScoresByResultId(resultId);
+    }
+
+    @Operation(summary = "초기 데이터베이스 적재용")
+    @PostMapping("/initialLoad/")
+    public ResponseEntity<Void> submitSurveyResultToLoad(@RequestBody ResultRequestDto dto) { // @RequestBody ResultRequestDto dto
+        resultService.processSurveyResultToLoad(dto); //
+        return ResponseEntity.ok().build();
     }
 
 

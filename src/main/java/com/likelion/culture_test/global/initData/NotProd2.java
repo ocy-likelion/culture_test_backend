@@ -49,7 +49,13 @@ public class NotProd2 {
                         }
                     }
 
-                    resultService.processSurveyResult(dto);
+                    ResultRequestDto HundredAddDto = new ResultRequestDto(
+                            dto.userId() + 100,  // 기존 userId를 피하기 위한 조작
+                            dto.surveyId(),
+                            dto.answers()
+                    );
+
+                    resultService.processSurveyResultToLoad(HundredAddDto);
                 }
 
                 StringBuilder statsContent = new StringBuilder();
