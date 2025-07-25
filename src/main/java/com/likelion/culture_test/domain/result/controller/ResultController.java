@@ -102,11 +102,24 @@ public class ResultController {
 
 // 위의 벡터 값 하나씩 보내는 메서드는 보내는 동시에 어떤 값 보내졌나 확인용으로 반환하니까 getmapping  근데 이거를 전부다 조회하기 힘드니 그냥 보내기만 하고 post
     @Operation(summary = "현재 데이터베이스 내 전체 결과 벡터값을 FastAPI 서버로 전송 (일괄 처리, 해당 엔드포인드는 보내는 동시에 조회하는 거(이런것들은 get으로함) 말고 보내는 작업만 하니까 post, )")
-    @PostMapping("/batch/vector/all")
-    public ResponseEntity<Void> sendAllVectors() {
-        resultService.sendAllVectorsToFastApi();
+    @PostMapping("/batch/vector/all/{clusterNum}")
+    public ResponseEntity<Void> sendAllVectors(@PathVariable(name = "clusterNum") int clusterNum) {
+        resultService.sendAllVectorsToFastApi(clusterNum);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "특정 유저의 결과 기록들 최신순")
+    @GetMapping("/history/{userId}")
+    public List<ResultHistoryDto> getResultHistory(@PathVariable(name ="userId") Long userId) {
+        return resultService.getResultHistoryByUserId(userId);
+    }
+
+    @Operation(summary = "특정 결과 건의 백분율과 군집화된 유형 반환")
+    @GetMapping("/analysis/{resultId}")
+    public AnalysisResponseDto getAnalysisByResultId(@PathVariable(name ="resultId") Long resultId) {
+        return resultService.getCategoryScoresByResultId(resultId);
+    }
+
 
 
 

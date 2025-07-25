@@ -1,5 +1,7 @@
 package com.likelion.culture_test.domain.result.service;
 
+import com.likelion.culture_test.domain.cluster.entity.Cluster;
+import com.likelion.culture_test.domain.cluster.service.ClusterService;
 import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.entity.Result;
 import com.likelion.culture_test.domain.result.entity.ResultDetail;
@@ -17,6 +19,7 @@ import com.likelion.culture_test.global.util.ScoreUtils;
 import com.likelion.culture_test.global.util.TraitLabelUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -35,6 +38,9 @@ public class ResultService {
     private final ResultRepository resultRepository;
     private final ResultDetailRepository resultDetailRepository;
     private final WebClient webClient;
+    private final ClusterService clusterService;
+    @Value("${fastapi.base-url}")
+    private String fastApiBaseUrl;
 
     @Transactional
     public void processSurveyResult(ResultRequestDto dto) {
@@ -164,7 +170,7 @@ public class ResultService {
                 .toList();
     }
 
-// 컨트롤러단에서 getmapping으로 분류해놨긴 한데 조회 + 보내는 기능 둘다 있는 메서드라서 혹시몰라일단 붙일게요
+
     @Transactional
     public void sendVectorToFastApi(Long userId, Long surveyId, List<Double> vector) {
         VectorRequestDto requestDto = new VectorRequestDto(userId, surveyId, vector);
@@ -203,7 +209,7 @@ public class ResultService {
 
     public List<CategoryScoreWithCreatedAtDto> getCategoryScoresByCreatedAt(Long userId, Long surveyId) {
         List<Result> results = resultRepository.findByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId);
-
+// 이거를 과거 테스트 내역용으로
         return results.stream().map(result -> {
             List<ResultDetail> details = resultDetailRepository.findByResult(result);
 
@@ -250,13 +256,16 @@ public class ResultService {
 
     }
 
+    @Transactional
     public AnalysisResponseDto getLatestCategoryScores(Long userId, Long surveyId) {
         Optional<Result> resOpt = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId);
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
         if (resOpt.isEmpty()){
-            return new AnalysisResponseDto(ResultType.not_yet, "pending", List.of());
+            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of());
         }
+
+
 
         Result latest = resOpt.get();
 
@@ -285,14 +294,7 @@ public class ResultService {
             String leftType = TraitLabelUtils.getPositiveLabel(cat);
             String rightType = TraitLabelUtils.getNegativeLabel(cat);
 
-            //TraitSideDto leftSide, rightSide;
-//            if (score >= 0) {                // +쪽(positive)이 우세
-//                leftSide  = new TraitSideDto(positiveLabel, positive);
-//                rightSide = new TraitSideDto(negativeLabel, negative);
-//            } else {                         // -쪽(negative)이 우세
-//                leftSide  = new TraitSideDto(negativeLabel, negative);
-//                rightSide = new TraitSideDto(positiveLabel, positive);
-//            }
+
 
             items.add(new TraitItemDto(
                     cat.getDescription(),
@@ -300,48 +302,28 @@ public class ResultService {
                     new TraitSideDto(rightType, rightScore)
             ));
 
-//            double parseLeft = Double.parseDouble(leftType);
-//            double parseRight = Double.parseDouble(rightType);
-//
 
-//            if(parseLeft > parseRight && ){
-//                resultType = ResultType.ABCD;
-//
-//            }
 
         }
 
-        ResultType resultType = decideResultType(items);
+
+        Cluster cluster = clusterService.findMostSimilarClusterFromLatestGeneration(avgByCategory);
+        String description = (cluster != null && cluster.getDescription() != null)
+                ? cluster.getDescription()
+                : ResultType.not_clusterd.getDescription();
 
 
-//        Map<String, TraitScoreDto> resultMap = new HashMap<>();
-//
-//        for (Map.Entry<Category, Double> entry : avgByCategory.entrySet()) {
-//            Category category = entry.getKey();
-//            double score = entry.getValue();
-//
-//            double positivePercent = (score + 2) / 4 * 100;
-//            double negativePercent = 100 - positivePercent;
-//
-//            resultMap.put(
-//                    category.name(),
-//                    new TraitScoreDto(
-//                            TraitLabelUtils.getPositiveLabel(category),
-//                            TraitLabelUtils.getNegativeLabel(category),
-//                            Math.round(positivePercent * 10) / 10.0,
-//                            Math.round(negativePercent * 10) / 10.0,
-//                            score
-//                    )
-//            );
-//        }
+        latest.setCluster(cluster);
+        resultRepository.save(latest);
 
-        return new AnalysisResponseDto(resultType, "done", items);
+
+        return new AnalysisResponseDto(description, "done", items);
     }
 
 
 
     @Transactional
-    public void sendAllVectorsToFastApi() {
+    public void sendAllVectorsToFastApi(int clusterNum) {
         List<Result> results = resultRepository.findAll();
 
         List<List<Double>> vectors = results.stream().map(result -> {
@@ -360,14 +342,18 @@ public class ResultService {
                             .mapToDouble(Double::doubleValue).average().orElse(0.0))
                     .toList();
         }).toList();
-        log.info("보내기 직전 생성된 벡터 수: {}", vectors.size());
+        log.info("보내기 직전 생성된 벡터ㅇㅇㅇㅇㅇㅇ 수: {}", vectors.size());
+
+        VectorBatchRequest vectorBatchRequest = new VectorBatchRequest(clusterNum, vectors);
         webClient.post()
                 .uri("/receive/vector/batch")
-                .bodyValue(vectors)
+                .bodyValue(vectorBatchRequest)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .doOnError(e -> log.error("전체 벡터 전송 실패: {}", e.getMessage()))
                 .subscribe();
+        log.info("{}{}", fastApiBaseUrl, "/receive/vector/batch");
+        //.block();
 
     }
 
@@ -408,6 +394,74 @@ public class ResultService {
 
         return ResultType.valueOf(key); // 반드시 존재, 없으면 예외 → not_yet
     }
+
+    public List<ResultHistoryDto> getResultHistoryByUserId(Long userId) {
+        List<Result> results = resultRepository.findByUserIdOrderByCreatedAtDesc(userId);
+
+        return results.stream()
+                .map(result -> new ResultHistoryDto(
+                        result.getId(),
+                        result.getCluster() != null ? result.getCluster().getDescription() : ResultType.not_clusterd.getDescription(),
+                        result.getCreatedAt().toLocalDate()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
+
+    @Transactional
+    public AnalysisResponseDto getCategoryScoresByResultId(Long resultId) {
+        Result result = resultRepository.findById(resultId)
+                .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
+
+        List<ResultDetail> details = resultDetailRepository.findByResult(result);
+
+        if (details.isEmpty()) {
+            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of());
+        }
+
+        Map<Category, Double> avgByCategory = details.stream()
+                .collect(Collectors.groupingBy(
+                        d -> d.getProperty().getCategory(),
+                        Collectors.averagingDouble(ResultDetail::getScore)
+                ));
+
+        List<TraitItemDto> items = new ArrayList<>();
+
+        for (Map.Entry<Category, Double> entry : avgByCategory.entrySet()) {
+            Category category = entry.getKey();
+            double rawAvg = entry.getValue();
+
+            int leftScore = (int) Math.round((rawAvg + 2) / 4 * 100);
+            int rightScore = 100 - leftScore;
+
+            String leftLabel = TraitLabelUtils.getPositiveLabel(category);
+            String rightLabel = TraitLabelUtils.getNegativeLabel(category);
+
+            items.add(new TraitItemDto(
+                    category.getDescription(),
+                    new TraitSideDto(leftLabel, leftScore),
+                    new TraitSideDto(rightLabel, rightScore)
+            ));
+        }
+
+        Cluster cluster = result.getCluster();
+
+        String description = (cluster != null && cluster.getDescription() != null)
+                ? cluster.getDescription()
+                : ResultType.not_clusterd.getDescription(); // ❗ 군집화 전 상태 처리
+
+        return new AnalysisResponseDto(description, "done", items);
+    }
+
+
+
+
+
+
+
+
+
 
 
 

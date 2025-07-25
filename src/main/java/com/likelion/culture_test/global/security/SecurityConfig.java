@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/v3/api-docs/**","/h2-console/**").permitAll()
                                 .anyRequest().authenticated()
 //                        .anyRequest().permitAll()
+
                 )
                 .oauth2Login(oauth2 -> oauth2 //소셜 로그인 설정
                         .authorizationEndpoint(endpoint -> endpoint
