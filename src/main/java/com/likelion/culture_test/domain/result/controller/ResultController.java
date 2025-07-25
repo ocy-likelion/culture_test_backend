@@ -35,9 +35,7 @@ public class ResultController {
             throw new CustomException(ErrorCode.UNAUTHORIZED); // 401 오류 반환 등
         }
         Long userId = user.getId();
-        log.info("현재 진행 : /submit");
-        log.info("현재 로그인된 유저의 id : " + userId);
-        log.info("현재 로그인된 유저의 nickname : " + user.getNickname());
+
 
         ResultRequestDto dto = new ResultRequestDto(userId, resultRequestWithoutUserDto.surveyId(), resultRequestWithoutUserDto.answers());
         resultService.processSurveyResult(dto); //
@@ -142,8 +140,8 @@ public class ResultController {
 
     @Operation(summary = "특정 결과 건의 백분율과 군집화된 유형 반환")
     @GetMapping("/analysis/{resultId}")
-    public AnalysisResponseDto getAnalysisByResultId(@PathVariable(name ="resultId") Long resultId) {
-        return resultService.getCategoryScoresByResultId(resultId);
+    public AnalysisResponseWithNicknameDto getAnalysisByResultId(@PathVariable(name ="resultId") Long resultId, @Parameter(hidden = true) @LoginUser User user) {
+        return resultService.getCategoryScoresByResultId(resultId, user);
     }
 
     @Operation(summary = "초기 데이터베이스 적재용")

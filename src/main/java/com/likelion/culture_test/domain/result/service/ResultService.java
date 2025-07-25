@@ -13,6 +13,7 @@ import com.likelion.culture_test.domain.survey.entity.Survey;
 import com.likelion.culture_test.domain.survey.enums.Category;
 import com.likelion.culture_test.domain.survey.repository.ChoiceRepository;
 import com.likelion.culture_test.domain.survey.repository.SurveyRepository;
+import com.likelion.culture_test.domain.user.entity.User;
 import com.likelion.culture_test.global.exceptions.CustomException;
 import com.likelion.culture_test.global.exceptions.ErrorCode;
 import com.likelion.culture_test.global.resolver.LoginUser;
@@ -436,7 +437,7 @@ public class ResultService {
 
 
     @Transactional
-    public AnalysisResponseDto getCategoryScoresByResultId(Long resultId) {
+    public AnalysisResponseWithNicknameDto getCategoryScoresByResultId(Long resultId, @LoginUser User user) {
         Result result = resultRepository.findById(resultId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
 
@@ -445,8 +446,11 @@ public class ResultService {
         String initialImageUrl = "/images/default.png";
 
 
+
+
         if (details.isEmpty()) {
-            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
+            AnalysisResponseDto analysisResponseDto = new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
+            return new AnalysisResponseWithNicknameDto(analysisResponseDto, "nickname_null");
         }
 
         Map<Category, Double> avgByCategory = details.stream()
@@ -497,8 +501,10 @@ public class ResultService {
             imageUrl = "/images/default.png";
         }
 
+        AnalysisResponseDto analysisResponseDto = new AnalysisResponseDto(description, "done", items, detailDescription, imageUrl);
 
-        return new AnalysisResponseDto(description, "done", items, detailDescription, imageUrl);
+
+        return new AnalysisResponseWithNicknameDto(analysisResponseDto, user.getNickname());
     }
 
     private String extractLastWord(String sentence) {
