@@ -2,7 +2,12 @@ package com.likelion.culture_test.domain.result.controller;
 
 import com.likelion.culture_test.domain.result.dto.*;
 import com.likelion.culture_test.domain.result.service.ResultService;
+import com.likelion.culture_test.domain.user.entity.User;
+import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
+import com.likelion.culture_test.global.resolver.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +29,16 @@ public class ResultController {
 
     @Operation(summary = "특정 유저가 특정 설문 조사지 안의 각 문항들에 답해서 제출하기")
     @PostMapping("/submit")
-    public ResponseEntity<Void> submitSurveyResult(@RequestBody ResultRequestDto dto) {
-        resultService.processSurveyResult(dto);
+    public ResponseEntity<Void> submitSurveyResult(@Parameter(hidden = true) @LoginUser User user, @RequestBody ResultRequestWithoutUserDto resultRequestWithoutUserDto) { // @RequestBody ResultRequestDto dto
+
+        if (user == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED); // 401 오류 반환 등
+        }
+        Long userId = user.getId();
+
+
+        ResultRequestDto dto = new ResultRequestDto(userId, resultRequestWithoutUserDto.surveyId(), resultRequestWithoutUserDto.answers());
+        resultService.processSurveyResult(dto); //
         return ResponseEntity.ok().build();
     }
 
@@ -86,16 +99,22 @@ public class ResultController {
             @PathVariable(name = "surveyId") Long surveyId
     ) {
         List<Double> vector = resultService.getLatestVector(userId, surveyId);
-        resultService.sendVectorToFastApi(userId, surveyId, vector); // 전송 포함
+        //resultService.sendVectorToFastApi(userId, surveyId, vector); // 전송 포함
         return vector;
     }
 
     @Operation(summary = "설문 응답 제출 후 결과 백분율 반환")
     @GetMapping("/latest/scoresAndPercentages/{userId}/survey/{surveyId}")
     public AnalysisResponseDto getLatestScore(
-            @PathVariable(name = "userId") Long userId,
+            @Parameter(hidden = true) @LoginUser User user,
             @PathVariable(name = "surveyId") Long surveyId
     ) {
+
+        if (user == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED); // 401 오류 반환 등
+        }
+        Long userId = user.getId();
+
         return resultService.getLatestCategoryScores(userId, surveyId);
     }
 
@@ -110,14 +129,26 @@ public class ResultController {
 
     @Operation(summary = "특정 유저의 결과 기록들 최신순")
     @GetMapping("/history/{userId}")
-    public List<ResultHistoryDto> getResultHistory(@PathVariable(name ="userId") Long userId) {
+    public List<ResultHistoryDto> getResultHistory(@Parameter(hidden = true) @LoginUser User user) {
+        if (user == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED); // 401 오류 반환 등
+        }
+        Long userId = user.getId();
+
         return resultService.getResultHistoryByUserId(userId);
     }
 
     @Operation(summary = "특정 결과 건의 백분율과 군집화된 유형 반환")
     @GetMapping("/analysis/{resultId}")
-    public AnalysisResponseDto getAnalysisByResultId(@PathVariable(name ="resultId") Long resultId) {
-        return resultService.getCategoryScoresByResultId(resultId);
+    public AnalysisResponseWithNicknameDto getAnalysisByResultId(@PathVariable(name ="resultId") Long resultId, @Parameter(hidden = true) @LoginUser User user) {
+        return resultService.getCategoryScoresByResultId(resultId, user);
+    }
+
+    @Operation(summary = "초기 데이터베이스 적재용")
+    @PostMapping("/initialLoad/")
+    public ResponseEntity<Void> submitSurveyResultToLoad(@RequestBody ResultRequestDto dto) { // @RequestBody ResultRequestDto dto
+        resultService.processSurveyResultToLoad(dto); //
+        return ResponseEntity.ok().build();
     }
 
 

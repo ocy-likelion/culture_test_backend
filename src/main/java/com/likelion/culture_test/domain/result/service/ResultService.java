@@ -13,8 +13,10 @@ import com.likelion.culture_test.domain.survey.entity.Survey;
 import com.likelion.culture_test.domain.survey.enums.Category;
 import com.likelion.culture_test.domain.survey.repository.ChoiceRepository;
 import com.likelion.culture_test.domain.survey.repository.SurveyRepository;
+import com.likelion.culture_test.domain.user.entity.User;
 import com.likelion.culture_test.global.exceptions.CustomException;
 import com.likelion.culture_test.global.exceptions.ErrorCode;
+import com.likelion.culture_test.global.resolver.LoginUser;
 import com.likelion.culture_test.global.util.ScoreUtils;
 import com.likelion.culture_test.global.util.TraitLabelUtils;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,7 @@ public class ResultService {
     private final ClusterService clusterService;
     @Value("${fastapi.base-url}")
     private String fastApiBaseUrl;
+
 
     @Transactional
     public void processSurveyResult(ResultRequestDto dto) {
@@ -234,7 +237,7 @@ public class ResultService {
         }).toList();
     }
 
-    // 컨트롤러단에서 getmapping으로 분류해놨긴 한데 조회 + 보내는 기능 둘다 있는 메서드라서 일단 붙일게요
+
     public List<Double> getLatestVector(Long userId, Long surveyId) {
         Result latest = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
@@ -434,7 +437,7 @@ public class ResultService {
 
 
     @Transactional
-    public AnalysisResponseDto getCategoryScoresByResultId(Long resultId) {
+    public AnalysisResponseWithNicknameDto getCategoryScoresByResultId(Long resultId, @LoginUser User user) {
         Result result = resultRepository.findById(resultId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
 
@@ -443,8 +446,11 @@ public class ResultService {
         String initialImageUrl = "/images/default.png";
 
 
+
+
         if (details.isEmpty()) {
-            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
+            AnalysisResponseDto analysisResponseDto = new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
+            return new AnalysisResponseWithNicknameDto(analysisResponseDto, user.getNickname());
         }
 
         Map<Category, Double> avgByCategory = details.stream()
@@ -495,14 +501,105 @@ public class ResultService {
             imageUrl = "/images/default.png";
         }
 
+        AnalysisResponseDto analysisResponseDto = new AnalysisResponseDto(description, "done", items, detailDescription, imageUrl);
 
-        return new AnalysisResponseDto(description, "done", items, detailDescription, imageUrl);
+
+        return new AnalysisResponseWithNicknameDto(analysisResponseDto, user.getNickname());
     }
 
     private String extractLastWord(String sentence) {
         if (sentence == null || sentence.isBlank()) return "default";
         String[] words = sentence.trim().split(" ");
         return words[words.length - 1];
+    }
+
+
+
+    @Transactional
+    public void processSurveyResultToLoad(ResultRequestDto dto) {
+        Survey survey = surveyRepository.findById(dto.surveyId())
+                .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
+
+        List<Long> choiceIds = dto.answers().stream()
+                .map(AnswerDto::choiceId)
+                .toList();
+
+        List<Choice> choices = choiceRepository.findAllById(choiceIds);
+
+        Map<String, List<Integer>> fieldScoreMap = new HashMap<>();
+
+
+
+
+
+
+
+        // 결과 저장용 Result 엔티티 생성
+        Result result = Result.builder()
+                .userId(dto.userId())
+                .survey(survey)
+                .field("") // 나중에 채움
+                .cluster(null)
+                .build();
+
+        resultRepository.save(result);
+
+//        List<ResultDetail> existingDetails = resultDetailRepository.findByUserIdAndSurveyId(dto.userId(), dto.surveyId());
+//        resultDetailRepository.deleteAll(existingDetails);
+
+        for (int i = 0; i < choices.size(); i++) {
+            Choice choice = choices.get(i);
+            Long expectedQuestionId = dto.answers().get(i).questionId();
+
+            if (!choice.getQuestion().getId().equals(expectedQuestionId)) {
+                throw new CustomException(ErrorCode.QUESTION_CHOICE_MISMATCH);
+            }
+
+            String fieldName = choice.getProperty().getName(); // 분야 이름
+            int score = ScoreUtils.calculateScore(choice.getDisplayOrder(), choice.getQuestion().getProperty().getId());
+
+            fieldScoreMap
+                    .computeIfAbsent(fieldName, k -> new ArrayList<>())
+                    .add(score);
+
+            // ResultDetail 엔티티 생성 및 저장
+            ResultDetail detail = ResultDetail.builder()
+                    .result(result)
+                    .question(choice.getQuestion())
+                    .choice(choice)
+                    .property(choice.getProperty())
+                    .score((double) score)
+                    .build();
+
+            resultDetailRepository.save(detail);
+        }
+
+        // 분야 이름 고정 순서 정렬
+        List<String> sortedFields = new ArrayList<>(fieldScoreMap.keySet());
+        Collections.sort(sortedFields); // 알파벳 정렬 or 커스텀 정렬도 가능
+
+        // 분야별 평균
+        List<Double> vector = sortedFields.stream()
+                .map(field -> {
+                    List<Integer> scores = fieldScoreMap.get(field);
+                    return scores.stream().mapToInt(Integer::intValue).average().orElse(0.0);
+                })
+                .toList();
+
+        String field = vector.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+
+        result.setField(field);
+
+//        Result result = Result.builder()
+//                .userId(dto.userId())
+//                .survey(survey)
+//                .field(field)
+//                .cluster(null) // 추후 군집 분석 후 설정
+//                .build();
+
+        resultRepository.save(result);
     }
 
 
