@@ -450,7 +450,7 @@ public class ResultService {
 
         if (details.isEmpty()) {
             AnalysisResponseDto analysisResponseDto = new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
-            return new AnalysisResponseWithNicknameDto(analysisResponseDto, "nickname_null");
+            return new AnalysisResponseWithNicknameDto(analysisResponseDto, user.getNickname());
         }
 
         Map<Category, Double> avgByCategory = details.stream()
