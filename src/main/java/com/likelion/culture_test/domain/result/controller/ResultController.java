@@ -102,9 +102,12 @@ public class ResultController {
     @Operation(summary = "설문 응답 제출 후 결과 백분율 반환")
     @GetMapping("/latest/scoresAndPercentages/{userId}/survey/{surveyId}")
     public AnalysisResponseDto getLatestScore(
-            @PathVariable(name = "userId") Long userId,
+            @Parameter(hidden = true) @LoginUser User user,
             @PathVariable(name = "surveyId") Long surveyId
     ) {
+        Long userId = user.getId();
+        log.info("현재 로그인된 유저의 id : " + userId);
+        log.info("현재 로그인된 유저의 nickname : " + user.getNickname());
         return resultService.getLatestCategoryScores(userId, surveyId);
     }
 
