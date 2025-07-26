@@ -22,6 +22,7 @@ public class ClusterController {
 
     private final ClusterService clusterService;
 
+    @Operation(summary = "Fast api 서버와의 통신")
     @PostMapping("/result")
     public ResponseEntity<Void> receiveClusteredResult(@RequestBody ClusterResponseDto responseDto){
         System.out.println("==== 컨트롤러 진입 확인 ====");
@@ -35,7 +36,7 @@ public class ClusterController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "방금 나온 해당 결과가 속한 몇번째 돌린 군집 세대에 해당하는지, 군집 명, 전체에서의 퍼센티지 반환")
+    @Operation(summary = "@ 방금 나온 해당 결과가 속한 몇번째 돌린 군집 세대에 해당하는지, 군집 명, 전체에서의 퍼센티지 반환")
     @GetMapping("/percentage")
     public ResponseEntity<ClusterInfoDto> getClusterPercentage(
             @Parameter(hidden = true) @LoginUser User user,
