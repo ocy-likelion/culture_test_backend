@@ -48,9 +48,9 @@ public enum ErrorCode {
   OAUTH_REDIRECT_URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "리다이렉트 URL(state 파라미터)이 존재하지 않습니다."),
 
   RESULT_LABEL_COUNT_MISMATCH(HttpStatus.INTERNAL_SERVER_ERROR, "저장된 결과 수가 라벨 수보다 적습니다."),
-  CLUSTER_GENERATION_NOT_FOUND(HttpStatus.NOT_FOUND, "클러스터 세대 정보를 찾을 수 없습니다."),
-  RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "요청하신 초기 데이터 리소스를 찾을 수 없습니다.");
-
+  CLUSTER_GENERATION_NOT_FOUND(HttpStatus.NOT_FOUND, "군집 세대 정보를 찾을 수 없습니다."),
+  RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "요청하신 초기 데이터 리소스를 찾을 수 없습니다."),
+  CLUSTER_NOT_FOUND(HttpStatus.NOT_FOUND, "군집 정보를 찾을 수 없습니다.");
   private final HttpStatus httpStatus;
   private final String message;
 }
