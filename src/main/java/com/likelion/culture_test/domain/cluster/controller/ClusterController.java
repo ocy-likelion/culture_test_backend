@@ -5,6 +5,7 @@ import com.likelion.culture_test.domain.cluster.dto.ClusterResponseDto;
 import com.likelion.culture_test.domain.cluster.service.ClusterService;
 import com.likelion.culture_test.domain.user.entity.User;
 import com.likelion.culture_test.global.resolver.LoginUser;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class ClusterController {
         return ResponseEntity.ok().build();
     }
 
-
+    @Operation(summary = "방금 나온 해당 결과가 속한 몇번째 돌린 군집 세대에 해당하는지, 군집 명, 전체에서의 퍼센티지 반환")
     @GetMapping("/percentage")
     public ResponseEntity<ClusterInfoDto> getClusterPercentage(
             @Parameter(hidden = true) @LoginUser User user,
