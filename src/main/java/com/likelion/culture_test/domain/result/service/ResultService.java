@@ -266,6 +266,7 @@ public class ResultService {
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
 
+
         String initialImageUrl = "/images/default.png";
         if (resOpt.isEmpty()){
             return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
@@ -274,6 +275,7 @@ public class ResultService {
 
 
         Result latest = resOpt.get();
+
 
 
         List<ResultDetail> details = resultDetailRepository.findByResult(latest);
@@ -425,6 +427,8 @@ public class ResultService {
     public List<ResultHistoryDto> getResultHistoryByUserId(Long userId) {
         List<Result> results = resultRepository.findByUserIdOrderByCreatedAtDesc(userId);
 
+
+
         return results.stream()
                 .map(result -> new ResultHistoryDto(
                         result.getId(),
@@ -440,6 +444,10 @@ public class ResultService {
     public AnalysisResponseWithNicknameDto getCategoryScoresByResultId(Long resultId, @LoginUser User user) {
         Result result = resultRepository.findById(resultId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
+
+        if (!result.getUserId().equals(user.getId())){
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
 
         List<ResultDetail> details = resultDetailRepository.findByResult(result);
 
@@ -601,6 +609,12 @@ public class ResultService {
 
         resultRepository.save(result);
     }
+
+
+
+
+
+
 
 
 
