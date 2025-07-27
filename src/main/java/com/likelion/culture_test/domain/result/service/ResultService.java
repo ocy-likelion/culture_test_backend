@@ -22,6 +22,7 @@ import com.likelion.culture_test.global.util.TraitLabelUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -430,11 +431,40 @@ public class ResultService {
 
 
         return results.stream()
-                .map(result -> new ResultHistoryDto(
-                        result.getId(),
-                        result.getCluster() != null ? result.getCluster().getDescription() : ResultType.not_clusterd.getDescription(),
-                        result.getCreatedAt().toLocalDate()
-                ))
+                .map(result -> {
+                    String resultTypeDesc = result.getCluster() != null
+                            ? result.getCluster().getDescription()
+                            : ResultType.not_clusterd.getDescription();
+                    String[] words = resultTypeDesc.trim().split("\\s+");
+                    String lastWord = words[words.length - 1];
+                    String imageFileName = lastWord + ".png";
+                    String imagePath = "static/images/" + imageFileName;
+                    boolean exists;
+                    try {
+                        exists = new ClassPathResource(imagePath).exists();
+                    } catch (Exception e){
+                        exists = false;
+                    }
+
+//                    File file = new File(imagePath);
+//                    String imageUrl = file.exists()
+//                            ? "/images/" + imageFileName
+//                            : "/images/default.png";
+                    String imageUrl = exists ? "/images/" + imageFileName : "/images/default.png";
+                    return new ResultHistoryDto(
+                            result.getId(),
+                            resultTypeDesc,
+                            //result.getCluster() != null ? result.getCluster().getDescription() : ResultType.not_clusterd.getDescription(),
+                            result.getCreatedAt().toLocalDate(),
+                            imageUrl
+                    );
+
+
+
+                }
+
+
+                )
                 .collect(Collectors.toList());
     }
 
