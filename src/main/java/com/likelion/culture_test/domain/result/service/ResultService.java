@@ -640,33 +640,7 @@ public class ResultService {
         resultRepository.save(result);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public Long count() {
+        return resultRepository.count();
+    }
 }
