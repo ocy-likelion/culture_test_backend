@@ -21,6 +21,10 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
 
     List<Result> findByUserIdOrderByCreatedAtDesc(Long userId);
 
+    long count();
+
+    long countByClusterId(Long clusterId);
+
 
 
 }

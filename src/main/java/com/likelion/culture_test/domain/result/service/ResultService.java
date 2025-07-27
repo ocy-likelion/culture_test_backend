@@ -13,13 +13,16 @@ import com.likelion.culture_test.domain.survey.entity.Survey;
 import com.likelion.culture_test.domain.survey.enums.Category;
 import com.likelion.culture_test.domain.survey.repository.ChoiceRepository;
 import com.likelion.culture_test.domain.survey.repository.SurveyRepository;
+import com.likelion.culture_test.domain.user.entity.User;
 import com.likelion.culture_test.global.exceptions.CustomException;
 import com.likelion.culture_test.global.exceptions.ErrorCode;
+import com.likelion.culture_test.global.resolver.LoginUser;
 import com.likelion.culture_test.global.util.ScoreUtils;
 import com.likelion.culture_test.global.util.TraitLabelUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -42,6 +45,7 @@ public class ResultService {
     private final ClusterService clusterService;
     @Value("${fastapi.base-url}")
     private String fastApiBaseUrl;
+
 
     @Transactional
     public void processSurveyResult(ResultRequestDto dto) {
@@ -234,7 +238,7 @@ public class ResultService {
         }).toList();
     }
 
-    // 컨트롤러단에서 getmapping으로 분류해놨긴 한데 조회 + 보내는 기능 둘다 있는 메서드라서 일단 붙일게요
+
     public List<Double> getLatestVector(Long userId, Long surveyId) {
         Result latest = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
@@ -263,6 +267,7 @@ public class ResultService {
         // 해당값이 없으면 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         // 를 하는 기존코드 대신 프론트로 대기 상태라는 표시로 대체
 
+
         String initialImageUrl = "/images/default.png";
         if (resOpt.isEmpty()){
             return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
@@ -271,6 +276,7 @@ public class ResultService {
 
 
         Result latest = resOpt.get();
+
 
 
         List<ResultDetail> details = resultDetailRepository.findByResult(latest);
@@ -422,29 +428,67 @@ public class ResultService {
     public List<ResultHistoryDto> getResultHistoryByUserId(Long userId) {
         List<Result> results = resultRepository.findByUserIdOrderByCreatedAtDesc(userId);
 
+
+
         return results.stream()
-                .map(result -> new ResultHistoryDto(
-                        result.getId(),
-                        result.getCluster() != null ? result.getCluster().getDescription() : ResultType.not_clusterd.getDescription(),
-                        result.getCreatedAt().toLocalDate()
-                ))
+                .map(result -> {
+                    String resultTypeDesc = result.getCluster() != null
+                            ? result.getCluster().getDescription()
+                            : ResultType.not_clusterd.getDescription();
+                    String[] words = resultTypeDesc.trim().split("\\s+");
+                    String lastWord = words[words.length - 1];
+                    String imageFileName = lastWord + ".png";
+                    String imagePath = "static/images/" + imageFileName;
+                    boolean exists;
+                    try {
+                        exists = new ClassPathResource(imagePath).exists();
+                    } catch (Exception e){
+                        exists = false;
+                    }
+
+//                    File file = new File(imagePath);
+//                    String imageUrl = file.exists()
+//                            ? "/images/" + imageFileName
+//                            : "/images/default.png";
+                    String imageUrl = exists ? "/images/" + imageFileName : "/images/default.png";
+                    return new ResultHistoryDto(
+                            result.getId(),
+                            resultTypeDesc,
+                            //result.getCluster() != null ? result.getCluster().getDescription() : ResultType.not_clusterd.getDescription(),
+                            result.getCreatedAt().toLocalDate(),
+                            imageUrl
+                    );
+
+
+
+                }
+
+
+                )
                 .collect(Collectors.toList());
     }
 
 
 
     @Transactional
-    public AnalysisResponseDto getCategoryScoresByResultId(Long resultId) {
+    public AnalysisResponseWithNicknameDto getCategoryScoresByResultId(Long resultId, @LoginUser User user) {
         Result result = resultRepository.findById(resultId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
+
+        if (!result.getUserId().equals(user.getId())){
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
 
         List<ResultDetail> details = resultDetailRepository.findByResult(result);
 
         String initialImageUrl = "/images/default.png";
 
 
+
+
         if (details.isEmpty()) {
-            return new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
+            AnalysisResponseDto analysisResponseDto = new AnalysisResponseDto(ResultType.not_yet.getDescription(), "done", List.of(), ResultType.not_yet.getDetailDescription(), initialImageUrl);
+            return new AnalysisResponseWithNicknameDto(analysisResponseDto, user.getNickname());
         }
 
         Map<Category, Double> avgByCategory = details.stream()
@@ -495,8 +539,10 @@ public class ResultService {
             imageUrl = "/images/default.png";
         }
 
+        AnalysisResponseDto analysisResponseDto = new AnalysisResponseDto(description, "done", items, detailDescription, imageUrl);
 
-        return new AnalysisResponseDto(description, "done", items, detailDescription, imageUrl);
+
+        return new AnalysisResponseWithNicknameDto(analysisResponseDto, user.getNickname());
     }
 
     private String extractLastWord(String sentence) {
@@ -505,6 +551,94 @@ public class ResultService {
         return words[words.length - 1];
     }
 
+
+
+    @Transactional
+    public void processSurveyResultToLoad(ResultRequestDto dto) {
+        Survey survey = surveyRepository.findById(dto.surveyId())
+                .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
+
+        List<Long> choiceIds = dto.answers().stream()
+                .map(AnswerDto::choiceId)
+                .toList();
+
+        List<Choice> choices = choiceRepository.findAllById(choiceIds);
+
+        Map<String, List<Integer>> fieldScoreMap = new HashMap<>();
+
+
+
+
+
+
+
+        // 결과 저장용 Result 엔티티 생성
+        Result result = Result.builder()
+                .userId(dto.userId())
+                .survey(survey)
+                .field("") // 나중에 채움
+                .cluster(null)
+                .build();
+
+        resultRepository.save(result);
+
+//        List<ResultDetail> existingDetails = resultDetailRepository.findByUserIdAndSurveyId(dto.userId(), dto.surveyId());
+//        resultDetailRepository.deleteAll(existingDetails);
+
+        for (int i = 0; i < choices.size(); i++) {
+            Choice choice = choices.get(i);
+            Long expectedQuestionId = dto.answers().get(i).questionId();
+
+            if (!choice.getQuestion().getId().equals(expectedQuestionId)) {
+                throw new CustomException(ErrorCode.QUESTION_CHOICE_MISMATCH);
+            }
+
+            String fieldName = choice.getProperty().getName(); // 분야 이름
+            int score = ScoreUtils.calculateScore(choice.getDisplayOrder(), choice.getQuestion().getProperty().getId());
+
+            fieldScoreMap
+                    .computeIfAbsent(fieldName, k -> new ArrayList<>())
+                    .add(score);
+
+            // ResultDetail 엔티티 생성 및 저장
+            ResultDetail detail = ResultDetail.builder()
+                    .result(result)
+                    .question(choice.getQuestion())
+                    .choice(choice)
+                    .property(choice.getProperty())
+                    .score((double) score)
+                    .build();
+
+            resultDetailRepository.save(detail);
+        }
+
+        // 분야 이름 고정 순서 정렬
+        List<String> sortedFields = new ArrayList<>(fieldScoreMap.keySet());
+        Collections.sort(sortedFields); // 알파벳 정렬 or 커스텀 정렬도 가능
+
+        // 분야별 평균
+        List<Double> vector = sortedFields.stream()
+                .map(field -> {
+                    List<Integer> scores = fieldScoreMap.get(field);
+                    return scores.stream().mapToInt(Integer::intValue).average().orElse(0.0);
+                })
+                .toList();
+
+        String field = vector.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+
+        result.setField(field);
+
+//        Result result = Result.builder()
+//                .userId(dto.userId())
+//                .survey(survey)
+//                .field(field)
+//                .cluster(null) // 추후 군집 분석 후 설정
+//                .build();
+
+        resultRepository.save(result);
+    }
 
     public Long count() {
         return resultRepository.count();

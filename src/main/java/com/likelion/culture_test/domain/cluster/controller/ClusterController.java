@@ -1,15 +1,17 @@
 package com.likelion.culture_test.domain.cluster.controller;
 
+import com.likelion.culture_test.domain.cluster.dto.ClusterInfoDto;
 import com.likelion.culture_test.domain.cluster.dto.ClusterResponseDto;
 import com.likelion.culture_test.domain.cluster.service.ClusterService;
+import com.likelion.culture_test.domain.user.entity.User;
+import com.likelion.culture_test.global.resolver.LoginUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -20,6 +22,7 @@ public class ClusterController {
 
     private final ClusterService clusterService;
 
+    @Operation(summary = "Fast api 서버와의 통신")
     @PostMapping("/result")
     public ResponseEntity<Void> receiveClusteredResult(@RequestBody ClusterResponseDto responseDto){
         System.out.println("==== 컨트롤러 진입 확인 ====");
@@ -31,5 +34,17 @@ public class ClusterController {
         log.info("보낸 벡터 데이터들 처리 후 다시 받아오기?");
         clusterService.saveClustered(responseDto);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "@ 방금 나온 해당 결과가 속한 몇번째 돌린 군집 세대에 해당하는지, 군집 명, 전체에서의 퍼센티지 반환")
+    @GetMapping("/percentage")
+    public ResponseEntity<ClusterInfoDto> getClusterPercentage(
+            @Parameter(hidden = true) @LoginUser User user,
+            @RequestParam Long surveyId
+    ) {
+
+        Long userId = user.getId();
+        ClusterInfoDto dto = clusterService.clusterPercentage(userId, surveyId);
+        return ResponseEntity.ok(dto);
     }
 }

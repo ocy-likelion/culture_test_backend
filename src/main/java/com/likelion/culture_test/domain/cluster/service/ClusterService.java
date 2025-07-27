@@ -1,5 +1,6 @@
 package com.likelion.culture_test.domain.cluster.service;
 
+import com.likelion.culture_test.domain.cluster.dto.ClusterInfoDto;
 import com.likelion.culture_test.domain.cluster.dto.ClusterResponseDto;
 import com.likelion.culture_test.domain.cluster.entity.Centroid;
 import com.likelion.culture_test.domain.cluster.entity.Cluster;
@@ -17,10 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -217,6 +215,41 @@ public class ClusterService {
         return orderedCategories.stream()
                 .map(cat -> centroidMap.getOrDefault(cat, 0.0)) // 값 없으면 기본값 0.0
                 .collect(Collectors.toList());
+    }
+
+
+    public ClusterInfoDto clusterPercentage(Long userId, Long surveyId){
+
+        Optional<Result> recentResult = resultRepository.findTopByUserIdAndSurveyIdOrderByCreatedAtDesc(userId, surveyId);
+        Cluster cluster;
+        if (recentResult.isEmpty()) {
+            throw new CustomException(ErrorCode.RESULT_NOT_FOUND);
+//            Result result = recentResult.get();
+//            cluster = result.getCluster();
+        }
+
+        cluster = recentResult.get().getCluster();
+        if (cluster == null){
+            throw new CustomException(ErrorCode.CLUSTER_NOT_FOUND);
+
+
+        }
+
+        long totalResults = resultRepository.count();
+        long clusterResults = resultRepository.countByClusterId(cluster.getId());
+        double percentage = 0.0;
+        if (totalResults > 0) {
+            percentage = (double) clusterResults / totalResults * 100;
+            percentage = Math.round(percentage * 10) / 10.0;
+        }
+
+
+
+
+
+        return new ClusterInfoDto(cluster.getGeneration().getId(), cluster.getName(), percentage);
+
+
     }
 
 
