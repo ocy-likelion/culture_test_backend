@@ -336,15 +336,20 @@ public class ResultService {
 
         // String imageName = extractLastWord(description) + ".png";
         String imageName = resultType.getToEnglish() + ".png";
-        String imagePath = "src/main/resources/static/images/" + imageName;
-        String imageUrl;
+        //String imagePath = "src/main/resources/static/images/" + imageName;
+        String imagePath = "static/images/" + imageName;
+        ClassPathResource resource = new ClassPathResource(imagePath);
+        boolean exists = resource.exists();
 
-        File file = new File(imagePath);
-        if (file.exists()) {
-            imageUrl = "/images/" + imageName;
-        } else {
-            imageUrl = "/images/default.png";
-        }
+        String imageUrl = exists ? "/images/" + imageName : "/images/default.png";
+//        String imageUrl;
+//
+//        File file = new File(imagePath);
+//        if (file.exists()) {
+//            imageUrl = "/images/" + imageName;
+//        } else {
+//            imageUrl = "/images/default.png";
+//        }
 
 
 
