@@ -334,7 +334,8 @@ public class ResultService {
         latest.setCluster(cluster);
         resultRepository.save(latest);
 
-        String imageName = extractLastWord(description) + ".png";
+        // String imageName = extractLastWord(description) + ".png";
+        String imageName = resultType.getToEnglish() + ".png";
         String imagePath = "src/main/resources/static/images/" + imageName;
         String imageUrl;
 
@@ -435,9 +436,18 @@ public class ResultService {
                     String resultTypeDesc = result.getCluster() != null
                             ? result.getCluster().getDescription()
                             : ResultType.not_clusterd.getDescription();
-                    String[] words = resultTypeDesc.trim().split("\\s+");
-                    String lastWord = words[words.length - 1];
-                    String imageFileName = lastWord + ".png";
+
+
+//                    String[] words = resultTypeDesc.trim().split("\\s+");
+//                    String lastWord = words[words.length - 1];
+
+                    ResultType resultType = Arrays.stream(ResultType.values())
+                            .filter(rt -> rt.getDescription().equals(resultTypeDesc))
+                            .findFirst()
+                            .orElse(ResultType.not_yet);
+
+
+                    String imageFileName = resultType.getToEnglish() + ".png";
                     String imagePath = "static/images/" + imageFileName;
                     boolean exists;
                     try {
@@ -528,16 +538,25 @@ public class ResultService {
                 .orElse(ResultType.not_yet);  // 혹은 not_clusterd 등 fallback 설정
         String detailDescription = resultType.getDetailDescription();
 
-        String imageName = extractLastWord(description) + ".png";
-        String imagePath = "src/main/resources/static/images/" + imageName;
-        String imageUrl;
-
-        File file = new File(imagePath);
-        if (file.exists()) {
-            imageUrl = "/images/" + imageName;
-        } else {
-            imageUrl = "/images/default.png";
+        //String imageName = extractLastWord(description) + ".png";
+        String imageName = resultType.getToEnglish() + ".png";
+        String imagePath = "static/images/" + imageName;
+        //String imagePath = "src/main/resources/static/images/" + imageName;
+        boolean exists;
+        try {
+            exists = new ClassPathResource(imagePath).exists();
+        } catch (Exception e) {
+            exists = false;
         }
+
+        String imageUrl = exists ? "/images/" + imageName : "/images/default.png";
+
+//        File file = new File(imagePath);
+//        if (file.exists()) {
+//            imageUrl = "/images/" + imageName;
+//        } else {
+//            imageUrl = "/images/default.png";
+//        }
 
         AnalysisResponseDto analysisResponseDto = new AnalysisResponseDto(description, "done", items, detailDescription, imageUrl);
 
@@ -640,33 +659,7 @@ public class ResultService {
         resultRepository.save(result);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public Long count() {
+        return resultRepository.count();
+    }
 }
