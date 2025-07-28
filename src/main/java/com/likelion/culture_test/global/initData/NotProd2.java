@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.likelion.culture_test.domain.result.dto.AnswerDto;
 import com.likelion.culture_test.domain.result.dto.ResultRequestDto;
 import com.likelion.culture_test.domain.result.service.ResultService;
+import com.likelion.culture_test.global.exceptions.CustomException;
+import com.likelion.culture_test.global.exceptions.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -28,12 +30,15 @@ public class NotProd2 {
             @Transactional
             @Override
             public void run(ApplicationArguments args) throws Exception {
+                if (resultService.count() > 0) {
+                    return;
+                }
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/result_data.json");
 
                 if (inputStream == null) {
-                    throw new IllegalStateException("result_data.json 파일을 찾을 수 없습니다.");
+                    throw new CustomException(ErrorCode.RESOURCE_NOT_FOUND);
                 }
 
                 List<ResultRequestDto> responses = objectMapper
@@ -49,7 +54,13 @@ public class NotProd2 {
                         }
                     }
 
-                    resultService.processSurveyResult(dto);
+                    ResultRequestDto HundredAddDto = new ResultRequestDto(
+                            dto.userId(),  // 기존 userId를 피하기 위한 조작
+                            dto.surveyId(),
+                            dto.answers()
+                    );
+
+                    resultService.processSurveyResultToLoad(HundredAddDto);
                 }
 
                 StringBuilder statsContent = new StringBuilder();

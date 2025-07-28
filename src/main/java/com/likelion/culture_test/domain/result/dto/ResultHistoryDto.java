@@ -14,6 +14,7 @@ public class ResultHistoryDto {
 
     private String ResultType;
     private LocalDate localDate;
+    private String imageUrl;
 
 
 
